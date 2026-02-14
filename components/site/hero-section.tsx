@@ -9,7 +9,7 @@ import { WhatsAppButton } from "@/components/site/whatsapp-button";
 import { Button } from "@/components/ui/button";
 import { getWhatsAppUrl } from "@/data/plans";
 
-const HERO_CANDIDATE_IMAGES = ["/pepu/hero.jpg", "/fitness shirtless.jpg", "/images/hero-pepu.jpg"];
+const HERO_CANDIDATE_IMAGES = ["/pepu/hero.jpg", "/fitness-shirtless.jpg", "/images/hero-pepu.jpg"];
 const HERO_WHATSAPP_LINK = getWhatsAppUrl("Hola Pepu, quiero orientacion para elegir mi plan ideal.");
 
 export function HeroSection() {

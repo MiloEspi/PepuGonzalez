@@ -26,12 +26,15 @@ export function Navbar() {
     if (pathname !== "/") return;
     if (typeof window === "undefined") return;
 
-    if (!("IntersectionObserver" in window)) {
+    const supportsObserver = typeof window.IntersectionObserver !== "undefined";
+    if (!supportsObserver) {
       const hash = window.location.hash.replace("#", "");
-      if (hash === "sobre-mi") setActiveValue("sobre-mi");
-      if (hash === "plan-finder") setActiveValue("plan-finder");
-      if (hash === "planes-home") setActiveValue("planes");
-      return;
+      const frame = requestAnimationFrame(() => {
+        if (hash === "sobre-mi") setActiveValue("sobre-mi");
+        if (hash === "plan-finder") setActiveValue("plan-finder");
+        if (hash === "planes-home") setActiveValue("planes");
+      });
+      return () => cancelAnimationFrame(frame);
     }
 
     const targets = OBSERVED_HOME_SECTIONS.map((id) => document.getElementById(id)).filter(
