@@ -23,7 +23,7 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 The home hero uses `next/image` and tries these local paths in order:
 
 1. `/public/pepu/hero.jpg`
-2. `/public/fitness shirtless.jpg`
+2. `/public/fitness-shirtless.jpg`
 3. `/public/images/hero-pepu.jpg`
 
 If none exists, the UI falls back automatically to a gradient background so the layout still works.
