@@ -10,8 +10,10 @@ import { cn } from "@/lib/utils";
 type NavValue = "sobremi" | "planes" | "encontra-tu-plan";
 type ActiveNavValue = NavValue | "none";
 
-const NAV_SPY_SECTIONS: NavValue[] = ["sobremi", "planes", "encontra-tu-plan"];
+const NAV_SPY_SECTIONS: NavValue[] = ["encontra-tu-plan", "sobremi", "planes"];
 const NAV_TOP_OFFSET = 92;
+const ACTIVE_LINE_OFFSET = 20;
+const MIN_VISIBLE_RATIO = 0.32;
 
 interface VisibilityState {
   ratio: number;
@@ -20,25 +22,50 @@ interface VisibilityState {
 }
 
 function pickActiveSection(stateMap: Map<NavValue, VisibilityState>): ActiveNavValue {
+  const activeLine = NAV_TOP_OFFSET + ACTIVE_LINE_OFFSET;
   const candidates = NAV_SPY_SECTIONS.filter((id) => {
     const section = stateMap.get(id);
     if (!section) return false;
-
-    const nearTop = section.top <= NAV_TOP_OFFSET + 24 && section.bottom > NAV_TOP_OFFSET + 24;
-    return section.ratio >= 0.4 || nearTop;
+    const nearTop = section.top <= activeLine && section.bottom > activeLine;
+    return section.ratio >= MIN_VISIBLE_RATIO || nearTop;
   });
 
   if (!candidates.length) return "none";
 
   const [best] = candidates.sort((a, b) => {
-    const current = stateMap.get(a)!;
-    const next = stateMap.get(b)!;
+    const aState = stateMap.get(a)!;
+    const bState = stateMap.get(b)!;
+    const ratioDelta = bState.ratio - aState.ratio;
 
-    if (current.ratio !== next.ratio) return next.ratio - current.ratio;
-    return Math.abs(current.top - NAV_TOP_OFFSET) - Math.abs(next.top - NAV_TOP_OFFSET);
+    if (Math.abs(ratioDelta) > 0.05) {
+      return ratioDelta;
+    }
+
+    return Math.abs(aState.top - activeLine) - Math.abs(bState.top - activeLine);
   });
 
   return best ?? "none";
+}
+
+function buildInitialStateMap(sections: HTMLElement[]): Map<NavValue, VisibilityState> {
+  const initial = new Map<NavValue, VisibilityState>();
+
+  sections.forEach((section) => {
+    const rect = section.getBoundingClientRect();
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+    const visibleTop = Math.max(rect.top, NAV_TOP_OFFSET);
+    const visibleBottom = Math.min(rect.bottom, viewportHeight);
+    const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+    const ratio = rect.height > 0 ? visibleHeight / rect.height : 0;
+
+    initial.set(section.id as NavValue, {
+      ratio,
+      top: rect.top,
+      bottom: rect.bottom,
+    });
+  });
+
+  return initial;
 }
 
 export function Navbar() {
@@ -74,7 +101,11 @@ export function Navbar() {
     );
     if (!sections.length) return;
 
-    const stateMap = new Map<NavValue, VisibilityState>();
+    const stateMap = buildInitialStateMap(sections);
+    const initialFrame = requestAnimationFrame(() => {
+      setHomeActive(pickActiveSection(stateMap));
+    });
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -89,21 +120,17 @@ export function Navbar() {
         setHomeActive(pickActiveSection(stateMap));
       },
       {
-        threshold: [0, 0.15, 0.4, 0.65, 1],
-        rootMargin: `-${NAV_TOP_OFFSET}px 0px -42% 0px`,
+        threshold: [0, 0.1, 0.2, 0.32, 0.45, 0.6, 0.8, 1],
+        rootMargin: `-${NAV_TOP_OFFSET}px 0px -12% 0px`,
       }
     );
 
-    sections.forEach((section) => {
-      stateMap.set(section.id as NavValue, {
-        ratio: 0,
-        top: Number.POSITIVE_INFINITY,
-        bottom: Number.NEGATIVE_INFINITY,
-      });
-      observer.observe(section);
-    });
+    sections.forEach((section) => observer.observe(section));
 
-    return () => observer.disconnect();
+    return () => {
+      cancelAnimationFrame(initialFrame);
+      observer.disconnect();
+    };
   }, [pathname]);
 
   function scrollToSection(id: NavValue) {
@@ -153,14 +180,14 @@ export function Navbar() {
               aria-label="Navegacion principal"
               className="w-max rounded-full border border-border/80 bg-secondary/72 p-1 shadow-[inset_0_1px_0_hsl(0_0%_100%/0.62)]"
             >
+              <ToggleGroupItem value="encontra-tu-plan" aria-label="Ir a Encontrar tu plan" className={itemClassName}>
+                Encontra tu plan
+              </ToggleGroupItem>
               <ToggleGroupItem value="sobremi" aria-label="Ir a Sobre mi" className={itemClassName}>
                 Sobre mi
               </ToggleGroupItem>
               <ToggleGroupItem value="planes" aria-label="Ir a Planes" className={itemClassName}>
                 Planes
-              </ToggleGroupItem>
-              <ToggleGroupItem value="encontra-tu-plan" aria-label="Ir a Encontrar tu plan" className={itemClassName}>
-                Encontra tu plan
               </ToggleGroupItem>
             </ToggleGroup>
           </div>
