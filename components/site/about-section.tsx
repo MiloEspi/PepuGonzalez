@@ -28,24 +28,27 @@ const aboutBullets = [
 export function AboutSection() {
   const [showFallback, setShowFallback] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
-  const { hasAnimated } = useInViewAnimation(sectionRef);
+  const { hasEnteredView } = useInViewAnimation(sectionRef, { threshold: 0.18, rootMargin: "0px 0px -14% 0px" });
 
   useEffect(() => {
-    if (!hasAnimated || !sectionRef.current) return;
-    const revealTargets = sectionRef.current.querySelectorAll<HTMLElement>("[data-reveal]");
-    animateFadeSlideIn(revealTargets, { distance: 18, staggerStep: 120 });
-  }, [hasAnimated]);
+    if (!hasEnteredView || !sectionRef.current) return;
+    const targets = sectionRef.current.querySelectorAll<HTMLElement>("[data-reveal]");
+    animateFadeSlideIn(targets, { distance: 22, duration: 760, staggerStep: 120 });
+  }, [hasEnteredView]);
 
   return (
     <SectionShell
-      id="sobre-mi"
+      id="sobremi"
       eyebrow="SOBRE MI"
       title="Coaching con criterio, no con plantillas genéricas"
       description="Cada plan se construye con tus horarios, tu nivel y tu objetivo real para que puedas sostenerlo en el tiempo."
       className="pt-10"
     >
       <div ref={sectionRef} className="grid gap-8 md:grid-cols-[0.95fr_1.05fr] md:items-center">
-        <div data-reveal className="relative h-[420px] overflow-hidden rounded-2xl border border-border/80 motion-safe:opacity-0 motion-safe:translate-y-4">
+        <div
+          data-reveal
+          className="relative h-[420px] overflow-hidden rounded-2xl border border-border/80 opacity-0"
+        >
           {!showFallback ? (
             <Image
               src={ABOUT_IMAGE}
@@ -69,7 +72,7 @@ export function AboutSection() {
             <article
               key={item.title}
               data-reveal
-              className="rounded-xl border border-border/75 bg-card/90 p-5 shadow-[0_10px_24px_-22px_hsl(215_30%_24%)] motion-safe:opacity-0 motion-safe:translate-y-4"
+              className="rounded-xl border border-border/75 bg-card/90 p-5 opacity-0 shadow-[0_10px_24px_-22px_hsl(215_30%_24%)]"
             >
               <h3 className="flex items-center gap-2 font-heading text-lg font-semibold">
                 <CheckCircle2 className="size-4 text-primary" />

@@ -7,20 +7,50 @@ import { useEffect, useMemo, useState } from "react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { cn } from "@/lib/utils";
 
-type NavValue = "sobre-mi" | "planes" | "plan-finder";
-type HomeSection = "sobre-mi" | "planes-home" | "plan-finder";
+type NavValue = "sobremi" | "planes" | "encontra-tu-plan";
+type ActiveNavValue = NavValue | "none";
 
-const OBSERVED_HOME_SECTIONS: HomeSection[] = ["plan-finder", "sobre-mi", "planes-home"];
+const NAV_SPY_SECTIONS: NavValue[] = ["sobremi", "planes", "encontra-tu-plan"];
+const NAV_TOP_OFFSET = 92;
+
+interface VisibilityState {
+  ratio: number;
+  top: number;
+  bottom: number;
+}
+
+function pickActiveSection(stateMap: Map<NavValue, VisibilityState>): ActiveNavValue {
+  const candidates = NAV_SPY_SECTIONS.filter((id) => {
+    const section = stateMap.get(id);
+    if (!section) return false;
+
+    const nearTop = section.top <= NAV_TOP_OFFSET + 24 && section.bottom > NAV_TOP_OFFSET + 24;
+    return section.ratio >= 0.4 || nearTop;
+  });
+
+  if (!candidates.length) return "none";
+
+  const [best] = candidates.sort((a, b) => {
+    const current = stateMap.get(a)!;
+    const next = stateMap.get(b)!;
+
+    if (current.ratio !== next.ratio) return next.ratio - current.ratio;
+    return Math.abs(current.top - NAV_TOP_OFFSET) - Math.abs(next.top - NAV_TOP_OFFSET);
+  });
+
+  return best ?? "none";
+}
 
 export function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
-  const [activeValue, setActiveValue] = useState<NavValue>("plan-finder");
+  const [homeActive, setHomeActive] = useState<ActiveNavValue>("none");
 
-  const selectedValue = useMemo<NavValue>(() => {
+  const selectedValue = useMemo<ActiveNavValue>(() => {
     if (pathname.startsWith("/planes")) return "planes";
-    return activeValue;
-  }, [activeValue, pathname]);
+    if (pathname !== "/") return "none";
+    return homeActive;
+  }, [homeActive, pathname]);
 
   useEffect(() => {
     if (pathname !== "/") return;
@@ -28,80 +58,77 @@ export function Navbar() {
 
     const supportsObserver = typeof window.IntersectionObserver !== "undefined";
     if (!supportsObserver) {
-      const hash = window.location.hash.replace("#", "");
+      const hash = window.location.hash.replace("#", "") as ActiveNavValue;
       const frame = requestAnimationFrame(() => {
-        if (hash === "sobre-mi") setActiveValue("sobre-mi");
-        if (hash === "plan-finder") setActiveValue("plan-finder");
-        if (hash === "planes-home") setActiveValue("planes");
+        if (NAV_SPY_SECTIONS.includes(hash as NavValue)) {
+          setHomeActive(hash);
+          return;
+        }
+        setHomeActive("none");
       });
       return () => cancelAnimationFrame(frame);
     }
 
-    const targets = OBSERVED_HOME_SECTIONS.map((id) => document.getElementById(id)).filter(
-      (element): element is HTMLElement => Boolean(element)
+    const sections = NAV_SPY_SECTIONS.map((id) => document.getElementById(id)).filter(
+      (node): node is HTMLElement => Boolean(node)
     );
-    if (!targets.length) return;
+    if (!sections.length) return;
 
-    const visibilityMap = new Map<HomeSection, number>();
+    const stateMap = new Map<NavValue, VisibilityState>();
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          const id = (entry.target as HTMLElement).id as HomeSection;
-          visibilityMap.set(id, entry.isIntersecting ? entry.intersectionRatio : 0);
+          const id = (entry.target as HTMLElement).id as NavValue;
+          stateMap.set(id, {
+            ratio: entry.isIntersecting ? entry.intersectionRatio : 0,
+            top: entry.boundingClientRect.top,
+            bottom: entry.boundingClientRect.bottom,
+          });
         });
 
-        const [best] = Array.from(visibilityMap.entries()).sort((a, b) => b[1] - a[1]);
-        if (!best || best[1] <= 0) return;
-
-        if (best[0] === "sobre-mi") setActiveValue("sobre-mi");
-        if (best[0] === "plan-finder") setActiveValue("plan-finder");
-        if (best[0] === "planes-home") setActiveValue("planes");
+        setHomeActive(pickActiveSection(stateMap));
       },
       {
-        threshold: [0.1, 0.25, 0.45, 0.65],
-        rootMargin: "-30% 0px -45% 0px",
+        threshold: [0, 0.15, 0.4, 0.65, 1],
+        rootMargin: `-${NAV_TOP_OFFSET}px 0px -42% 0px`,
       }
     );
 
-    targets.forEach((target) => {
-      visibilityMap.set(target.id as HomeSection, 0);
-      observer.observe(target);
+    sections.forEach((section) => {
+      stateMap.set(section.id as NavValue, {
+        ratio: 0,
+        top: Number.POSITIVE_INFINITY,
+        bottom: Number.NEGATIVE_INFINITY,
+      });
+      observer.observe(section);
     });
 
     return () => observer.disconnect();
   }, [pathname]);
 
-  function smoothScrollTo(sectionId: HomeSection) {
-    const target = document.getElementById(sectionId);
-    if (!target) return;
+  function scrollToSection(id: NavValue) {
+    const section = document.getElementById(id);
+    if (!section) return;
 
-    target.scrollIntoView({ behavior: "smooth", block: "start" });
-    window.history.replaceState(null, "", `/#${sectionId}`);
+    section.scrollIntoView({ behavior: "smooth", block: "start" });
+    window.history.replaceState(null, "", `/#${id}`);
   }
 
   function handleValueChange(nextValue: string) {
     if (!nextValue) return;
     const value = nextValue as NavValue;
 
-    if (value === "planes") {
-      if (pathname === "/") {
-        setActiveValue("planes");
-        smoothScrollTo("planes-home");
-        return;
-      }
-
+    if (value === "planes" && pathname !== "/") {
       router.push("/planes");
       return;
     }
-
-    setActiveValue(value);
 
     if (pathname !== "/") {
       router.push(`/#${value}`);
       return;
     }
 
-    smoothScrollTo(value);
+    scrollToSection(value);
   }
 
   const itemClassName = cn(
@@ -121,18 +148,18 @@ export function Navbar() {
           <div className="max-w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             <ToggleGroup
               type="single"
-              value={selectedValue}
+              value={selectedValue === "none" ? undefined : selectedValue}
               onValueChange={handleValueChange}
               aria-label="Navegacion principal"
               className="w-max rounded-full border border-border/80 bg-secondary/72 p-1 shadow-[inset_0_1px_0_hsl(0_0%_100%/0.62)]"
             >
-              <ToggleGroupItem value="sobre-mi" aria-label="Ir a Sobre mi" className={itemClassName}>
+              <ToggleGroupItem value="sobremi" aria-label="Ir a Sobre mi" className={itemClassName}>
                 Sobre mi
               </ToggleGroupItem>
               <ToggleGroupItem value="planes" aria-label="Ir a Planes" className={itemClassName}>
                 Planes
               </ToggleGroupItem>
-              <ToggleGroupItem value="plan-finder" aria-label="Ir a Encontrar tu plan" className={itemClassName}>
+              <ToggleGroupItem value="encontra-tu-plan" aria-label="Ir a Encontrar tu plan" className={itemClassName}>
                 Encontra tu plan
               </ToggleGroupItem>
             </ToggleGroup>

@@ -5,6 +5,7 @@ import { type RefObject, useEffect, useState } from "react";
 interface UseInViewAnimationOptions extends IntersectionObserverInit {
   once?: boolean;
   disabled?: boolean;
+  skipInitialCheck?: boolean;
 }
 
 export function useInViewAnimation<T extends HTMLElement>(
@@ -17,6 +18,7 @@ export function useInViewAnimation<T extends HTMLElement>(
     rootMargin = "0px 0px -10% 0px",
     once = true,
     disabled = false,
+    skipInitialCheck = false,
   } = options;
 
   const [isInView, setIsInView] = useState(false);
@@ -48,18 +50,20 @@ export function useInViewAnimation<T extends HTMLElement>(
 
     if (typeof window === "undefined") return;
 
-    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-    const rect = node.getBoundingClientRect();
-    const isInitiallyVisible = rect.top < viewportHeight * 0.9 && rect.bottom > viewportHeight * 0.1;
+    if (!skipInitialCheck) {
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+      const rect = node.getBoundingClientRect();
+      const isInitiallyVisible = rect.top < viewportHeight * 0.9 && rect.bottom > viewportHeight * 0.1;
 
-    if (isInitiallyVisible) {
-      const frame = requestAnimationFrame(() => {
-        setIsInView(true);
-        setHasAnimated(true);
-      });
+      if (isInitiallyVisible) {
+        const frame = requestAnimationFrame(() => {
+          setIsInView(true);
+          setHasAnimated(true);
+        });
 
-      if (once) {
-        return () => cancelAnimationFrame(frame);
+        if (once) {
+          return () => cancelAnimationFrame(frame);
+        }
       }
     }
 
@@ -92,7 +96,7 @@ export function useInViewAnimation<T extends HTMLElement>(
 
     observer.observe(node);
     return () => observer.disconnect();
-  }, [ref, threshold, root, rootMargin, once, disabled, prefersReducedMotion]);
+  }, [ref, threshold, root, rootMargin, once, disabled, prefersReducedMotion, skipInitialCheck]);
 
   return {
     isInView,

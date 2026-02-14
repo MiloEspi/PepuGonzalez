@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { ArrowLeft, Check } from "lucide-react";
 
 import { WhatsAppButton } from "@/components/site/whatsapp-button";
 import { Badge } from "@/components/ui/badge";
@@ -29,6 +29,7 @@ function getAnswerLabel<K extends keyof QuizAnswers>(key: K, value: QuizAnswers[
 export function PlanFinderQuiz() {
   const [stepIndex, setStepIndex] = useState(0);
   const [answers, setAnswers] = useState<Partial<QuizAnswers>>({});
+  const advanceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const totalSteps = quizQuestions.length;
   const isComplete = isQuizComplete(answers);
@@ -36,18 +37,27 @@ export function PlanFinderQuiz() {
   const activeQuestion = quizQuestions[stepIndex];
   const progressValue = isComplete ? 100 : Math.round(((stepIndex + 1) / totalSteps) * 100);
 
+  useEffect(() => {
+    return () => {
+      if (advanceTimeoutRef.current) {
+        clearTimeout(advanceTimeoutRef.current);
+      }
+    };
+  }, []);
+
   function handleOptionSelect(value: QuizAnswers[keyof QuizAnswers]) {
     if (!activeQuestion) return;
 
-    const updatedAnswers = {
-      ...answers,
+    setAnswers((prev) => ({
+      ...prev,
       [activeQuestion.id]: value,
-    };
-
-    setAnswers(updatedAnswers);
+    }));
 
     if (stepIndex < totalSteps - 1) {
-      setStepIndex((prev) => prev + 1);
+      if (advanceTimeoutRef.current) clearTimeout(advanceTimeoutRef.current);
+      advanceTimeoutRef.current = setTimeout(() => {
+        setStepIndex((prev) => Math.min(prev + 1, totalSteps - 1));
+      }, 130);
     }
   }
 
@@ -102,43 +112,56 @@ export function PlanFinderQuiz() {
 
   return (
     <Card className="rounded-2xl border-border/80 bg-card/95">
-      <CardHeader className="space-y-4">
-        <div className="flex items-center justify-between">
-          <p className="text-xs font-semibold tracking-[0.16em] text-muted-foreground">
-            PASO {stepIndex + 1} / {totalSteps}
-          </p>
+      <CardHeader className="space-y-3 pb-4">
+        <div className="flex items-start justify-between gap-4">
+          <div className="space-y-1">
+            <p className="text-xs font-semibold tracking-[0.15em] text-muted-foreground">
+              PASO {stepIndex + 1} / {totalSteps}
+            </p>
+            <CardTitle className="text-2xl">{activeQuestion.title}</CardTitle>
+          </div>
           <Badge variant="secondary" className="rounded-full">
             Plan Finder
           </Badge>
         </div>
-        <Progress value={progressValue} />
-        <div className="space-y-2">
-          <CardTitle className="text-xl">{activeQuestion.title}</CardTitle>
-          <p className="text-sm text-muted-foreground">{activeQuestion.subtitle}</p>
-        </div>
+        <Progress value={progressValue} className="h-1.5 bg-primary/18" />
+        <p className="text-sm text-muted-foreground">{activeQuestion.subtitle}</p>
       </CardHeader>
 
-      <CardContent className="space-y-3">
-        {activeQuestion.options.map((option) => {
-          const selected = answers[activeQuestion.id] === option.value;
-          return (
-            <button
-              key={option.label}
-              type="button"
-              onClick={() => handleOptionSelect(option.value)}
-              className={cn(
-                "w-full rounded-xl border px-4 py-3 text-left text-sm transition",
-                selected
-                  ? "border-primary bg-primary/8 text-foreground"
-                  : "border-border/80 bg-background/65 text-muted-foreground hover:border-primary/40 hover:text-foreground"
-              )}
-            >
-              {option.label}
-            </button>
-          );
-        })}
+      <CardContent className="space-y-4">
+        <div key={activeQuestion.id} className="space-y-3 animate-[quiz-step-in_220ms_ease-out]">
+          {activeQuestion.options.map((option) => {
+            const selected = answers[activeQuestion.id] === option.value;
 
-        <div className="flex flex-wrap gap-2 pt-3">
+            return (
+              <button
+                key={option.label}
+                type="button"
+                onClick={() => handleOptionSelect(option.value)}
+                className={cn(
+                  "group flex w-full items-center justify-between rounded-2xl border px-4 py-3 text-left text-sm transition",
+                  selected
+                    ? "border-primary bg-primary/10 text-foreground shadow-[0_14px_24px_-22px_hsl(212_70%_28%)]"
+                    : "border-border/80 bg-background/65 text-muted-foreground hover:border-primary/35 hover:bg-accent/45 hover:text-foreground"
+                )}
+              >
+                <span className="font-medium">{option.label}</span>
+                <span
+                  className={cn(
+                    "grid size-5 place-items-center rounded-full border transition",
+                    selected
+                      ? "border-primary bg-primary text-primary-foreground"
+                      : "border-border/80 bg-background text-transparent group-hover:border-primary/35"
+                  )}
+                >
+                  <Check className="size-3.5" />
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="flex flex-wrap gap-2 pt-1">
           {Object.entries(answers).map(([key, value]) => (
             <Badge key={key} variant="outline" className="rounded-full">
               {getAnswerLabel(key as keyof QuizAnswers, value as QuizAnswers[keyof QuizAnswers])}
@@ -152,10 +175,7 @@ export function PlanFinderQuiz() {
           <ArrowLeft className="size-4" />
           Volver
         </Button>
-        <span className="flex items-center gap-1 text-xs text-muted-foreground">
-          Elegi una opcion
-          <ArrowRight className="size-3.5" />
-        </span>
+        <p className="text-xs text-muted-foreground">Selecciona una opcion para avanzar</p>
       </CardFooter>
     </Card>
   );

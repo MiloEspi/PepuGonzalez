@@ -2,9 +2,9 @@ import { SmoothScrollLink } from "@/components/site/smooth-scroll-link";
 import { WhatsAppButton } from "@/components/site/whatsapp-button";
 import { SectionShell } from "@/components/site/section-shell";
 import { Button } from "@/components/ui/button";
-import { getWhatsAppUrl } from "@/data/plans";
+import { WHATSAPP_DIRECT_URL } from "@/data/plans";
 
-const WHATSAPP_LINK = getWhatsAppUrl("Hola Pepu, quiero empezar hoy y necesito ayuda para elegir mi plan.");
+const WHATSAPP_LINK = WHATSAPP_DIRECT_URL;
 
 export function FinalCTA() {
   return (
@@ -17,7 +17,7 @@ export function FinalCTA() {
         </p>
         <div className="mt-7 flex flex-wrap gap-3">
           <Button asChild variant="secondary" size="lg" className="rounded-full bg-white text-slate-900 hover:bg-white/90">
-            <SmoothScrollLink href="/#plan-finder">Encontra tu plan</SmoothScrollLink>
+            <SmoothScrollLink href="/#encontra-tu-plan">Encontra tu plan</SmoothScrollLink>
           </Button>
           <WhatsAppButton href={WHATSAPP_LINK} size="lg">
             Hablar por WhatsApp

@@ -8,7 +8,7 @@ import { featuredPlans } from "@/data/plans";
 export function FeaturedPlans() {
   return (
     <SectionShell
-      id="planes-home"
+      id="planes"
       eyebrow="PLANES DESTACADOS"
       title="Elegi un plan con estructura y objetivo claro"
       description="Cada programa esta armado para ejecutarse en tu realidad: dias disponibles, nivel actual y contexto de entrenamiento."

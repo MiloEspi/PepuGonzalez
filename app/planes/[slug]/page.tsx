@@ -8,7 +8,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { GOAL_LABELS, LEVEL_LABELS, getPlanBySlug, getWhatsAppUrl, plans } from "@/data/plans";
+import { GOAL_LABELS, LEVEL_LABELS, WHATSAPP_DIRECT_URL, getPlanBySlug, plans } from "@/data/plans";
 
 interface PlanDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -69,9 +69,9 @@ export default async function PlanDetailPage({ params }: PlanDetailPageProps) {
           <p className="mt-4 text-lg font-semibold text-foreground">{plan.priceLabel}</p>
 
           <div className="mt-6 flex flex-wrap gap-3">
-            <WhatsAppButton href={getWhatsAppUrl(plan.whatsappMessage)}>Hablar por WhatsApp</WhatsAppButton>
+            <WhatsAppButton href={WHATSAPP_DIRECT_URL}>Hablar por WhatsApp</WhatsAppButton>
             <Button asChild variant="outline" className="rounded-full px-6">
-              <Link href="/#plan-finder">Encontra tu plan</Link>
+              <Link href="/#encontra-tu-plan">Encontra tu plan</Link>
             </Button>
           </div>
         </div>

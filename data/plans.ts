@@ -1,4 +1,6 @@
 export const WHATSAPP_NUMBER = "5491100000000";
+export const WHATSAPP_DIRECT_URL =
+  "https://api.whatsapp.com/send/?phone=5492213619007&text=Hola+Pepu%2C+quiero+mi+Rutina+%283%2F4%2F5%2F6+d%C3%ADas%29+y+ayuda+para+elegir+Volumen+o+Definici%C3%B3n.&type=phone_number&app_absent=0";
 
 export type Goal = "definicion" | "volumen" | "rendimiento";
 export type Level = "principiante" | "intermedio" | "avanzado";
