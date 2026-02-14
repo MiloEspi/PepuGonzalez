@@ -18,7 +18,15 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Hero image setup
+
+The home hero uses `next/image` and tries these local paths in order:
+
+1. `/public/pepu/hero.jpg`
+2. `/public/fitness shirtless.jpg`
+3. `/public/images/hero-pepu.jpg`
+
+If none exists, the UI falls back automatically to a gradient background so the layout still works.
 
 ## Learn More
 
