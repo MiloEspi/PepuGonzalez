@@ -57,7 +57,7 @@ export default async function PlanDetailPage({ params }: PlanDetailPageProps) {
           Volver a planes
         </Link>
 
-        <div className="mt-5 rounded-3xl border border-border/80 bg-card p-6 shadow-[0_20px_40px_-34px_hsl(212_40%_25%)] md:p-8">
+        <div className="mt-5 rounded-3xl border border-border/80 bg-card p-6 shadow-[0_22px_44px_-36px_rgba(0,0,0,0.92)] md:p-8">
           <div className="flex flex-wrap gap-2">
             <Badge variant="secondary">{GOAL_LABELS[plan.goal]}</Badge>
             <Badge variant="outline">{LEVEL_LABELS[plan.level]}</Badge>
@@ -99,7 +99,7 @@ export default async function PlanDetailPage({ params }: PlanDetailPageProps) {
             return (
               <article
                 key={item}
-                className="flex items-start gap-3 rounded-2xl border border-border/80 bg-card px-4 py-4 shadow-[0_12px_24px_-26px_hsl(212_40%_25%)]"
+                className="flex items-start gap-3 rounded-2xl border border-border/80 bg-card px-4 py-4 shadow-[0_14px_24px_-24px_rgba(0,0,0,0.86)]"
               >
                 <div className="rounded-lg border border-primary/20 bg-primary/8 p-2">
                   <Icon className="size-4 text-primary" />
@@ -116,7 +116,7 @@ export default async function PlanDetailPage({ params }: PlanDetailPageProps) {
       </section>
 
       <section className="mx-auto mt-6 grid w-full max-w-6xl gap-5 px-5 md:grid-cols-2">
-        <article className="rounded-2xl border border-primary/40 bg-primary/5 p-5">
+        <article className="rounded-2xl border border-primary/40 bg-primary/10 p-5">
           <h2 className="text-lg font-semibold">Ideal para</h2>
           <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
             {plan.forWho.map((item) => (
@@ -127,11 +127,11 @@ export default async function PlanDetailPage({ params }: PlanDetailPageProps) {
           </ul>
         </article>
 
-        <article className="rounded-2xl border border-slate-400/45 bg-slate-100/55 p-5">
+        <article className="rounded-2xl border border-destructive/35 bg-destructive/10 p-5">
           <h2 className="text-lg font-semibold">No ideal para</h2>
           <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
             {plan.notFor.map((item) => (
-              <li key={item} className="rounded-lg border border-slate-300/70 bg-background/80 px-3 py-2">
+              <li key={item} className="rounded-lg border border-destructive/20 bg-background/80 px-3 py-2">
                 {item}
               </li>
             ))}

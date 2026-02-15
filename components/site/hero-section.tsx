@@ -2,89 +2,145 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { ArrowDown } from "lucide-react";
+import { ArrowDown, ArrowDownRight } from "lucide-react";
+import { animate } from "animejs";
 
 import { SmoothScrollLink } from "@/components/site/smooth-scroll-link";
-import { WhatsAppButton } from "@/components/site/whatsapp-button";
 import { Button } from "@/components/ui/button";
-import { WHATSAPP_DIRECT_URL } from "@/data/plans";
-import { animateFadeSlideIn } from "@/lib/animations";
+import { getStickyWhatsAppHref } from "@/data/offers";
+import { animateFadeSlideIn, shouldReduceMotion } from "@/lib/animations";
 
-const HERO_CANDIDATE_IMAGES = ["/pepu/hero.jpg", "/fitness-shirtless.jpg", "/images/hero-pepu.jpg"];
-const HERO_WHATSAPP_LINK = WHATSAPP_DIRECT_URL;
+const HERO_IMAGES = ["/pepu/hero.jpg", "/fitness-shirtless.jpg", "/images/hero-pepu.jpg"];
 
 export function HeroSection() {
-  const [activeImageIndex, setActiveImageIndex] = useState(0);
-  const [showFallback, setShowFallback] = useState(false);
+  const [imageIndex, setImageIndex] = useState(0);
+  const [showGradientFallback, setShowGradientFallback] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!heroRef.current) return;
+
     const targets = heroRef.current.querySelectorAll<HTMLElement>("[data-hero-reveal]");
-    animateFadeSlideIn(targets, { distance: 28, duration: 860, delay: 120, staggerStep: 180 });
+    animateFadeSlideIn(targets, { distance: 26, duration: 760, delay: 60, staggerStep: 120 });
+
+    const primaryButton = heroRef.current.querySelector<HTMLElement>("[data-hero-primary]");
+    if (!primaryButton) return;
+
+    const reducedMotion = shouldReduceMotion();
+    const restingShadow = "0 16px 34px -20px rgba(212,20,20,0.88)";
+    primaryButton.style.boxShadow = restingShadow;
+
+    const handleEnter = () => {
+      if (reducedMotion) return;
+      animate(primaryButton, {
+        scale: [1, 1.03],
+        boxShadow: [restingShadow, "0 24px 48px -18px rgba(212,20,20,0.95)"],
+        duration: 240,
+        ease: "out(6)",
+      });
+    };
+
+    const handleLeave = () => {
+      if (reducedMotion) return;
+      animate(primaryButton, {
+        scale: [1.03, 1],
+        boxShadow: ["0 24px 48px -18px rgba(212,20,20,0.95)", restingShadow],
+        duration: 220,
+        ease: "out(4)",
+      });
+    };
+
+    primaryButton.addEventListener("mouseenter", handleEnter);
+    primaryButton.addEventListener("mouseleave", handleLeave);
+
+    return () => {
+      primaryButton.removeEventListener("mouseenter", handleEnter);
+      primaryButton.removeEventListener("mouseleave", handleLeave);
+    };
   }, []);
 
   function handleImageError() {
-    if (activeImageIndex < HERO_CANDIDATE_IMAGES.length - 1) {
-      setActiveImageIndex((prev) => prev + 1);
+    if (imageIndex < HERO_IMAGES.length - 1) {
+      setImageIndex((prev) => prev + 1);
       return;
     }
 
-    setShowFallback(true);
+    setShowGradientFallback(true);
   }
 
   return (
-    <section id="inicio" className="mx-auto w-full max-w-6xl scroll-mt-24 px-5 pb-4 pt-6 md:scroll-mt-28 md:pb-6 md:pt-8">
-      <div ref={heroRef} className="relative isolate overflow-hidden rounded-3xl border border-border/80">
-        <div className="relative h-[82svh] min-h-[500px] w-full max-h-[860px]">
-          {!showFallback ? (
+    <section id="inicio" className="mx-auto w-full max-w-6xl scroll-mt-24 px-5 pb-2 pt-5 md:scroll-mt-28 md:pb-3 md:pt-7">
+      <div ref={heroRef} className="relative isolate overflow-hidden rounded-3xl border border-white/12 shadow-[0_34px_74px_-56px_rgba(0,0,0,0.95)]">
+        <div className="relative h-[82svh] min-h-[540px] w-full max-h-[920px]">
+          {!showGradientFallback ? (
             <Image
-              src={HERO_CANDIDATE_IMAGES[activeImageIndex]}
-              alt="Pepu Gonzalez entrenando con atletas"
+              key={HERO_IMAGES[imageIndex]}
+              src={HERO_IMAGES[imageIndex]}
+              alt="Pepu Gonzalez en entrenamiento"
               fill
               priority
               sizes="100vw"
-              className="object-cover"
+              className="object-cover object-[center_22%]"
               onError={handleImageError}
             />
           ) : (
-            <div className="h-full w-full bg-[linear-gradient(120deg,hsl(214_30%_92%)_0%,hsl(212_52%_78%)_45%,hsl(213_42%_58%)_100%)]" />
+            <div className="h-full w-full bg-[linear-gradient(120deg,#0f0f12_0%,#15161a_45%,#230b0b_100%)]" />
           )}
         </div>
 
-        <div className="pointer-events-none absolute inset-0 bg-slate-950/28" />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/48 via-slate-950/14 to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-full bg-gradient-to-r from-[rgba(8,8,10,0.84)] via-[rgba(8,8,10,0.4)] to-transparent md:w-[70%]" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/62 via-transparent to-black/25" />
 
         <div
           data-hero-reveal
-          className="absolute inset-x-5 bottom-6 max-w-lg rounded-2xl border border-white/48 bg-white/70 p-5 opacity-0 shadow-[0_24px_45px_-32px_rgba(12,24,36,0.7)] backdrop-blur-md md:inset-x-auto md:left-8 md:bottom-10 md:p-6"
+          className="absolute inset-x-5 top-1/2 max-w-[39rem] -translate-y-1/2 opacity-0 md:left-8 md:inset-x-auto"
         >
-          <p className="text-xs font-semibold tracking-[0.16em] text-slate-700/88">COACHING PERSONALIZADO</p>
-          <h1 className="mt-2 text-3xl font-semibold text-slate-900 md:text-4xl">Pepu Gonzalez</h1>
-          <p className="mt-1 text-xl font-medium text-primary">Inicia tu cambio</p>
-          <p className="mt-3 text-sm text-slate-700/90 md:text-base">
-            Estructura, seguimiento y planes disenados para que avances sin improvisar.
-            Menos ruido, mas resultados reales.
+          <p className="text-xs font-semibold tracking-[0.2em] text-white/72">COACHING DE RENDIMIENTO</p>
+          <h1 className="mt-3 text-[2.5rem] font-extrabold leading-[0.92] tracking-[-0.03em] text-white md:text-[4rem]">
+            Potencia tu fisico con
+            <br />
+            un sistema real.
+          </h1>
+          <p className="mt-4 max-w-xl text-sm text-white/84 md:text-lg">
+            Entrenamiento estructurado para resultados medibles.
+            Menos ruido, mas avance.
           </p>
-          <div className="mt-5 flex flex-wrap gap-2.5">
-            <Button asChild className="rounded-full px-6">
-              <SmoothScrollLink href="#encontra-tu-plan">Encontra tu plan</SmoothScrollLink>
+
+          <div className="mt-6 flex flex-wrap gap-2.5">
+            <Button
+              asChild
+              size="lg"
+              className="rounded-full bg-[linear-gradient(120deg,#8b0000_0%,#d41414_100%)] px-6 text-xs font-bold tracking-[0.05em] md:text-sm"
+            >
+              <SmoothScrollLink href="#encontra-tu-plan" data-hero-primary>
+                ENCONTRA TU PLAN
+                <ArrowDownRight className="size-4" />
+              </SmoothScrollLink>
             </Button>
-            <WhatsAppButton href={HERO_WHATSAPP_LINK} className="px-5">
-              Hablar por WhatsApp
-            </WhatsAppButton>
+
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="rounded-full border-white/45 bg-transparent px-6 text-xs font-semibold text-white hover:border-white hover:bg-white hover:text-black md:text-sm"
+            >
+              <a href={getStickyWhatsAppHref()} target="_blank" rel="noreferrer">
+                HABLAR POR WHATSAPP
+              </a>
+            </Button>
           </div>
         </div>
 
-        <SmoothScrollLink
-          data-hero-reveal
-          href="#encontra-tu-plan"
-          aria-label="Desliza para descubrir el Plan Finder"
-          className="absolute bottom-4 left-1/2 z-20 inline-flex -translate-x-1/2 items-center gap-2 rounded-full border border-white/28 bg-black/35 px-4 py-2 text-xs text-white opacity-0 backdrop-blur transition hover:bg-black/45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
-        >
-          <ArrowDown className="size-3.5" />
-          <span>Desliza para descubrir</span>
-        </SmoothScrollLink>
+        <div data-hero-reveal className="absolute bottom-5 left-1/2 -translate-x-1/2 opacity-0">
+          <SmoothScrollLink
+            href="#encontra-tu-plan"
+            className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/35 px-4 py-2 text-xs font-medium tracking-[0.05em] text-white/82 transition-colors hover:border-white/35 hover:text-white"
+            aria-label="Desliza para descubrir la siguiente seccion"
+          >
+            Desliza para descubrir
+            <ArrowDown className="size-3.5" />
+          </SmoothScrollLink>
+        </div>
       </div>
     </section>
   );

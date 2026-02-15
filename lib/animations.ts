@@ -9,6 +9,8 @@ interface FadeSlideOptions {
   duration?: number;
   delay?: number;
   staggerStep?: number;
+  blur?: number;
+  ease?: string;
 }
 
 function toElementArray(targets: TargetInput): HTMLElement[] {
@@ -27,26 +29,28 @@ export function animateFadeSlideIn(targets: TargetInput, options: FadeSlideOptio
   const nodes = toElementArray(targets);
   if (!nodes.length) return;
 
-  const { distance = 24, duration = 640, delay = 0, staggerStep = 80 } = options;
+  const { distance = 24, duration = 480, delay = 0, staggerStep = 80, blur = 10, ease = "outExpo" } = options;
 
   if (shouldReduceMotion()) {
     nodes.forEach((node) => {
       node.style.opacity = "1";
       node.style.transform = "translateY(0px)";
+      node.style.filter = "blur(0px)";
     });
     return;
   }
 
   nodes.forEach((node) => {
-    node.style.willChange = "transform, opacity";
+    node.style.willChange = "transform, opacity, filter";
   });
 
   animate(nodes, {
     opacity: [0, 1],
     translateY: [distance, 0],
+    filter: [`blur(${blur}px)`, "blur(0px)"],
     duration,
     delay: nodes.length > 1 ? stagger(staggerStep, { start: delay }) : delay,
-    ease: "out(3)",
+    ease,
     complete: () => {
       nodes.forEach((node) => {
         node.style.willChange = "auto";

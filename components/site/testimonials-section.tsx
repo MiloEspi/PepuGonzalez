@@ -1,28 +1,118 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef } from "react";
+import { animate } from "animejs";
 
 import { animateFadeSlideIn } from "@/lib/animations";
 import { useInViewAnimation } from "@/hooks/use-in-view-animation";
 import { SectionShell } from "@/components/site/section-shell";
+import { cn } from "@/lib/utils";
 
-const testimonials = [
+const transformations = [
   {
+    id: "lucia",
     name: "Lucia R.",
-    quote: "En 8 semanas recupere energia, baje grasa y volvi a entrenar con orden.",
-    metric: "-5.2 kg en 9 semanas",
+    timeframe: "12 semanas",
+    beforeImage: "/fitness-shirtless.jpg",
+    afterImage: "/fitness-shirtless.jpg",
+    testimonial: "Baje grasa, gane fuerza y por primera vez sostuve el proceso sin abandonar.",
   },
   {
+    id: "matias",
     name: "Matias G.",
-    quote: "Por primera vez tuve una rutina que pude sostener de verdad.",
-    metric: "+14 kg en sentadilla",
+    timeframe: "90 dias",
+    beforeImage: "/fitness-shirtless.jpg",
+    afterImage: "/fitness-shirtless.jpg",
+    testimonial: "Con sistema y seguimiento, deje de entrenar al azar y empece a progresar en serio.",
   },
   {
+    id: "carla",
     name: "Carla V.",
-    quote: "Entrenando en casa logre definicion sin perder fuerza.",
-    metric: "4 dias consistentes por semana",
+    timeframe: "10 semanas",
+    beforeImage: "/fitness-shirtless.jpg",
+    afterImage: "/fitness-shirtless.jpg",
+    testimonial: "Entrenando en casa logre recomposicion y mas confianza en mi fisico.",
   },
 ];
+
+function HoverBeforeAfter({ beforeImage, afterImage, name }: { beforeImage: string; afterImage: string; name: string }) {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const beforeLayerRef = useRef<HTMLDivElement>(null);
+  const afterLayerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const wrapper = wrapperRef.current;
+    const beforeLayer = beforeLayerRef.current;
+    const afterLayer = afterLayerRef.current;
+    if (!wrapper || !beforeLayer || !afterLayer) return;
+
+    afterLayer.style.opacity = "0";
+
+    const handleEnter = () => {
+      animate(beforeLayer, {
+        opacity: [1, 0.24],
+        translateX: [0, -10],
+        duration: 360,
+        ease: "out(3)",
+      });
+
+      animate(afterLayer, {
+        opacity: [0, 1],
+        translateX: [10, 0],
+        duration: 400,
+        ease: "out(4)",
+      });
+    };
+
+    const handleLeave = () => {
+      animate(beforeLayer, {
+        opacity: [0.24, 1],
+        translateX: [-10, 0],
+        duration: 360,
+        ease: "out(3)",
+      });
+
+      animate(afterLayer, {
+        opacity: [1, 0],
+        translateX: [0, 10],
+        duration: 320,
+        ease: "out(3)",
+      });
+    };
+
+    wrapper.addEventListener("mouseenter", handleEnter);
+    wrapper.addEventListener("mouseleave", handleLeave);
+
+    return () => {
+      wrapper.removeEventListener("mouseenter", handleEnter);
+      wrapper.removeEventListener("mouseleave", handleLeave);
+    };
+  }, []);
+
+  return (
+    <div ref={wrapperRef} className="group relative h-[280px] overflow-hidden rounded-[8px] border border-white/12 bg-black/65">
+      <div ref={beforeLayerRef} className="absolute inset-0">
+        <Image src={beforeImage} alt={`${name} antes`} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
+        <div className="pointer-events-none absolute inset-0 bg-black/50" />
+      </div>
+
+      <div ref={afterLayerRef} className="absolute inset-0">
+        <Image src={afterImage} alt={`${name} despues`} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
+        <div className="pointer-events-none absolute inset-0 bg-black/26" />
+      </div>
+
+      <div className="pointer-events-none absolute left-3 top-3 flex items-center gap-2">
+        <span className="rounded-full border border-white/25 bg-black/40 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.1em] text-white/85">
+          Antes
+        </span>
+        <span className="rounded-full border border-primary/35 bg-primary/25 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.1em] text-white">
+          Despues
+        </span>
+      </div>
+    </div>
+  );
+}
 
 export function TestimonialsSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -38,27 +128,32 @@ export function TestimonialsSection() {
     <SectionShell
       id="resultados"
       eyebrow="RESULTADOS"
-      title="Historias reales, progreso medible"
-      description="Ejemplos de alumnos que aplicaron el sistema y sostuvieron el cambio."
+      title="Resultados reales. Personas reales."
+      description="Reemplaza estas imagenes y citas por casos concretos para reforzar prueba social."
     >
-      <div ref={sectionRef} className="grid gap-5 md:grid-cols-3">
-        {testimonials.map((item) => (
+      <div ref={sectionRef} className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {transformations.map((item, index) => (
           <article
-            key={item.name}
+            key={item.id}
             data-reveal
-            className="space-y-4 rounded-2xl border border-border/80 bg-card p-5 opacity-0 shadow-[0_18px_30px_-28px_hsl(215_30%_20%)]"
+            className={cn(
+              "textured-surface overflow-hidden rounded-[10px] border border-white/12 bg-card/86 opacity-0 shadow-[0_30px_48px_-40px_rgba(0,0,0,0.95)] transition-[transform,box-shadow] duration-[230ms] ease-[var(--ease-premium)] hover:-translate-y-1.5 hover:shadow-[0_34px_54px_-32px_rgba(122,14,14,0.72)]",
+              index === 0 ? "md:col-span-2" : ""
+            )}
           >
-            <div className="grid grid-cols-2 gap-2">
-              <div className="rounded-xl border border-border/60 bg-[linear-gradient(135deg,hsl(213_20%_90%),hsl(213_20%_82%))] px-3 py-7 text-center text-xs font-medium text-muted-foreground">
-                Antes
-              </div>
-              <div className="rounded-xl border border-border/60 bg-[linear-gradient(135deg,hsl(212_70%_92%),hsl(212_70%_82%))] px-3 py-7 text-center text-xs font-medium text-primary">
-                Despues
+            <div className="p-1.5">
+              <HoverBeforeAfter beforeImage={item.beforeImage} afterImage={item.afterImage} name={item.name} />
+            </div>
+
+            <div className="space-y-3 p-4">
+              <p className="text-sm leading-relaxed text-white/86">&ldquo;{item.testimonial}&rdquo;</p>
+              <div className="flex items-center justify-between">
+                <p className="text-sm font-semibold text-foreground">{item.name}</p>
+                <p className="rounded-full border border-border/65 bg-background/65 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
+                  {item.timeframe}
+                </p>
               </div>
             </div>
-            <p className="text-sm leading-relaxed text-muted-foreground">&ldquo;{item.quote}&rdquo;</p>
-            <p className="font-semibold text-foreground">{item.metric}</p>
-            <p className="text-xs uppercase tracking-[0.12em] text-muted-foreground">{item.name}</p>
           </article>
         ))}
       </div>

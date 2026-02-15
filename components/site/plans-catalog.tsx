@@ -80,7 +80,7 @@ export function PlansCatalog() {
 
   return (
     <div className="space-y-8">
-      <div className="rounded-2xl border border-border/80 bg-card/70 p-5 md:p-6">
+      <div className="rounded-2xl border border-border/80 bg-[linear-gradient(145deg,#16171b_0%,#121318_100%)] p-5 md:p-6">
         <div className="grid gap-5 md:grid-cols-3">
           <FilterGroup title="OBJETIVO" options={goalFilterOptions} selected={goalFilter} onChange={setGoalFilter} />
           <FilterGroup title="NIVEL" options={levelFilterOptions} selected={levelFilter} onChange={setLevelFilter} />

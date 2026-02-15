@@ -5,18 +5,18 @@ import { Slot } from "radix-ui"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-[transform,box-shadow,background-color,color,border-color] duration-200 motion-reduce:transition-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+  "group inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-[transform,box-shadow,background-color,color,border-color] duration-[220ms] ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
   {
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground shadow-[0_10px_20px_-16px_hsl(212_75%_32%)] hover:bg-primary/90 motion-safe:hover:-translate-y-px motion-safe:hover:shadow-[0_16px_24px_-16px_hsl(212_75%_32%)]",
+          "bg-primary text-primary-foreground shadow-[0_12px_24px_-18px_rgba(139,0,0,0.9)] hover:bg-primary/90 motion-safe:hover:scale-[1.03] motion-safe:hover:shadow-[0_18px_28px_-16px_rgba(139,0,0,0.9)]",
         destructive:
-          "bg-destructive text-white shadow-[0_8px_18px_-14px_hsl(0_72%_42%)] hover:bg-destructive/90 motion-safe:hover:-translate-y-px focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
+          "bg-destructive text-white shadow-[0_8px_18px_-14px_hsl(0_72%_42%)] hover:bg-destructive/90 motion-safe:hover:scale-[1.02] focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
         outline:
-          "border bg-background shadow-[0_8px_16px_-16px_hsl(215_35%_28%)] hover:bg-accent hover:text-accent-foreground motion-safe:hover:-translate-y-px motion-safe:hover:shadow-[0_14px_20px_-16px_hsl(215_35%_28%)] dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
+          "border bg-background shadow-[0_8px_16px_-16px_rgba(0,0,0,0.7)] hover:bg-white hover:text-black motion-safe:hover:scale-[1.02] motion-safe:hover:shadow-[0_14px_20px_-14px_rgba(0,0,0,0.72)] dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
         secondary:
-          "bg-secondary text-secondary-foreground shadow-[0_8px_16px_-18px_hsl(215_35%_28%)] hover:bg-secondary/80 motion-safe:hover:-translate-y-px",
+          "bg-secondary text-secondary-foreground shadow-[0_8px_16px_-18px_rgba(0,0,0,0.74)] hover:bg-secondary/80 motion-safe:hover:scale-[1.02]",
         ghost:
           "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
         link: "text-primary underline-offset-4 hover:underline",

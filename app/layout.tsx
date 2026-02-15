@@ -1,20 +1,21 @@
 import type { Metadata } from "next";
-import { Manrope, Plus_Jakarta_Sans } from "next/font/google";
+import { Inter, Montserrat } from "next/font/google";
 
 import { Footer } from "@/components/site/footer";
+import { MobileWhatsAppSticky } from "@/components/site/mobile-whatsapp-sticky";
 import { Navbar } from "@/components/site/navbar";
 import "./globals.css";
 
-const headingFont = Manrope({
-  variable: "--font-manrope",
+const headingFont = Montserrat({
+  variable: "--font-montserrat",
   subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
+  weight: ["600", "700", "800", "900"],
 });
 
-const bodyFont = Plus_Jakarta_Sans({
-  variable: "--font-jakarta",
+const bodyFont = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -34,6 +35,7 @@ export default function RootLayout({
         <div className="relative min-h-screen bg-background text-foreground">
           <Navbar />
           {children}
+          <MobileWhatsAppSticky />
           <Footer />
         </div>
       </body>

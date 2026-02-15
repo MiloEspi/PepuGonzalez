@@ -16,7 +16,7 @@ export function PlanFinderTeaser() {
   const cardRef = useRef<HTMLDivElement>(null);
   const curtainRef = useRef<HTMLDivElement>(null);
   const { hasAnimated, prefersReducedMotion } = useInViewAnimation(cardRef, {
-    threshold: 0.22,
+    threshold: 0.15,
     rootMargin: "0px 0px -20% 0px",
     skipInitialCheck: true,
   });
@@ -40,7 +40,7 @@ export function PlanFinderTeaser() {
 
     const animation = animate(curtain, {
       scaleY: [1, 0],
-      duration: 560,
+      duration: 520,
       ease: "out(3)",
       complete: () => {
         curtain.style.pointerEvents = "none";
@@ -53,47 +53,45 @@ export function PlanFinderTeaser() {
   }, [hasAnimated, prefersReducedMotion]);
 
   return (
-    <SectionShell id="encontra-tu-plan" className="pt-6 md:pt-8">
-      <div ref={cardRef} className="relative z-20 -mt-8 overflow-hidden rounded-[1.65rem] md:-mt-12">
+    <SectionShell id="encontra-tu-plan" className="-mt-10 pt-0 md:-mt-14">
+      <div ref={cardRef} className="relative z-20 overflow-hidden rounded-[10px]">
         <div ref={curtainRef} className="pointer-events-none absolute inset-0 z-30 origin-top bg-background" />
 
-        <Card className="rounded-3xl border-primary/25 bg-[linear-gradient(150deg,hsl(36_30%_98%)_0%,hsl(212_60%_95%)_100%)] p-5 shadow-[0_24px_60px_-56px_hsl(212_70%_30%)] md:p-7">
-          <div className="flex flex-col gap-5">
-            <div className="flex items-start justify-between gap-4">
+        <Card className="textured-surface rounded-[10px] border-primary/34 bg-[linear-gradient(160deg,#15161a_0%,#131419_46%,#1a0f10_100%)] p-4 shadow-[0_38px_72px_-48px_rgba(122,14,14,0.94)] md:p-5">
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center justify-between gap-4">
               <div className="space-y-2">
-                <Badge className="w-fit rounded-full bg-primary/90 text-primary-foreground">Plan Finder</Badge>
-                <h3 className="max-w-2xl text-2xl font-semibold md:text-[2rem]">
+                <Badge className="badge-shimmer w-fit rounded-[6px] border border-primary/45 bg-primary/90 text-primary-foreground">Plan Finder</Badge>
+                <h3 className="max-w-2xl text-3xl font-semibold leading-tight md:text-[2.15rem]">
                   Descubri tu mejor plan en menos de un minuto.
                 </h3>
                 <p className="max-w-2xl text-sm text-muted-foreground md:text-base">
-                  4 preguntas, recomendacion clara y acceso directo al plan ideal para vos.
+                  4 pasos, recomendacion directa y acceso inmediato por WhatsApp.
                 </p>
               </div>
-              <Compass className="mt-1 hidden size-6 text-primary md:block" />
+              <Compass className="hidden size-6 text-primary md:block" />
             </div>
 
             {!expanded ? (
-              <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <Button
                   type="button"
                   onClick={() => setExpanded(true)}
-                  className="w-full rounded-full px-6 py-6 text-base font-semibold md:w-auto"
+                  className="premium-cta w-full rounded-[8px] bg-[linear-gradient(120deg,#8b0000_0%,#d41414_100%)] px-5 py-5 text-sm font-semibold tracking-[0.02em] sm:w-auto"
                 >
                   Empezar quiz
-                  <ArrowRight className="size-4" />
+                  <ArrowRight className="premium-arrow size-4" />
                 </Button>
 
-                <details className="rounded-xl border border-border/75 bg-background/65 px-4 py-3 text-sm text-muted-foreground md:max-w-md">
+                <details className="rounded-[8px] border border-border/80 bg-background/35 px-4 py-2.5 text-sm text-muted-foreground sm:max-w-md">
                   <summary className="cursor-pointer font-medium text-foreground">Como funciona?</summary>
-                  <p className="mt-2">
-                    Te recomiendo un plan segun objetivo, nivel, dias por semana y lugar de entrenamiento.
-                  </p>
+                  <p className="mt-1.5">Elegis objetivo, frecuencia y contexto. Te recomendamos un plan exacto para vos.</p>
                 </details>
               </div>
             ) : null}
 
             {expanded ? (
-              <div className="rounded-2xl border border-border/70 bg-background/55 p-3 md:p-4">
+              <div className="rounded-[8px] border border-border/80 bg-background/42 p-2.5 md:p-3">
                 <PlanFinderQuiz />
               </div>
             ) : null}

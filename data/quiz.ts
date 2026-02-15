@@ -1,10 +1,15 @@
-import { getPlanBySlug, plans, type DaysPerWeek, type Goal, type Level, type Plan, type TrainingPlace } from "@/data/plans";
+import { getOfferBySlug, type Offer, type OfferSlug } from "@/data/offers";
+
+export type QuizGoal = "masa-muscular" | "definir-grasa" | "recomposicion-corporal";
+export type QuizDaysPerWeek = 3 | 4 | 5 | 6;
+export type QuizTrainingPlace = "gimnasio" | "casa";
+export type QuizCommitment = "si" | "no";
 
 export interface QuizAnswers {
-  goal: Goal;
-  level: Level;
-  daysPerWeek: DaysPerWeek;
-  trainingPlace: TrainingPlace;
+  goal: QuizGoal;
+  daysPerWeek: QuizDaysPerWeek;
+  trainingPlace: QuizTrainingPlace;
+  commitment90: QuizCommitment;
 }
 
 export type QuizQuestionId = keyof QuizAnswers;
@@ -21,124 +26,89 @@ export interface QuizQuestion<T extends QuizQuestionId = QuizQuestionId> {
   options: QuizOption<T>[];
 }
 
-export interface QuizRule {
-  id: string;
-  when: Partial<QuizAnswers>;
-  planSlug: string;
-}
+export const QUIZ_GOAL_LABELS: Record<QuizGoal, string> = {
+  "masa-muscular": "Ganar masa muscular",
+  "definir-grasa": "Definir grasa",
+  "recomposicion-corporal": "Recomposicion corporal",
+};
+
+export const QUIZ_TRAINING_PLACE_LABELS: Record<QuizTrainingPlace, string> = {
+  gimnasio: "Gimnasio",
+  casa: "Casa",
+};
+
+export const QUIZ_COMMITMENT_LABELS: Record<QuizCommitment, string> = {
+  si: "Compromiso 90 dias: Si",
+  no: "Compromiso 90 dias: No",
+};
 
 export const quizQuestions: QuizQuestion[] = [
   {
     id: "goal",
     title: "Cual es tu objetivo principal?",
-    subtitle: "Elegi el resultado que queres priorizar este ciclo.",
+    subtitle: "Elegi el objetivo que queres atacar primero.",
     options: [
-      { label: "Definicion", value: "definicion" },
-      { label: "Volumen", value: "volumen" },
-      { label: "Rendimiento", value: "rendimiento" },
-    ],
-  },
-  {
-    id: "level",
-    title: "En que nivel estas hoy?",
-    subtitle: "Nos ayuda a ajustar la exigencia de cada semana.",
-    options: [
-      { label: "Principiante", value: "principiante" },
-      { label: "Intermedio", value: "intermedio" },
-      { label: "Avanzado", value: "avanzado" },
+      { label: "Ganar masa muscular", value: "masa-muscular" },
+      { label: "Definir grasa", value: "definir-grasa" },
+      { label: "Recomposicion corporal", value: "recomposicion-corporal" },
     ],
   },
   {
     id: "daysPerWeek",
-    title: "Cuantos dias por semana entrenas?",
-    subtitle: "La consistencia manda. Elegi lo que realmente podes cumplir.",
+    title: "Cuantos dias entrenas por semana?",
+    subtitle: "La recomendacion se ajusta a tu disponibilidad real.",
     options: [
       { label: "3 dias", value: 3 },
       { label: "4 dias", value: 4 },
       { label: "5 dias", value: 5 },
+      { label: "6 dias", value: 6 },
     ],
   },
   {
     id: "trainingPlace",
-    title: "Donde vas a entrenar?",
-    subtitle: "Adaptamos el plan al equipamiento que ya tenes.",
+    title: "Entrenas en gimnasio o en casa?",
+    subtitle: "Necesitamos adaptar el sistema a tu contexto.",
     options: [
-      { label: "Gym", value: "gym" },
-      { label: "Casa", value: "casa" },
+      { label: "Gimnasio", value: "gimnasio" },
+      { label: "En casa", value: "casa" },
+    ],
+  },
+  {
+    id: "commitment90",
+    title: "Estas dispuesto a comprometerte 90 dias?",
+    subtitle: "La velocidad del resultado depende de tu compromiso.",
+    options: [
+      { label: "Si", value: "si" },
+      { label: "No", value: "no" },
     ],
   },
 ];
 
-export const quizRules: QuizRule[] = [
-  {
-    id: "definicion-casa-4",
-    when: { goal: "definicion", trainingPlace: "casa", daysPerWeek: 4 },
-    planSlug: "definicion-casa-4d",
-  },
-  {
-    id: "definicion-principiante",
-    when: { goal: "definicion", level: "principiante" },
-    planSlug: "recomp-3d-base",
-  },
-  {
-    id: "volumen-avanzado",
-    when: { goal: "volumen", level: "avanzado", daysPerWeek: 5 },
-    planSlug: "volumen-5d-elite",
-  },
-  {
-    id: "volumen-intermedio",
-    when: { goal: "volumen", level: "intermedio" },
-    planSlug: "volumen-4d-smart",
-  },
-  {
-    id: "rendimiento-avanzado",
-    when: { goal: "rendimiento", level: "avanzado", daysPerWeek: 5 },
-    planSlug: "rendimiento-5d-pro",
-  },
-  {
-    id: "rendimiento-casa",
-    when: { goal: "rendimiento", trainingPlace: "casa" },
-    planSlug: "rendimiento-3d-funcional",
-  },
-];
-
-const weights: Record<QuizQuestionId, number> = {
-  goal: 4,
-  level: 3,
-  daysPerWeek: 2,
-  trainingPlace: 1,
-};
-
-function matchesPartialRule(answers: QuizAnswers, rule: Partial<QuizAnswers>): boolean {
-  return (Object.keys(rule) as QuizQuestionId[]).every((key) => answers[key] === rule[key]);
-}
-
 export function isQuizComplete(answers: Partial<QuizAnswers>): answers is QuizAnswers {
   return (
     typeof answers.goal !== "undefined" &&
-    typeof answers.level !== "undefined" &&
     typeof answers.daysPerWeek !== "undefined" &&
-    typeof answers.trainingPlace !== "undefined"
+    typeof answers.trainingPlace !== "undefined" &&
+    typeof answers.commitment90 !== "undefined"
   );
 }
 
-export function recommendPlanFromAnswers(answers: QuizAnswers): Plan {
-  const directRule = quizRules.find((rule) => matchesPartialRule(answers, rule.when));
-  if (directRule) {
-    const plan = getPlanBySlug(directRule.planSlug);
-    if (plan) return plan;
+function resolveOfferSlug(answers: QuizAnswers): OfferSlug {
+  const highCommitment = answers.commitment90 === "si";
+  const highAvailability = answers.daysPerWeek >= 5;
+  const nutritionDriven = answers.goal === "definir-grasa" || answers.goal === "recomposicion-corporal";
+
+  if (highCommitment && highAvailability) {
+    return "mentoria-1-1";
   }
 
-  const [bestMatch] = plans
-    .map((plan) => {
-      let score = 0;
-      if (plan.goal === answers.goal) score += weights.goal;
-      if (plan.level === answers.level) score += weights.level;
-      if (plan.daysPerWeek === answers.daysPerWeek) score += weights.daysPerWeek;
-      if (plan.trainingPlace === answers.trainingPlace) score += weights.trainingPlace;
-      return { plan, score };
-    })
-    .sort((a, b) => b.score - a.score);
+  if (highCommitment && nutritionDriven) {
+    return "programa-transformacion";
+  }
 
-  return bestMatch?.plan ?? plans[0];
+  return "programa-base";
+}
+
+export function recommendPlanFromAnswers(answers: QuizAnswers): Offer {
+  return getOfferBySlug(resolveOfferSlug(answers));
 }
