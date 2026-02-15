@@ -1,16 +1,16 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft, Check } from "lucide-react";
 import { animate } from "animejs";
 
 import { SmoothScrollLink } from "@/components/site/smooth-scroll-link";
+import { WhatsAppButton } from "@/components/site/whatsapp-button";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { getOfferPrimaryHref } from "@/data/offers";
+import { getStickyWhatsAppHref } from "@/data/offers";
 import {
   QUIZ_COMMITMENT_LABELS,
   QUIZ_GOAL_LABELS,
@@ -112,9 +112,9 @@ export function PlanFinderQuiz() {
 
   if (isComplete && recommendation) {
     return (
-      <Card className="rounded-xl border-primary/34 bg-card/95">
+      <Card className="rounded-[14px] border-white/18 bg-card/95">
         <CardHeader className="space-y-3 border-b border-border/70 pb-4">
-          <Badge className="w-fit rounded-full bg-primary/90 text-primary-foreground">Recomendacion final</Badge>
+          <Badge className="badge-shimmer w-fit bg-primary/90 text-primary-foreground">Recomendacion final</Badge>
           <CardTitle className="text-2xl md:text-[1.9rem]">{recommendation.title}</CardTitle>
           <p className="text-sm text-muted-foreground">{recommendation.strapline}</p>
         </CardHeader>
@@ -122,7 +122,7 @@ export function PlanFinderQuiz() {
         <CardContent className="space-y-5">
           <div className="flex flex-wrap gap-2">
             {Object.entries(answers).map(([key, value]) => (
-              <Badge key={key} variant="outline" className="rounded-full border-border/80 bg-background/55">
+              <Badge key={key} variant="outline" className="border-border/80 bg-background/55">
                 {getAnswerLabel(key as keyof QuizAnswers, value as QuizAnswers[keyof QuizAnswers])}
               </Badge>
             ))}
@@ -130,7 +130,7 @@ export function PlanFinderQuiz() {
 
           <ul className="space-y-2 text-sm text-muted-foreground">
             {recommendation.benefits.slice(0, 3).map((item) => (
-              <li key={item} className="rounded-lg border border-border/75 bg-background/45 px-3 py-2">
+              <li key={item} className="rounded-[10px] border border-border/75 bg-background/45 px-3 py-2">
                 {item}
               </li>
             ))}
@@ -138,24 +138,17 @@ export function PlanFinderQuiz() {
         </CardContent>
 
         <CardFooter className="flex flex-wrap gap-2 pt-1">
-          <Button asChild className="rounded-full px-5">
+          <Button asChild className="rounded-[10px] px-5">
             <SmoothScrollLink href={`/#plan-${recommendation.slug}`} onClick={() => rememberSelectedPlan(recommendation.title)}>
               Ver detalle
             </SmoothScrollLink>
           </Button>
 
-          <Button asChild variant="outline" className="rounded-full px-5">
-            <Link
-              href={getOfferPrimaryHref(recommendation)}
-              target="_blank"
-              rel="noreferrer"
-              onClick={() => rememberSelectedPlan(recommendation.title)}
-            >
-              Hablar por WhatsApp
-            </Link>
-          </Button>
+          <WhatsAppButton href={getStickyWhatsAppHref(recommendation.title)} className="px-5">
+            Hablar por WhatsApp
+          </WhatsAppButton>
 
-          <Button variant="ghost" className="rounded-full" onClick={handleReset}>
+          <Button variant="ghost" className="rounded-[10px]" onClick={handleReset}>
             Rehacer quiz
           </Button>
         </CardFooter>
@@ -166,7 +159,7 @@ export function PlanFinderQuiz() {
   if (!activeQuestion) return null;
 
   return (
-    <Card className="rounded-xl border-border/80 bg-card/96 shadow-[0_24px_42px_-36px_rgba(0,0,0,0.9)]">
+    <Card className="rounded-[14px] border-border/80 bg-card/96 shadow-[0_24px_42px_-36px_rgba(0,0,0,0.9)]">
       <CardHeader className="space-y-3 pb-3">
         <div className="flex items-start justify-between gap-4">
           <div className="space-y-1.5">
@@ -176,7 +169,7 @@ export function PlanFinderQuiz() {
             <CardTitle className="text-[1.9rem] leading-[1.06]">{activeQuestion.title}</CardTitle>
           </div>
 
-          <Badge variant="secondary" className="rounded-full">
+          <Badge variant="secondary">
             Plan Finder
           </Badge>
         </div>
@@ -196,7 +189,7 @@ export function PlanFinderQuiz() {
                 type="button"
                 onClick={(event) => handleOptionSelect(option.value, event.currentTarget)}
                 className={cn(
-                  "group flex w-full items-center justify-between rounded-xl border px-3.5 py-2.5 text-left text-sm transition duration-200",
+                  "group flex w-full items-center justify-between rounded-[10px] border px-3.5 py-2.5 text-left text-sm transition duration-[220ms] ease-[var(--ease-premium)]",
                   selected
                     ? "border-primary/70 bg-[rgba(122,14,14,0.58)] text-foreground shadow-[0_16px_30px_-28px_rgba(212,20,20,0.9)]"
                     : "border-border/80 bg-background/52 text-muted-foreground hover:border-primary/55 hover:bg-[rgba(122,14,14,0.18)] hover:text-foreground"
@@ -205,7 +198,7 @@ export function PlanFinderQuiz() {
                 <span className="font-medium">{option.label}</span>
                 <span
                   className={cn(
-                    "grid size-5 place-items-center rounded-full border transition",
+                    "grid size-5 place-items-center rounded-[8px] border transition",
                     selected
                       ? "border-primary bg-primary text-primary-foreground"
                       : "border-border/80 bg-background text-transparent group-hover:border-primary/45"
@@ -220,7 +213,7 @@ export function PlanFinderQuiz() {
 
         <div className="flex flex-wrap gap-2 pt-1">
           {Object.entries(answers).map(([key, value]) => (
-            <Badge key={key} variant="outline" className="rounded-full">
+            <Badge key={key} variant="outline">
               {getAnswerLabel(key as keyof QuizAnswers, value as QuizAnswers[keyof QuizAnswers])}
             </Badge>
           ))}
@@ -228,7 +221,7 @@ export function PlanFinderQuiz() {
       </CardContent>
 
       <CardFooter className="flex items-center justify-between">
-        <Button type="button" variant="ghost" size="sm" className="rounded-full" onClick={handleBack} disabled={stepIndex === 0}>
+        <Button type="button" variant="ghost" size="sm" className="rounded-[10px]" onClick={handleBack} disabled={stepIndex === 0}>
           <ArrowLeft className="size-4" />
           Volver
         </Button>

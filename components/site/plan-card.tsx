@@ -16,19 +16,19 @@ export function PlanCard({ plan, className }: PlanCardProps) {
   return (
     <Card
       className={cn(
-        "h-full rounded-2xl border-border/80 bg-[linear-gradient(150deg,#16171b_0%,#121318_100%)] shadow-[0_22px_44px_-38px_rgba(0,0,0,0.95)]",
+        "h-full rounded-[14px] border-border/80 bg-[linear-gradient(150deg,#16171b_0%,#121318_100%)] shadow-[0_22px_44px_-38px_rgba(0,0,0,0.95)]",
         className
       )}
     >
       <CardHeader className="space-y-3 pb-0">
         <div className="flex flex-wrap gap-2">
-          <Badge variant="secondary" className="rounded-full">
+          <Badge variant="secondary">
             {GOAL_LABELS[plan.goal]}
           </Badge>
-          <Badge variant="outline" className="rounded-full">
+          <Badge variant="outline">
             {LEVEL_LABELS[plan.level]}
           </Badge>
-          <Badge variant="outline" className="rounded-full">
+          <Badge variant="outline">
             {plan.daysPerWeek} dias
           </Badge>
         </div>
@@ -42,7 +42,7 @@ export function PlanCard({ plan, className }: PlanCardProps) {
       </CardContent>
 
       <CardFooter className="mt-auto flex flex-wrap gap-2">
-        <Button asChild size="sm" className="rounded-full">
+        <Button asChild size="sm" className="rounded-[10px]">
           <Link href={`/planes/${plan.slug}`}>Ver detalle</Link>
         </Button>
         <WhatsAppButton href={getWhatsAppUrl(plan.whatsappMessage)} size="sm">

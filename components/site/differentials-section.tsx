@@ -12,32 +12,32 @@ const differentiators = [
   {
     title: "No uso rutinas genericas",
     icon: ClipboardCheck,
-    cardClass: "bg-[linear-gradient(135deg,#17181d_0%,#121318_100%)] border-border/80",
+    cardClass: "bg-[linear-gradient(135deg,#17181d_0%,#121318_100%)] border-white/14",
   },
   {
     title: "Programacion basada en progresion real",
     icon: Workflow,
-    cardClass: "bg-[linear-gradient(140deg,rgba(122,14,14,0.28)_0%,#16171c_100%)] border-primary/28",
+    cardClass: "bg-[linear-gradient(140deg,rgba(122,14,14,0.28)_0%,#16171c_100%)] border-white/14",
   },
   {
     title: "Enfoque en mentalidad y disciplina",
     icon: BrainCircuit,
-    cardClass: "bg-[linear-gradient(140deg,#16171c_0%,#131419_100%)] border-border/80",
+    cardClass: "bg-[linear-gradient(140deg,#16171c_0%,#131419_100%)] border-white/14",
   },
   {
     title: "Resultados medibles",
     icon: BarChart3,
-    cardClass: "bg-[linear-gradient(140deg,#17181d_0%,rgba(122,14,14,0.24)_100%)] border-primary/25",
+    cardClass: "bg-[linear-gradient(140deg,#17181d_0%,rgba(122,14,14,0.24)_100%)] border-white/14",
   },
   {
     title: "Comunicacion directa",
     icon: MessagesSquare,
-    cardClass: "bg-[linear-gradient(140deg,#15161a_0%,#121318_100%)] border-border/75",
+    cardClass: "bg-[linear-gradient(140deg,#15161a_0%,#121318_100%)] border-white/14",
   },
   {
     title: "Direccion clara por objetivo",
     icon: Target,
-    cardClass: "bg-[linear-gradient(140deg,#17181d_0%,#101116_100%)] border-border/80",
+    cardClass: "bg-[linear-gradient(140deg,#17181d_0%,#101116_100%)] border-white/14",
   },
 ];
 
@@ -67,11 +67,11 @@ export function DifferentialsSection() {
               key={item.title}
               data-reveal
               className={cn(
-                "group rounded-[8px] border p-4 opacity-0 transition-[transform,box-shadow,border-color] duration-[220ms] ease-[var(--ease-premium)] hover:-translate-y-1.5 hover:shadow-[0_24px_38px_-28px_rgba(122,14,14,0.9)]",
+                "group rounded-[10px] border p-4 opacity-0 transition-[transform,box-shadow,border-color] duration-[220ms] ease-[var(--ease-premium)] hover:-translate-y-1.5 hover:shadow-[0_24px_38px_-28px_rgba(122,14,14,0.9)]",
                 item.cardClass
               )}
             >
-              <div className="inline-flex rounded-lg border border-primary/30 bg-primary/14 p-2 text-primary transition-colors duration-200 group-hover:border-primary/55 group-hover:bg-primary/25">
+              <div className="inline-flex rounded-[8px] border border-primary/30 bg-primary/14 p-2 text-primary transition-colors duration-200 group-hover:border-primary/55 group-hover:bg-primary/25">
                 <Icon className="size-4" />
               </div>
               <p className="mt-3 text-sm font-semibold text-foreground">{item.title}</p>

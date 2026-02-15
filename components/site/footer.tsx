@@ -16,12 +16,12 @@ export function Footer() {
 
   return (
     <footer id="contacto" className="scroll-mt-24 border-t border-white/10 bg-[linear-gradient(180deg,#15161a_0%,#0f0f12_100%)] md:scroll-mt-28">
-      <div className="mx-auto w-full max-w-6xl px-5 py-12">
-        <div className="textured-surface rounded-[10px] border border-white/12 bg-[linear-gradient(145deg,#14151a_0%,#101116_100%)] p-6 shadow-[0_34px_68px_-48px_rgba(0,0,0,0.95)] md:p-8">
+      <div className="layout-shell py-12">
+        <div className="textured-surface rounded-[14px] border border-white/14 bg-[linear-gradient(145deg,#14151a_0%,#101116_100%)] p-6 shadow-[0_34px_68px_-48px_rgba(0,0,0,0.95)] md:p-8">
           <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <div className="space-y-3">
-              <div className="inline-flex items-center gap-3 rounded-[8px] border border-primary/28 bg-[rgba(122,14,14,0.22)] px-3 py-2">
-                <div className="grid size-9 place-items-center rounded-[6px] border border-primary/38 bg-primary/18 text-primary">
+              <div className="inline-flex items-center gap-3 rounded-[10px] border border-white/18 bg-[rgba(122,14,14,0.22)] px-3 py-2">
+                <div className="grid size-9 place-items-center rounded-[8px] border border-primary/30 bg-primary/18 text-primary">
                   <span className="font-heading text-sm font-bold">PG</span>
                 </div>
                 <div>
@@ -49,7 +49,7 @@ export function Footer() {
                   key={item.label}
                   href={item.href}
                   aria-label={item.label}
-                  className="inline-flex size-10 items-center justify-center rounded-full border border-white/12 bg-background/58 text-muted-foreground transition-all duration-200 hover:-translate-y-px hover:border-primary/45 hover:bg-primary/18 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/45"
+                  className="inline-flex size-10 items-center justify-center rounded-[8px] border border-white/12 bg-background/58 text-muted-foreground transition-all duration-[220ms] ease-[var(--ease-premium)] hover:-translate-y-px hover:border-primary/45 hover:bg-primary/18 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/45"
                 >
                   <item.icon className="size-4.5" strokeWidth={2.05} />
                 </Link>

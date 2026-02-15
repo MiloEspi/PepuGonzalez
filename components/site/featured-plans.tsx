@@ -6,20 +6,14 @@ import { useEffect, useRef } from "react";
 import { ArrowRight, Check, Crown, ShieldCheck, Sparkles, Star, Target, TrendingUp, type LucideIcon } from "lucide-react";
 
 import { SectionShell } from "@/components/site/section-shell";
+import { WhatsAppButton } from "@/components/site/whatsapp-button";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { offers, getOfferPrimaryHref } from "@/data/offers";
+import { getOfferPrimaryHref, getStickyWhatsAppHref, offers } from "@/data/offers";
 import { rememberSelectedPlan } from "@/lib/plan-interest";
 import { animateFadeSlideIn, shouldReduceMotion } from "@/lib/animations";
 import { useInViewAnimation } from "@/hooks/use-in-view-animation";
 import { cn } from "@/lib/utils";
-
-const cardGridMap = {
-  "programa-base": "xl:col-span-5",
-  "programa-transformacion": "xl:col-span-7",
-  "plan-personalizado": "xl:col-span-6",
-  "mentoria-1-1": "xl:col-span-6",
-} as const;
 
 const PLAN_FALLBACK_IMAGE = "/fitness-shirtless.jpg";
 
@@ -54,7 +48,7 @@ const themeClasses: Record<OfferTheme, ThemeConfig> = {
   base: {
     icon: ShieldCheck,
     outer:
-      "bg-[linear-gradient(135deg,rgba(95,99,108,0.72)_0%,rgba(46,48,54,0.94)_64%,rgba(212,20,20,0.28)_100%)] shadow-[0_26px_48px_-36px_rgba(0,0,0,0.95)]",
+      "bg-[linear-gradient(136deg,rgba(98,102,112,0.7)_0%,rgba(45,48,56,0.92)_64%,rgba(33,35,42,0.96)_100%)] shadow-[0_26px_48px_-36px_rgba(0,0,0,0.95)]",
     surface:
       "textured-surface bg-[linear-gradient(145deg,#18191f_0%,#121318_54%,#111216_100%)]",
     glow:
@@ -106,14 +100,14 @@ const themeClasses: Record<OfferTheme, ThemeConfig> = {
   personalizado: {
     icon: Target,
     outer:
-      "bg-[linear-gradient(145deg,rgba(116,119,126,0.74)_0%,rgba(78,80,88,0.72)_58%,rgba(212,20,20,0.45)_100%)] shadow-[0_30px_54px_-38px_rgba(0,0,0,0.95)]",
+      "bg-[linear-gradient(130deg,rgba(112,115,124,0.76)_0%,rgba(52,58,69,0.82)_44%,rgba(212,20,20,0.42)_100%)] shadow-[0_30px_54px_-38px_rgba(0,0,0,0.95)]",
     surface:
-      "textured-metal bg-[linear-gradient(148deg,#1a1b21_0%,#121318_50%,#17181e_100%)]",
+      "textured-metal bg-[linear-gradient(128deg,#1a1b21_0%,#121318_42%,#1f2330_74%,#2f1518_100%)] [background-image:linear-gradient(128deg,#1a1b21_0%,#121318_42%,#1f2330_74%,#2f1518_100%),radial-gradient(circle_at_80%_20%,rgba(255,255,255,0.14),transparent_40%),repeating-linear-gradient(132deg,rgba(255,255,255,0.015)_0_1px,transparent_1px_6px)]",
     glow:
-      "bg-[radial-gradient(circle_at_15%_0%,rgba(255,255,255,0.16),transparent_64%)] opacity-35 group-hover:opacity-55",
+      "bg-[radial-gradient(circle_at_12%_0%,rgba(255,255,255,0.2),transparent_62%),radial-gradient(circle_at_92%_86%,rgba(212,20,20,0.26),transparent_52%)] opacity-42 group-hover:opacity-64",
     hover: "hover:-translate-y-1.5 hover:shadow-[0_34px_58px_-34px_rgba(0,0,0,0.94)]",
     media: "border-white/16 bg-[linear-gradient(145deg,#121318_0%,#0d0e13_100%)]",
-    overlay: "bg-[linear-gradient(180deg,rgba(0,0,0,0.18)_0%,rgba(122,14,14,0.42)_100%)]",
+    overlay: "bg-[linear-gradient(180deg,rgba(0,0,0,0.14)_0%,rgba(122,14,14,0.44)_100%)]",
     mediaMotion: "group-hover:scale-[1.07] group-hover:translate-x-1",
     badge: "border-white/16 bg-[#15161a] text-white/86",
     accentBadge: "border-white/16 bg-black/42 text-white/78",
@@ -127,20 +121,20 @@ const themeClasses: Record<OfferTheme, ThemeConfig> = {
     benefitText: "text-sm leading-relaxed text-white/84",
     cta: "bg-[linear-gradient(120deg,#5E0B0B_0%,#8A1010_100%)] text-white shadow-[0_14px_24px_-18px_rgba(122,14,14,0.95)] hover:shadow-[0_18px_30px_-16px_rgba(122,14,14,0.95)]",
     studioLight:
-      "bg-[linear-gradient(128deg,rgba(255,255,255,0.16)_0%,rgba(255,255,255,0.03)_22%,rgba(255,255,255,0)_46%)]",
+      "bg-[linear-gradient(126deg,rgba(255,255,255,0.18)_0%,rgba(255,255,255,0.05)_18%,rgba(255,255,255,0)_44%)]",
   },
   mentoria: {
     icon: Crown,
     outer:
-      "bg-[linear-gradient(145deg,rgba(200,163,79,0.9)_0%,rgba(138,112,54,0.76)_56%,rgba(24,20,14,0.96)_100%)] shadow-[0_34px_62px_-40px_rgba(200,163,79,0.66)]",
+      "bg-[linear-gradient(138deg,rgba(200,163,79,0.92)_0%,rgba(144,118,58,0.7)_48%,rgba(22,18,12,0.97)_100%)] shadow-[0_34px_62px_-40px_rgba(200,163,79,0.66)]",
     surface:
-      "bg-[linear-gradient(150deg,#0c0c0f_0%,#101116_60%,#0d0d10_100%)] [background-image:linear-gradient(150deg,#0c0c0f_0%,#101116_60%,#0d0d10_100%),repeating-linear-gradient(132deg,rgba(255,255,255,0.014)_0_1px,transparent_1px_6px)]",
+      "bg-[linear-gradient(146deg,#0c0c0f_0%,#101116_54%,#0d0d10_100%)] [background-image:linear-gradient(146deg,#0c0c0f_0%,#101116_54%,#0d0d10_100%),radial-gradient(circle_at_80%_22%,rgba(200,163,79,0.22),transparent_46%),repeating-linear-gradient(132deg,rgba(255,255,255,0.014)_0_1px,transparent_1px_6px)]",
     glow:
-      "bg-[radial-gradient(circle_at_18%_0%,rgba(200,163,79,0.32),transparent_62%)] opacity-40 group-hover:opacity-68",
+      "bg-[radial-gradient(circle_at_20%_0%,rgba(200,163,79,0.34),transparent_62%),radial-gradient(circle_at_92%_76%,rgba(200,163,79,0.28),transparent_50%)] opacity-44 group-hover:opacity-72",
     hover:
       "hover:-translate-y-2 hover:shadow-[0_38px_68px_-34px_rgba(200,163,79,0.72)]",
     media: "border-[#c8a34f]/55 bg-black/82",
-    overlay: "bg-[linear-gradient(180deg,rgba(0,0,0,0.16)_0%,rgba(200,163,79,0.3)_100%)]",
+    overlay: "bg-[linear-gradient(180deg,rgba(0,0,0,0.1)_0%,rgba(200,163,79,0.38)_100%)]",
     mediaMotion: "group-hover:scale-[1.08] group-hover:translate-x-1 group-hover:-translate-y-1",
     badge: "border-[#c8a34f]/56 bg-[#c8a34f]/94 text-black",
     accentBadge: "border-[#c8a34f]/44 bg-black/56 text-[#debf76]",
@@ -176,13 +170,14 @@ export function FeaturedPlans() {
       title="Elegi tu nivel de acompanamiento"
       description="Programas estructurados para etapas distintas del proceso, con una misma logica: resultados medibles y sostenibles."
     >
-      <div ref={cardsRef} className="grid gap-5 lg:grid-cols-2 xl:grid-cols-12">
+      <div ref={cardsRef} className="grid gap-6 md:grid-cols-2">
         {offers.map((offer) => {
           const styles = themeClasses[offer.theme];
           const Icon = styles.icon;
           const imageSrc = offer.coverImage ?? PLAN_FALLBACK_IMAGE;
           const isTransformacion = offer.theme === "transformacion";
           const isMentoria = offer.theme === "mentoria";
+          const badgeLabel = offer.theme === "base" ? "Base" : offer.theme === "personalizado" ? "Custom" : offer.shortLabel;
 
           return (
             <article
@@ -190,15 +185,14 @@ export function FeaturedPlans() {
               id={`plan-${offer.slug}`}
               key={offer.slug}
               className={cn(
-                "group relative overflow-hidden rounded-[10px] p-[1px] opacity-0 transition-[transform,box-shadow] duration-[240ms] ease-[var(--ease-premium)]",
-                cardGridMap[offer.slug],
+                "group relative overflow-hidden rounded-[14px] p-[1px] opacity-0 transition-[transform,box-shadow] duration-[240ms] ease-[var(--ease-premium)]",
                 styles.outer,
                 styles.hover
               )}
             >
-              <div className={cn("pointer-events-none absolute inset-0 -z-10 rounded-[10px] blur-2xl transition-opacity duration-250", styles.glow)} />
+              <div className={cn("pointer-events-none absolute inset-0 -z-10 rounded-[14px] blur-2xl transition-opacity duration-250", styles.glow)} />
 
-              <div className={cn("relative flex h-full flex-col overflow-hidden rounded-[9px] p-4 md:p-5", styles.surface)}>
+              <div className={cn("relative flex h-full flex-col overflow-hidden rounded-[14px] p-4 md:p-5", styles.surface)}>
                 {styles.studioLight ? (
                   <div
                     className={cn(
@@ -208,7 +202,7 @@ export function FeaturedPlans() {
                   />
                 ) : null}
 
-                <div className={cn("relative mb-5 h-44 overflow-hidden rounded-[8px] border md:h-48", styles.media)}>
+                <div className={cn("relative mb-5 h-44 overflow-hidden rounded-[10px] border md:h-48", styles.media)}>
                   <Image
                     src={imageSrc}
                     alt={offer.title}
@@ -223,32 +217,32 @@ export function FeaturedPlans() {
                   <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.06)_0%,rgba(0,0,0,0.72)_100%)]" />
 
                   <div className="absolute left-3 top-3 flex flex-wrap items-center gap-2">
-                    <Badge className={cn("badge-shimmer rounded-[6px] border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em]", styles.badge)}>
-                      {offer.shortLabel}
+                    <Badge className={cn("badge-shimmer rounded-[8px] border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em]", styles.badge)}>
+                      {badgeLabel}
                     </Badge>
 
                     {isTransformacion ? (
-                      <Badge className={cn("rounded-[6px] border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em]", styles.accentBadge)}>
+                      <Badge className={cn("rounded-[8px] border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em]", styles.accentBadge)}>
                         <Star className="size-3.5" />
                         MAS VENDIDO
                       </Badge>
                     ) : null}
 
                     {isMentoria ? (
-                      <Badge className={cn("rounded-[6px] border px-2.5 py-1 text-[10px] font-semibold tracking-[0.08em]", styles.accentBadge)}>
+                      <Badge className={cn("rounded-[8px] border px-2.5 py-1 text-[10px] font-semibold tracking-[0.08em]", styles.accentBadge)}>
                         <Sparkles className="size-3.5" />
                         Solo 5 cupos
                       </Badge>
                     ) : null}
 
                     {!isTransformacion && !isMentoria && offer.badgeLabel ? (
-                      <Badge className={cn("rounded-[6px] border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em]", styles.accentBadge)}>
+                      <Badge className={cn("rounded-[8px] border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em]", styles.accentBadge)}>
                         {offer.badgeLabel}
                       </Badge>
                     ) : null}
                   </div>
 
-                  <span className={cn("absolute right-3 top-3 inline-flex size-8 items-center justify-center rounded-[6px] border", styles.iconWrap)}>
+                  <span className={cn("absolute right-3 top-3 inline-flex size-8 items-center justify-center rounded-[8px] border", styles.iconWrap)}>
                     <Icon className={cn("size-4", styles.iconTone)} />
                   </span>
                 </div>
@@ -258,7 +252,7 @@ export function FeaturedPlans() {
                 <p className={styles.pitch}>{offer.pitch}</p>
 
                 {offer.spotsMicrocopy && !isMentoria ? (
-                  <p className={cn("mt-3 inline-flex w-fit items-center gap-1 rounded-[6px] border px-2.5 py-1 text-xs font-medium", styles.microcopy)}>
+                  <p className={cn("mt-3 inline-flex w-fit items-center gap-1 rounded-[8px] border px-2.5 py-1 text-xs font-medium", styles.microcopy)}>
                     {offer.spotsMicrocopy}
                   </p>
                 ) : null}
@@ -266,7 +260,7 @@ export function FeaturedPlans() {
                 <ul className="mt-5">
                   {offer.benefits.map((benefit, index) => (
                     <li key={benefit} className={cn("flex items-start gap-3 py-2.5", index < offer.benefits.length - 1 ? styles.benefitDivider : "")}>
-                      <span className={cn("mt-0.5 inline-flex size-5 shrink-0 items-center justify-center rounded-[6px] border", styles.benefitIcon)}>
+                      <span className={cn("mt-0.5 inline-flex size-5 shrink-0 items-center justify-center rounded-[8px] border", styles.benefitIcon)}>
                         <Check className="size-3.5" />
                       </span>
                       <span className={styles.benefitText}>{benefit}</span>
@@ -274,12 +268,16 @@ export function FeaturedPlans() {
                   ))}
                 </ul>
 
-                <Button asChild size="lg" className={cn("premium-cta mt-6 h-11 w-full justify-between rounded-[8px] px-4 text-[0.69rem] font-bold tracking-[0.08em]", styles.cta)}>
+                <Button asChild size="lg" className={cn("premium-cta mt-6 h-11 w-full justify-between rounded-[10px] px-4 text-[0.69rem] font-bold tracking-[0.08em]", styles.cta)}>
                   <Link href={getOfferPrimaryHref(offer)} target="_blank" rel="noreferrer" onClick={() => rememberSelectedPlan(offer.title)}>
                     <span className="pr-2 text-left leading-[1.2]">{offer.ctaLabel}</span>
                     <ArrowRight className="premium-arrow size-4 shrink-0" />
                   </Link>
                 </Button>
+
+                <WhatsAppButton href={getStickyWhatsAppHref(offer.title)} size="sm" className="mt-2 w-full justify-center">
+                  WhatsApp
+                </WhatsAppButton>
               </div>
             </article>
           );
@@ -287,7 +285,7 @@ export function FeaturedPlans() {
       </div>
 
       <div className="mt-8">
-        <Button asChild variant="outline" className="premium-cta rounded-[8px] border-white/18 bg-black/38 px-5">
+        <Button asChild variant="outline" className="premium-cta rounded-[10px] border-white/18 bg-black/38 px-5">
           <Link href="/planes">Ver catalogo completo</Link>
         </Button>
       </div>

@@ -275,11 +275,11 @@ export function Navbar() {
       className={cn(
         "sticky top-0 z-50 transition-all duration-300",
         isTransparent
-          ? "border-b border-transparent bg-[rgba(15,15,18,0.62)] backdrop-blur-[14px]"
-          : "border-b border-white/12 bg-[rgba(15,15,18,0.78)] backdrop-blur-[14px]"
+          ? "border-b border-transparent bg-[rgba(10,10,12,0.6)] backdrop-blur-[14px]"
+          : "border-b border-white/12 bg-[rgba(10,10,12,0.72)] backdrop-blur-[14px]"
       )}
     >
-      <div className="mx-auto flex h-[4.5rem] w-full max-w-6xl items-center justify-between gap-3 px-5">
+      <div className="layout-shell flex h-[4.5rem] items-center justify-between gap-3">
         <Link
           href="/"
           onClick={handleBrandClick}
@@ -330,7 +330,7 @@ export function Navbar() {
             aria-label={isMenuOpen ? "Cerrar menu" : "Abrir menu"}
             aria-expanded={isMenuOpen}
             onClick={() => setIsMenuOpen((prev) => !prev)}
-            className="inline-flex size-9 items-center justify-center rounded-full border border-white/12 bg-white/[0.08] text-white/90 transition-all duration-200 hover:border-primary/45 hover:text-white"
+            className="inline-flex size-9 items-center justify-center rounded-[8px] border border-white/14 bg-white/[0.06] text-white/90 transition-all duration-[220ms] ease-[var(--ease-premium)] hover:border-primary/35 hover:bg-white/[0.09] hover:text-white"
           >
             {isMenuOpen ? <X className="size-4.5" /> : <Menu className="size-4.5" />}
           </button>
@@ -338,7 +338,7 @@ export function Navbar() {
           {isMenuOpen ? (
             <div
               ref={menuRef}
-              className="absolute right-0 top-[calc(100%+0.55rem)] z-40 w-56 origin-top-right rounded-2xl border border-white/[0.14] bg-[rgba(15,15,18,0.85)] p-2.5 opacity-0 shadow-[0_24px_52px_-30px_rgba(0,0,0,0.92)] backdrop-blur-xl"
+              className="absolute right-0 top-[calc(100%+0.55rem)] z-40 w-56 origin-top-right rounded-[14px] border border-white/[0.14] bg-[rgba(10,10,12,0.86)] p-2.5 opacity-0 shadow-[0_24px_52px_-30px_rgba(0,0,0,0.92)] backdrop-blur-xl"
             >
               <p className="px-2 pb-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Explorar</p>
               <ul className="space-y-1">
@@ -347,7 +347,7 @@ export function Navbar() {
                     <a
                       href={pathname === "/" ? `#${item.id}` : `/#${item.id}`}
                       onClick={(event) => handleExtraClick(event, item.id)}
-                      className="inline-flex w-full items-center rounded-lg px-2.5 py-2 text-sm font-medium text-muted-foreground transition-colors duration-200 hover:bg-white/[0.08] hover:text-foreground"
+                      className="inline-flex w-full items-center rounded-[8px] px-2.5 py-2 text-sm font-medium text-muted-foreground transition-colors duration-[220ms] ease-[var(--ease-premium)] hover:bg-white/[0.08] hover:text-foreground"
                     >
                       {item.label}
                     </a>

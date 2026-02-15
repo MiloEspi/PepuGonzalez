@@ -53,7 +53,7 @@ function FilterGroup<T extends string | number>({
             type="button"
             size="sm"
             variant={selected === option.value ? "default" : "outline"}
-            className="rounded-full"
+            className="rounded-[10px]"
             onClick={() => onChange(option.value)}
           >
             {option.label}
@@ -80,7 +80,7 @@ export function PlansCatalog() {
 
   return (
     <div className="space-y-8">
-      <div className="rounded-2xl border border-border/80 bg-[linear-gradient(145deg,#16171b_0%,#121318_100%)] p-5 md:p-6">
+      <div className="rounded-[14px] border border-border/80 bg-[linear-gradient(145deg,#16171b_0%,#121318_100%)] p-5 md:p-6">
         <div className="grid gap-5 md:grid-cols-3">
           <FilterGroup title="OBJETIVO" options={goalFilterOptions} selected={goalFilter} onChange={setGoalFilter} />
           <FilterGroup title="NIVEL" options={levelFilterOptions} selected={levelFilter} onChange={setLevelFilter} />
@@ -90,7 +90,7 @@ export function PlansCatalog() {
 
       <div className="flex items-center justify-between">
         <p className="text-sm text-muted-foreground">Mostrando {filteredPlans.length} plan(es)</p>
-        <Badge variant="outline" className="rounded-full">
+        <Badge variant="outline">
           Actualizado para fase 1
         </Badge>
       </div>
@@ -102,7 +102,7 @@ export function PlansCatalog() {
           ))}
         </div>
       ) : (
-        <div className="rounded-2xl border border-dashed border-border/80 bg-card/55 p-8 text-center text-sm text-muted-foreground">
+        <div className="rounded-[14px] border border-dashed border-border/80 bg-card/55 p-8 text-center text-sm text-muted-foreground">
           No encontramos planes con esos filtros. Proba cambiar objetivo, nivel o dias.
         </div>
       )}

@@ -8,7 +8,6 @@ import { PlanFinderQuiz } from "@/components/site/plan-finder-quiz";
 import { SectionShell } from "@/components/site/section-shell";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { useInViewAnimation } from "@/hooks/use-in-view-animation";
 
 export function PlanFinderTeaser() {
@@ -53,16 +52,16 @@ export function PlanFinderTeaser() {
   }, [hasAnimated, prefersReducedMotion]);
 
   return (
-    <SectionShell id="encontra-tu-plan" className="-mt-10 pt-0 md:-mt-14">
-      <div ref={cardRef} className="relative z-20 overflow-hidden rounded-[10px]">
+    <SectionShell id="encontra-tu-plan" className="pt-3 md:pt-4" panelClassName="bg-[linear-gradient(170deg,#15161a_0%,#111217_100%)]">
+      <div ref={cardRef} className="relative z-20">
         <div ref={curtainRef} className="pointer-events-none absolute inset-0 z-30 origin-top bg-background" />
 
-        <Card className="textured-surface rounded-[10px] border-primary/34 bg-[linear-gradient(160deg,#15161a_0%,#131419_46%,#1a0f10_100%)] p-4 shadow-[0_38px_72px_-48px_rgba(122,14,14,0.94)] md:p-5">
+        <div className="rounded-[14px] bg-[linear-gradient(160deg,#15161a_0%,#131419_46%,#1a0f10_100%)] p-4 shadow-[0_34px_62px_-44px_rgba(122,14,14,0.9)] md:p-5">
           <div className="flex flex-col gap-4">
-            <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-4">
               <div className="space-y-2">
-                <Badge className="badge-shimmer w-fit rounded-[6px] border border-primary/45 bg-primary/90 text-primary-foreground">Plan Finder</Badge>
-                <h3 className="max-w-2xl text-3xl font-semibold leading-tight md:text-[2.15rem]">
+                <Badge className="badge-shimmer w-fit border border-primary/45 bg-primary/90 text-primary-foreground">Plan Finder</Badge>
+                <h3 className="max-w-2xl text-[1.7rem] font-semibold leading-tight md:text-[2.15rem]">
                   Descubri tu mejor plan en menos de un minuto.
                 </h3>
                 <p className="max-w-2xl text-sm text-muted-foreground md:text-base">
@@ -77,13 +76,13 @@ export function PlanFinderTeaser() {
                 <Button
                   type="button"
                   onClick={() => setExpanded(true)}
-                  className="premium-cta w-full rounded-[8px] bg-[linear-gradient(120deg,#8b0000_0%,#d41414_100%)] px-5 py-5 text-sm font-semibold tracking-[0.02em] sm:w-auto"
+                  className="premium-cta w-full rounded-[10px] bg-[linear-gradient(120deg,#8b0000_0%,#d41414_100%)] px-5 py-5 text-sm font-semibold tracking-[0.02em] sm:w-auto"
                 >
                   Empezar quiz
                   <ArrowRight className="premium-arrow size-4" />
                 </Button>
 
-                <details className="rounded-[8px] border border-border/80 bg-background/35 px-4 py-2.5 text-sm text-muted-foreground sm:max-w-md">
+                <details className="rounded-[10px] bg-black/22 px-4 py-2.5 text-sm text-muted-foreground sm:max-w-md">
                   <summary className="cursor-pointer font-medium text-foreground">Como funciona?</summary>
                   <p className="mt-1.5">Elegis objetivo, frecuencia y contexto. Te recomendamos un plan exacto para vos.</p>
                 </details>
@@ -91,12 +90,12 @@ export function PlanFinderTeaser() {
             ) : null}
 
             {expanded ? (
-              <div className="rounded-[8px] border border-border/80 bg-background/42 p-2.5 md:p-3">
+              <div className="rounded-[10px] bg-background/42 p-2.5 md:p-3">
                 <PlanFinderQuiz />
               </div>
             ) : null}
           </div>
-        </Card>
+        </div>
       </div>
     </SectionShell>
   );
