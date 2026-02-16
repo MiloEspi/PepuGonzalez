@@ -22,7 +22,7 @@ const bodyFont = Inter({
 export const metadata: Metadata = {
   title: "Pepu Gonzalez | Coaching de rendimiento",
   description:
-    "Entrenamiento personalizado para fuerza, recomposicion y rendimiento con acompanamiento directo.",
+    "Entrenamiento personalizado para fuerza, recomposicion y rendimiento con acompañamiento directo.",
 };
 
 export default function RootLayout({

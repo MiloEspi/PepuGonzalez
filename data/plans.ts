@@ -1,4 +1,4 @@
-export const WHATSAPP_NUMBER = "5492213619007";
+﻿export const WHATSAPP_NUMBER = "5492213619007";
 export const WHATSAPP_DIRECT_URL =
   "https://api.whatsapp.com/send/?phone=5492213619007&text=Hola+Pepu%2C+quiero+mi+Rutina+%283%2F4%2F5%2F6+d%C3%ADas%29+y+ayuda+para+elegir+Volumen+o+Definici%C3%B3n.&type=phone_number&app_absent=0";
 
@@ -142,7 +142,7 @@ export const plans: Plan[] = [
       "Bloque semanal de fuerza + potencia + condicionamiento",
       "Test quincenal de rendimiento",
       "Control de carga interna y externa",
-      "Acompanamiento por WhatsApp con feedback tecnico",
+      "Acompañamiento por WhatsApp con feedback tecnico",
     ],
     forWho: [
       "Personas con experiencia que quieren rendimiento integral",
@@ -294,3 +294,4 @@ export function getPlanBySlug(slug: string): Plan | undefined {
 export function getWhatsAppUrl(message: string): string {
   return `https://api.whatsapp.com/send/?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(message)}&type=phone_number&app_absent=0`;
 }
+

@@ -53,7 +53,7 @@ export function AboutSection() {
           <div className="mt-3.5 space-y-3 text-sm leading-relaxed text-muted-foreground md:text-base">
             <p>Durante mucho tiempo no me senti comodo con mi fisico.</p>
             <p>Entrenaba sin estructura. Sin estrategia. Sin resultados reales.</p>
-            <p>Hoy ayudo a otros a transformar su fisico sin perder anos probando cosas que no funcionan.</p>
+            <p>Hoy ayudo a otros a transformar su fisico sin perder años probando cosas que no funcionan.</p>
           </div>
         </article>
 
@@ -63,7 +63,7 @@ export function AboutSection() {
         >
           <div className="space-y-3 text-sm leading-relaxed text-white/88 md:text-base">
             <p>No vendo rutinas genericas. Construyo procesos.</p>
-            <p>Cada plan se disena para tu contexto, tu nivel y tu objetivo real.</p>
+            <p>Cada plan se diseña para tu contexto, tu nivel y tu objetivo real.</p>
           </div>
 
           <div

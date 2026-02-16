@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowRight, Check, Crown, Flame, Rocket, ShieldCheck, Star, type LucideIcon } from "lucide-react";
 
 import { AnimatedButton } from "@/components/AnimatedButton";
@@ -8,7 +9,6 @@ import { PlanCard } from "@/components/PlanCard";
 import { SectionShell } from "@/components/site/section-shell";
 import { WhatsAppButton } from "@/components/site/whatsapp-button";
 import { Badge } from "@/components/ui/badge";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { getOfferPrimaryHref, getStickyWhatsAppHref, offers } from "@/data/offers";
 import { rememberSelectedPlan } from "@/lib/plan-interest";
 import { cn } from "@/lib/utils";
@@ -120,6 +120,61 @@ const comparisonRows: Array<{
 ];
 
 export function FeaturedPlans() {
+  const comparisonViewportRef = useRef<HTMLDivElement>(null);
+  const animationFrameRef = useRef<number | null>(null);
+  const [comparisonProgress, setComparisonProgress] = useState({
+    hasOverflow: false,
+    progress: 0,
+    thumbWidth: 100,
+    hasInteracted: false,
+  });
+
+  const updateComparisonMetrics = useCallback(() => {
+    const node = comparisonViewportRef.current;
+    if (!node) return;
+
+    const maxScroll = node.scrollWidth - node.clientWidth;
+    const hasOverflow = maxScroll > 2;
+    const progress = hasOverflow ? Math.min(Math.max(node.scrollLeft / maxScroll, 0), 1) : 0;
+    const thumbWidth = hasOverflow ? Math.max((node.clientWidth / node.scrollWidth) * 100, 14) : 100;
+
+    setComparisonProgress((prev) => {
+      const hasInteracted = prev.hasInteracted || node.scrollLeft > 6;
+      if (
+        prev.hasOverflow === hasOverflow &&
+        Math.abs(prev.progress - progress) < 0.005 &&
+        Math.abs(prev.thumbWidth - thumbWidth) < 0.5 &&
+        prev.hasInteracted === hasInteracted
+      ) {
+        return prev;
+      }
+
+      return { hasOverflow, progress, thumbWidth, hasInteracted };
+    });
+  }, []);
+
+  const scheduleComparisonMetricsUpdate = useCallback(() => {
+    if (typeof window === "undefined") return;
+    if (animationFrameRef.current !== null) return;
+
+    animationFrameRef.current = window.requestAnimationFrame(() => {
+      animationFrameRef.current = null;
+      updateComparisonMetrics();
+    });
+  }, [updateComparisonMetrics]);
+
+  useEffect(() => {
+    scheduleComparisonMetricsUpdate();
+    window.addEventListener("resize", scheduleComparisonMetricsUpdate);
+
+    return () => {
+      window.removeEventListener("resize", scheduleComparisonMetricsUpdate);
+      if (animationFrameRef.current !== null) {
+        window.cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
+  }, [scheduleComparisonMetricsUpdate]);
+
   if (!offers.length) {
     return (
       <SectionShell
@@ -150,7 +205,7 @@ export function FeaturedPlans() {
       description="Cuatro niveles claros. Un solo objetivo: progreso real con estructura."
     >
       <article className="mb-5 rounded-[12px] border border-primary/35 bg-[linear-gradient(126deg,rgba(122,14,14,0.3)_0%,rgba(40,12,15,0.72)_100%)] px-4 py-3 text-sm text-white/86">
-        Se envia encuesta detallada para disenar tu plan completamente adaptado. En el sistema Transformacion, esta personalizacion es total.
+        Se envia encuesta detallada para diseñar tu plan completamente adaptado. En el sistema Transformacion, esta personalizacion es total.
       </article>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -170,7 +225,9 @@ export function FeaturedPlans() {
                 "relative overflow-hidden rounded-[16px] border p-[1px] transition-[transform,box-shadow] duration-[280ms] ease-[var(--ease-premium)] hover:-translate-y-1.5",
                 styles.shell,
                 isTransformacion ? "md:-translate-y-2 md:scale-[1.04] md:shadow-[0_50px_84px_-42px_rgba(122,14,14,0.98)]" : "",
-                isMentoria ? "before:pointer-events-none before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_82%_14%,rgba(255,214,120,0.18),transparent_44%)]" : ""
+                isMentoria
+                  ? "before:pointer-events-none before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_82%_14%,rgba(255,214,120,0.18),transparent_44%)]"
+                  : ""
               )}
             >
               <div className={cn("relative flex h-full flex-col rounded-[15px] p-3.5 md:p-4", styles.surface)}>
@@ -267,69 +324,108 @@ export function FeaturedPlans() {
           <p className="text-xs uppercase tracking-[0.14em] text-white/64">Inicio | Base | Transformacion | Mentoria</p>
         </div>
 
-        <ScrollArea className="w-full overflow-hidden rounded-[12px] border border-white/12 bg-black/24">
-          <table className="w-max min-w-[940px] border-separate border-spacing-0 text-sm">
-            <thead>
-              <tr>
-                <th className="sticky left-0 z-30 min-w-[170px] border-b border-r border-white/12 bg-[linear-gradient(150deg,#15161b_0%,#111217_100%)] px-4 py-3 text-left text-[11px] uppercase tracking-[0.1em] text-white/68">
-                  Caracteristica
-                </th>
-                {offers.map((offer) => {
-                  const styles = themeClasses[offer.theme];
-                  const isTransformacion = offer.slug === "programa-transformacion";
-
-                  return (
-                    <th
-                      key={`head-${offer.slug}`}
-                      className={cn(
-                        "min-w-[190px] border-b border-l border-white/12 px-4 py-3 text-left text-[11px] uppercase tracking-[0.1em]",
-                        styles.tableHead,
-                        isTransformacion ? "border-primary/50 shadow-[0_14px_24px_-16px_rgba(212,20,20,0.9)]" : ""
-                      )}
-                    >
-                      <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
-                        {offer.shortLabel}
-                        {isTransformacion ? (
-                          <span className="rounded-[6px] border border-primary/50 bg-primary/35 px-1.5 py-0.5 text-[9px]">
-                            Mas elegido
-                          </span>
-                        ) : null}
-                      </span>
-                    </th>
-                  );
-                })}
-              </tr>
-            </thead>
-
-            <tbody>
-              {comparisonRows.map((row) => (
-                <tr key={row.label}>
-                  <td className="sticky left-0 z-20 border-b border-r border-white/12 bg-[linear-gradient(145deg,#131419_0%,#101116_100%)] px-4 py-3 text-xs font-semibold uppercase tracking-[0.08em] text-white/78">
-                    {row.label}
-                  </td>
-
+        <div className="relative">
+          <div
+            ref={comparisonViewportRef}
+            onScroll={scheduleComparisonMetricsUpdate}
+            className="w-full touch-pan-x overflow-x-auto overflow-y-hidden rounded-[12px] border border-white/12 bg-black/24 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+            style={{ WebkitOverflowScrolling: "touch" }}
+          >
+            <table className="w-max min-w-[780px] border-separate border-spacing-0 text-sm md:min-w-[1040px]">
+              <thead>
+                <tr>
+                  <th className="sticky left-0 z-30 min-w-[176px] border-b border-r border-white/12 bg-[linear-gradient(150deg,#15161b_0%,#111217_100%)] px-4 py-3 text-left text-[11px] uppercase tracking-[0.1em] text-white/68">
+                    Caracteristica
+                  </th>
                   {offers.map((offer) => {
                     const styles = themeClasses[offer.theme];
                     const isTransformacion = offer.slug === "programa-transformacion";
+
                     return (
-                      <td
-                        key={`${row.label}-${offer.slug}`}
+                      <th
+                        key={`head-${offer.slug}`}
                         className={cn(
-                          "border-b border-l border-white/12 px-4 py-3 text-sm",
-                          styles.tableCell,
-                          isTransformacion ? "border-primary/35 shadow-[0_18px_28px_-18px_rgba(212,20,20,0.85)]" : ""
+                          "min-w-[182px] border-b border-l border-white/12 px-4 py-3 text-left text-[11px] uppercase tracking-[0.1em]",
+                          styles.tableHead,
+                          isTransformacion ? "border-primary/50 shadow-[0_14px_24px_-16px_rgba(212,20,20,0.9)]" : ""
                         )}
                       >
-                        {row.getter(offer)}
-                      </td>
+                        <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
+                          {offer.shortLabel}
+                          {isTransformacion ? (
+                            <span className="rounded-[6px] border border-primary/50 bg-primary/35 px-1.5 py-0.5 text-[9px]">
+                              Mas elegido
+                            </span>
+                          ) : null}
+                        </span>
+                      </th>
                     );
                   })}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-          <ScrollBar orientation="horizontal" className="h-3 px-1.5 py-0.5" />
-        </ScrollArea>
+              </thead>
+
+              <tbody>
+                {comparisonRows.map((row) => (
+                  <tr key={row.label}>
+                    <td className="sticky left-0 z-20 border-b border-r border-white/12 bg-[linear-gradient(145deg,#131419_0%,#101116_100%)] px-4 py-3.5 text-xs font-semibold uppercase tracking-[0.08em] text-white/78">
+                      {row.label}
+                    </td>
+
+                    {offers.map((offer) => {
+                      const styles = themeClasses[offer.theme];
+                      const isTransformacion = offer.slug === "programa-transformacion";
+                      return (
+                        <td
+                          key={`${row.label}-${offer.slug}`}
+                          className={cn(
+                            "border-b border-l border-white/12 px-4 py-3.5 text-sm",
+                            styles.tableCell,
+                            isTransformacion ? "border-primary/35 shadow-[0_18px_28px_-18px_rgba(212,20,20,0.85)]" : ""
+                          )}
+                        >
+                          {row.getter(offer)}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div
+            aria-hidden
+            className={cn(
+              "pointer-events-none absolute inset-y-0 left-0 w-6 bg-[linear-gradient(90deg,rgba(17,18,23,0.98)_0%,rgba(17,18,23,0)_100%)] transition-opacity duration-200",
+              comparisonProgress.hasOverflow && comparisonProgress.progress > 0.02 ? "opacity-100" : "opacity-0"
+            )}
+          />
+          <div
+            aria-hidden
+            className={cn(
+              "pointer-events-none absolute inset-y-0 right-0 w-6 bg-[linear-gradient(270deg,rgba(17,18,23,0.98)_0%,rgba(17,18,23,0)_100%)] transition-opacity duration-200",
+              comparisonProgress.hasOverflow && comparisonProgress.progress < 0.98 ? "opacity-100" : "opacity-0"
+            )}
+          />
+        </div>
+
+        {comparisonProgress.hasOverflow ? (
+          <div className="mt-3 space-y-2">
+            {!comparisonProgress.hasInteracted ? (
+              <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-white/58 md:hidden">Desliza -&gt;</p>
+            ) : null}
+
+            <div className="relative h-1.5 w-full overflow-hidden rounded-full bg-white/14">
+              <span
+                className="absolute top-0 h-full rounded-full bg-[linear-gradient(90deg,#8b0000_0%,#d41414_100%)] transition-transform duration-150 ease-linear"
+                style={{
+                  width: `${comparisonProgress.thumbWidth}%`,
+                  transform: `translateX(${comparisonProgress.progress * (100 - comparisonProgress.thumbWidth)}%)`,
+                }}
+              />
+            </div>
+          </div>
+        ) : null}
       </div>
     </SectionShell>
   );

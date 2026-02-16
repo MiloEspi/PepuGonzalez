@@ -1,7 +1,7 @@
 import { getOfferBySlug, type Offer, type OfferSlug } from "@/data/offers";
 
 export type QuizGoal = "ganar-masa" | "perder-grasa" | "recomposicion" | "mejorar-rendimiento";
-export type QuizTrainingExperience = "nunca" | "menos-6-meses" | "seis-meses-dos-anos" | "mas-2-anos";
+export type QuizTrainingExperience = "nunca" | "menos-6-meses" | "seis-meses-dos-años" | "mas-2-años";
 export type QuizDaysPerWeek = 3 | 4 | 5 | 6;
 export type QuizRoutineStructure = "no" | "mas-o-menos" | "si";
 export type QuizNutritionPlan = "si" | "no";
@@ -10,7 +10,7 @@ export type QuizCommitment =
   | "empezar-aprender"
   | "progresar-serio"
   | "cambio-fuerte-90"
-  | "maximo-acompanamiento";
+  | "maximo-acompañamiento";
 
 export interface QuizAnswers {
   goal: QuizGoal;
@@ -46,8 +46,8 @@ export const QUIZ_GOAL_LABELS: Record<QuizGoal, string> = {
 export const QUIZ_TRAINING_EXPERIENCE_LABELS: Record<QuizTrainingExperience, string> = {
   nunca: "Nunca entrene",
   "menos-6-meses": "Menos de 6 meses",
-  "seis-meses-dos-anos": "6 meses a 2 anos",
-  "mas-2-anos": "Mas de 2 anos",
+  "seis-meses-dos-años": "6 meses a 2 años",
+  "mas-2-años": "Mas de 2 años",
 };
 
 export const QUIZ_DAYS_LABELS: Record<QuizDaysPerWeek, string> = {
@@ -78,7 +78,7 @@ export const QUIZ_COMMITMENT_LABELS: Record<QuizCommitment, string> = {
   "empezar-aprender": "Quiero empezar y aprender",
   "progresar-serio": "Quiero progresar en serio",
   "cambio-fuerte-90": "Quiero un cambio fuerte en 90 dias",
-  "maximo-acompanamiento": "Quiero el maximo acompanamiento",
+  "maximo-acompañamiento": "Quiero el maximo acompañamiento",
 };
 
 export const QUIZ_ANSWER_LABELS: {
@@ -112,8 +112,8 @@ export const quizQuestions: QuizQuestion[] = [
     options: [
       { label: "Nunca entrene", value: "nunca" },
       { label: "Menos de 6 meses", value: "menos-6-meses" },
-      { label: "6 meses a 2 anos", value: "seis-meses-dos-anos" },
-      { label: "Mas de 2 anos", value: "mas-2-anos" },
+      { label: "6 meses a 2 años", value: "seis-meses-dos-años" },
+      { label: "Mas de 2 años", value: "mas-2-años" },
     ],
   },
   {
@@ -149,7 +149,7 @@ export const quizQuestions: QuizQuestion[] = [
   {
     id: "followUp",
     title: "Queres seguimiento",
-    subtitle: "Defini la intensidad de acompanamiento que buscas.",
+    subtitle: "Defini la intensidad de acompañamiento que buscas.",
     options: [
       { label: "No, solo el plan", value: "solo-plan" },
       { label: "Seguimiento mensual", value: "seguimiento-mensual" },
@@ -164,7 +164,7 @@ export const quizQuestions: QuizQuestion[] = [
       { label: "Quiero empezar y aprender", value: "empezar-aprender" },
       { label: "Quiero progresar en serio", value: "progresar-serio" },
       { label: "Quiero un cambio fuerte en 90 dias", value: "cambio-fuerte-90" },
-      { label: "Quiero el maximo acompanamiento", value: "maximo-acompanamiento" },
+      { label: "Quiero el maximo acompañamiento", value: "maximo-acompañamiento" },
     ],
   },
 ];
@@ -183,9 +183,9 @@ export function isQuizComplete(answers: Partial<QuizAnswers>): answers is QuizAn
 
 function resolveOfferSlug(answers: QuizAnswers): OfferSlug {
   const isMentoriaExact =
-    answers.trainingExperience === "mas-2-anos" &&
+    answers.trainingExperience === "mas-2-años" &&
     answers.followUp === "seguimiento-semanal" &&
-    answers.commitmentLevel === "maximo-acompanamiento";
+    answers.commitmentLevel === "maximo-acompañamiento";
   if (isMentoriaExact) {
     return "mentoria-1-1";
   }
@@ -208,7 +208,7 @@ function resolveOfferSlug(answers: QuizAnswers): OfferSlug {
   }
 
   const isBaseExact =
-    answers.trainingExperience === "seis-meses-dos-anos" &&
+    answers.trainingExperience === "seis-meses-dos-años" &&
     answers.routineStructure === "si" &&
     answers.followUp === "solo-plan" &&
     answers.commitmentLevel === "progresar-serio";
@@ -217,7 +217,7 @@ function resolveOfferSlug(answers: QuizAnswers): OfferSlug {
   }
 
   // Fallback para perfiles mixtos, conservando la priorizacion del sistema final.
-  if (answers.followUp === "seguimiento-semanal" || answers.commitmentLevel === "maximo-acompanamiento") {
+  if (answers.followUp === "seguimiento-semanal" || answers.commitmentLevel === "maximo-acompañamiento") {
     return "mentoria-1-1";
   }
 

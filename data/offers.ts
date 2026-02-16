@@ -57,7 +57,7 @@ export const offers: Offer[] = [
     shortLabel: "Inicio",
     strapline: "El punto de partida correcto lo cambia todo.",
     pitch:
-      "La mayoria empieza mal: entrena sin estructura, copia rutinas y no entiende progresion. El problema no es motivacion. Es la base. Este programa esta disenado para que empieces bien desde el primer dia.",
+      "La mayoria empieza mal: entrena sin estructura, copia rutinas y no entiende progresion. El problema no es motivacion. Es la base. Este programa esta diseñado para que empieces bien desde el primer dia.",
     benefits: [
       "Rutina adaptativa 3-4 dias",
       "Explicacion clara de ejercicios",
@@ -137,7 +137,7 @@ export const offers: Offer[] = [
     durationLabel: "90 dias",
     priceArs: "$119.900 ARS",
     priceUsd: "119 USD",
-    surveyStatement: "Se envia encuesta detallada para disenar tu plan completamente adaptado.",
+    surveyStatement: "Se envia encuesta detallada para diseñar tu plan completamente adaptado.",
     featuredTagline: "Plan 100% personalizado a traves de encuesta estrategica inicial.",
     ctaLabel: "QUIERO MI TRANSFORMACION 100% PERSONALIZADA",
     ctaType: "lead",
@@ -159,7 +159,7 @@ export const offers: Offer[] = [
     slug: "mentoria-1-1",
     title: "Mentoria 1 a 1",
     shortLabel: "Mentoria",
-    strapline: "Maximo nivel de acompanamiento premium.",
+    strapline: "Maximo nivel de acompañamiento premium.",
     pitch:
       "Proceso 1 a 1 con seguimiento semanal, ajustes constantes y contacto directo prioritario para rendimiento alto.",
     benefits: [
