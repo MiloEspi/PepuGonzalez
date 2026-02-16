@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Inter, Montserrat } from "next/font/google";
 
+import { Navbar } from "@/components/Navbar";
+import { SvgFilters } from "@/components/SvgFilters";
 import { Footer } from "@/components/site/footer";
 import { MobileWhatsAppSticky } from "@/components/site/mobile-whatsapp-sticky";
-import { Navbar } from "@/components/site/navbar";
 import "./globals.css";
 
 const headingFont = Montserrat({
@@ -32,7 +33,8 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={`${headingFont.variable} ${bodyFont.variable} antialiased`}>
-        <div className="relative min-h-screen bg-background text-foreground">
+        <div className="relative min-h-screen bg-background pt-[var(--navbar-height)] text-foreground">
+          <SvgFilters />
           <Navbar />
           {children}
           <MobileWhatsAppSticky />

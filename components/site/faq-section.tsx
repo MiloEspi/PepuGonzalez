@@ -4,29 +4,29 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 const faqs = [
   {
     question: "En cuanto tiempo voy a ver resultados?",
-    answer: "Si cumplis con el plan, normalmente los primeros cambios visibles aparecen entre semana 3 y 5.",
+    answer: "Si aplicas el sistema con consistencia, los primeros cambios suelen aparecer entre la semana 3 y la 5.",
   },
   {
     question: "Esto es para mi nivel?",
-    answer: "Si. Ajustamos el sistema a tu punto de partida para que puedas progresar sin lesionarte.",
+    answer: "Si. El punto de partida cambia, pero el metodo se adapta para que progreses sin improvisar.",
   },
   {
     question: "Que pasa si no puedo cumplir todo perfecto?",
-    answer: "No buscamos perfeccion, buscamos consistencia. Se adapta el plan para sostener avance real.",
+    answer: "No busco perfeccion. Ajusto carga, volumen y frecuencia para que puedas sostener avance semana a semana.",
   },
   {
     question: "Como se que esto va a funcionar?",
-    answer: "Porque hay estructura, seguimiento y ajustes medibles. No dependes de motivacion aleatoria.",
+    answer: "Porque no depende de motivacion. Hay plan, seguimiento y ajustes segun tu respuesta real.",
   },
   {
     question: "Hay devoluciones?",
-    answer: "Se evalua caso por caso segun avance y cumplimiento de la primera fase del programa.",
+    answer: "Se revisa caso por caso despues de la primera fase, segun cumplimiento y ejecucion del sistema.",
   },
 ];
 
 export function FAQSection() {
   return (
-    <SectionShell id="faq" eyebrow="FAQ" title="Preguntas frecuentes" description="Respuestas directas para que tomes una decision con claridad.">
+    <SectionShell id="faq" eyebrow="FAQ" title="Preguntas clave antes de aplicar" description="Respuestas con postura para que decidas con claridad y compromiso.">
       <div className="textured-surface rounded-[14px] border border-border/80 bg-card/90 px-6">
         <Accordion type="single" collapsible className="w-full">
           {faqs.map((faq, index) => (

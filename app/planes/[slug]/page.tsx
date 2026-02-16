@@ -71,7 +71,7 @@ export default async function PlanDetailPage({ params }: PlanDetailPageProps) {
           <div className="mt-6 flex flex-wrap gap-3">
             <WhatsAppButton href={WHATSAPP_DIRECT_URL}>Hablar por WhatsApp</WhatsAppButton>
             <Button asChild variant="outline" className="rounded-full px-6">
-              <Link href="/#encontra-tu-plan">Encontra tu plan</Link>
+              <Link href="/#cuestionario">Encontra tu plan</Link>
             </Button>
           </div>
         </div>

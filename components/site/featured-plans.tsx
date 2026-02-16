@@ -1,18 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
-import { useEffect, useRef } from "react";
 import { ArrowRight, Check, Crown, ShieldCheck, Sparkles, Star, Target, TrendingUp, type LucideIcon } from "lucide-react";
 
+import { AnimatedButton } from "@/components/AnimatedButton";
+import { PlanCard } from "@/components/PlanCard";
 import { SectionShell } from "@/components/site/section-shell";
 import { WhatsAppButton } from "@/components/site/whatsapp-button";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { getOfferPrimaryHref, getStickyWhatsAppHref, offers } from "@/data/offers";
 import { rememberSelectedPlan } from "@/lib/plan-interest";
-import { animateFadeSlideIn, shouldReduceMotion } from "@/lib/animations";
-import { useInViewAnimation } from "@/hooks/use-in-view-animation";
 import { cn } from "@/lib/utils";
 
 const PLAN_FALLBACK_IMAGE = "/fitness-shirtless.jpg";
@@ -151,48 +148,38 @@ const themeClasses: Record<OfferTheme, ThemeConfig> = {
 };
 
 export function FeaturedPlans() {
-  const cardsRef = useRef<HTMLDivElement>(null);
-  const { hasEnteredView } = useInViewAnimation(cardsRef, { threshold: 0.12, rootMargin: "0px 0px -10% 0px" });
-
-  useEffect(() => {
-    const container = cardsRef.current;
-    if (!container || !hasEnteredView) return;
-    const cards = container.querySelectorAll<HTMLElement>("[data-reveal]");
-    animateFadeSlideIn(cards, { distance: 24, duration: 520, staggerStep: 95 });
-  }, [hasEnteredView]);
-
-  const reducedMotion = shouldReduceMotion();
-
   return (
     <SectionShell
       id="planes"
       eyebrow="PLANES"
-      title="Elegi tu nivel de acompanamiento"
-      description="Programas estructurados para etapas distintas del proceso, con una misma logica: resultados medibles y sostenibles."
+      title="Elegi el nivel de acompanamiento para tu proceso"
+      description="Cada programa sube el nivel de exigencia y precision. El objetivo es uno: transformacion real."
     >
-      <div ref={cardsRef} className="grid gap-6 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 xl:grid-cols-4">
         {offers.map((offer) => {
           const styles = themeClasses[offer.theme];
           const Icon = styles.icon;
           const imageSrc = offer.coverImage ?? PLAN_FALLBACK_IMAGE;
           const isTransformacion = offer.theme === "transformacion";
           const isMentoria = offer.theme === "mentoria";
-          const badgeLabel = offer.theme === "base" ? "Base" : offer.theme === "personalizado" ? "Custom" : offer.shortLabel;
+          const badgeLabel = offer.theme === "base" ? "Base" : offer.theme === "personalizado" ? "Precision" : offer.shortLabel;
+          const visibleBenefits = offer.benefits;
 
           return (
-            <article
+            <PlanCard
               data-reveal
               id={`plan-${offer.slug}`}
               key={offer.slug}
               className={cn(
                 "group relative overflow-hidden rounded-[14px] p-[1px] opacity-0 transition-[transform,box-shadow] duration-[240ms] ease-[var(--ease-premium)]",
-                styles.outer,
-                styles.hover
+                isTransformacion ? "lg:-translate-y-2 lg:scale-[1.03] lg:shadow-[0_48px_86px_-46px_rgba(122,14,14,1)]" : "",
+                styles.outer
               )}
             >
+              <span data-plan-accent className="pointer-events-none absolute inset-y-6 left-0 z-20 w-px rounded-full bg-primary/70 opacity-58" />
               <div className={cn("pointer-events-none absolute inset-0 -z-10 rounded-[14px] blur-2xl transition-opacity duration-250", styles.glow)} />
 
-              <div className={cn("relative flex h-full flex-col overflow-hidden rounded-[14px] p-4 md:p-5", styles.surface)}>
+              <div className={cn("relative flex h-full flex-col overflow-hidden rounded-[14px] p-3.5 md:p-4", styles.surface)}>
                 {styles.studioLight ? (
                   <div
                     className={cn(
@@ -202,19 +189,20 @@ export function FeaturedPlans() {
                   />
                 ) : null}
 
-                <div className={cn("relative mb-5 h-44 overflow-hidden rounded-[10px] border md:h-48", styles.media)}>
+                <div className={cn("relative mb-4 h-40 overflow-hidden rounded-[10px] border md:h-44", styles.media)}>
                   <Image
+                    data-plan-media-image
                     src={imageSrc}
                     alt={offer.title}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1400px) 50vw, 33vw"
-                    className={cn(
-                      "object-cover grayscale contrast-[1.18] brightness-[0.78] transition-transform duration-[760ms] ease-[var(--ease-premium)]",
-                      reducedMotion ? "" : styles.mediaMotion
-                    )}
+                    className="object-cover grayscale contrast-[1.18] brightness-[0.78]"
                   />
                   <div className={cn("pointer-events-none absolute inset-0", styles.overlay)} />
-                  <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.06)_0%,rgba(0,0,0,0.72)_100%)]" />
+                  <div
+                    data-plan-media-overlay
+                    className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.06)_0%,rgba(0,0,0,0.72)_100%)] opacity-[0.78]"
+                  />
 
                   <div className="absolute left-3 top-3 flex flex-wrap items-center gap-2">
                     <Badge className={cn("badge-shimmer rounded-[8px] border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em]", styles.badge)}>
@@ -224,7 +212,7 @@ export function FeaturedPlans() {
                     {isTransformacion ? (
                       <Badge className={cn("rounded-[8px] border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em]", styles.accentBadge)}>
                         <Star className="size-3.5" />
-                        MAS VENDIDO
+                        MAS ELEGIDO
                       </Badge>
                     ) : null}
 
@@ -247,47 +235,55 @@ export function FeaturedPlans() {
                   </span>
                 </div>
 
-                <h3 className={cn(styles.title, styles.titleHover ? `transition-transform duration-200 ${styles.titleHover}` : "")}>{offer.title}</h3>
-                <p className={styles.strapline}>{offer.strapline}</p>
-                <p className={styles.pitch}>{offer.pitch}</p>
+                <div data-plan-copy>
+                  <h3
+                    className={cn(
+                      styles.title,
+                      "text-[1.45rem] leading-[1.02] md:text-[1.7rem]",
+                      styles.titleHover ? `transition-transform duration-200 ${styles.titleHover}` : ""
+                    )}
+                  >
+                    {offer.title}
+                  </h3>
+                  <p className={styles.strapline}>{offer.strapline}</p>
+                  <p className={styles.pitch}>{offer.pitch}</p>
 
-                {offer.spotsMicrocopy && !isMentoria ? (
-                  <p className={cn("mt-3 inline-flex w-fit items-center gap-1 rounded-[8px] border px-2.5 py-1 text-xs font-medium", styles.microcopy)}>
-                    {offer.spotsMicrocopy}
-                  </p>
-                ) : null}
+                  {offer.spotsMicrocopy && !isMentoria ? (
+                    <p className={cn("mt-3 inline-flex w-fit items-center gap-1 rounded-[8px] border px-2.5 py-1 text-xs font-medium", styles.microcopy)}>
+                      {offer.spotsMicrocopy}
+                    </p>
+                  ) : null}
 
-                <ul className="mt-5">
-                  {offer.benefits.map((benefit, index) => (
-                    <li key={benefit} className={cn("flex items-start gap-3 py-2.5", index < offer.benefits.length - 1 ? styles.benefitDivider : "")}>
-                      <span className={cn("mt-0.5 inline-flex size-5 shrink-0 items-center justify-center rounded-[8px] border", styles.benefitIcon)}>
-                        <Check className="size-3.5" />
-                      </span>
-                      <span className={styles.benefitText}>{benefit}</span>
-                    </li>
-                  ))}
-                </ul>
+                  <ul className="mt-4">
+                    {visibleBenefits.map((benefit, index) => (
+                      <li key={benefit} className={cn("flex items-start gap-2.5 py-2", index < visibleBenefits.length - 1 ? styles.benefitDivider : "")}>
+                        <span className={cn("mt-0.5 inline-flex size-5 shrink-0 items-center justify-center rounded-[8px] border", styles.benefitIcon)}>
+                          <Check className="size-3.5" />
+                        </span>
+                        <span className={styles.benefitText}>{benefit}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
 
-                <Button asChild size="lg" className={cn("premium-cta mt-6 h-11 w-full justify-between rounded-[10px] px-4 text-[0.69rem] font-bold tracking-[0.08em]", styles.cta)}>
-                  <Link href={getOfferPrimaryHref(offer)} target="_blank" rel="noreferrer" onClick={() => rememberSelectedPlan(offer.title)}>
-                    <span className="pr-2 text-left leading-[1.2]">{offer.ctaLabel}</span>
-                    <ArrowRight className="premium-arrow size-4 shrink-0" />
-                  </Link>
-                </Button>
+                <AnimatedButton
+                  href={getOfferPrimaryHref(offer)}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={cn("premium-cta mt-4 h-11 w-full justify-between rounded-[10px] px-4 text-[0.68rem] font-bold tracking-[0.08em]", styles.cta)}
+                  onClick={() => rememberSelectedPlan(offer.title)}
+                >
+                  <span className="pr-2 text-left leading-[1.2]">{offer.ctaLabel}</span>
+                  <ArrowRight className="premium-arrow size-4 shrink-0" />
+                </AnimatedButton>
 
                 <WhatsAppButton href={getStickyWhatsAppHref(offer.title)} size="sm" className="mt-2 w-full justify-center">
                   WhatsApp
                 </WhatsAppButton>
               </div>
-            </article>
+            </PlanCard>
           );
         })}
-      </div>
-
-      <div className="mt-8">
-        <Button asChild variant="outline" className="premium-cta rounded-[10px] border-white/18 bg-black/38 px-5">
-          <Link href="/planes">Ver catalogo completo</Link>
-        </Button>
       </div>
     </SectionShell>
   );

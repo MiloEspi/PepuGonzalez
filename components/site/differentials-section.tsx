@@ -1,65 +1,52 @@
 "use client";
 
 import { BarChart3, BrainCircuit, ClipboardCheck, MessagesSquare, Target, Workflow } from "lucide-react";
-import { useEffect, useRef } from "react";
 
 import { SectionShell } from "@/components/site/section-shell";
-import { useInViewAnimation } from "@/hooks/use-in-view-animation";
-import { animateFadeSlideIn } from "@/lib/animations";
 import { cn } from "@/lib/utils";
 
 const differentiators = [
   {
-    title: "No uso rutinas genericas",
+    title: "No recibis rutinas genericas",
     icon: ClipboardCheck,
     cardClass: "bg-[linear-gradient(135deg,#17181d_0%,#121318_100%)] border-white/14",
   },
   {
-    title: "Programacion basada en progresion real",
+    title: "Diagnostico real antes de programar",
     icon: Workflow,
     cardClass: "bg-[linear-gradient(140deg,rgba(122,14,14,0.28)_0%,#16171c_100%)] border-white/14",
   },
   {
-    title: "Enfoque en mentalidad y disciplina",
+    title: "Disciplina aplicada al contexto",
     icon: BrainCircuit,
     cardClass: "bg-[linear-gradient(140deg,#16171c_0%,#131419_100%)] border-white/14",
   },
   {
-    title: "Resultados medibles",
+    title: "Ajustes semanales con criterio",
     icon: BarChart3,
     cardClass: "bg-[linear-gradient(140deg,#17181d_0%,rgba(122,14,14,0.24)_100%)] border-white/14",
   },
   {
-    title: "Comunicacion directa",
+    title: "Comunicacion directa y util",
     icon: MessagesSquare,
     cardClass: "bg-[linear-gradient(140deg,#15161a_0%,#121318_100%)] border-white/14",
   },
   {
-    title: "Direccion clara por objetivo",
+    title: "Decisiones inteligentes para tu objetivo",
     icon: Target,
     cardClass: "bg-[linear-gradient(140deg,#17181d_0%,#101116_100%)] border-white/14",
   },
 ];
 
 export function DifferentialsSection() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const { hasEnteredView } = useInViewAnimation(sectionRef, { threshold: 0.12, rootMargin: "0px 0px -12% 0px" });
-
-  useEffect(() => {
-    const node = sectionRef.current;
-    if (!node || !hasEnteredView) return;
-    const targets = node.querySelectorAll<HTMLElement>("[data-reveal]");
-    animateFadeSlideIn(targets, { distance: 16, duration: 500, staggerStep: 80 });
-  }, [hasEnteredView]);
-
   return (
     <SectionShell
       id="diferenciales"
       eyebrow="COMPETENCIAS"
-      title="Sistema, lectura de contexto y ejecucion"
-      description="No se trata de entrenar mas. Se trata de entrenar mejor, con decisiones concretas y seguimiento."
+      title="Por que entrenar conmigo?"
+      description="No soy un coach mas. Leo tu contexto, tomo decisiones con criterio y ejecuto un sistema que se sostiene."
     >
-      <div ref={sectionRef} className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {differentiators.map((item) => {
           const Icon = item.icon;
           return (

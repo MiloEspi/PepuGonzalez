@@ -2,12 +2,11 @@
 
 import { animate } from "animejs";
 import { useEffect, useRef, useState } from "react";
-import { ArrowRight, Compass } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
+import { AnimatedButton } from "@/components/AnimatedButton";
 import { PlanFinderQuiz } from "@/components/site/plan-finder-quiz";
 import { SectionShell } from "@/components/site/section-shell";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { useInViewAnimation } from "@/hooks/use-in-view-animation";
 
 export function PlanFinderTeaser() {
@@ -52,40 +51,33 @@ export function PlanFinderTeaser() {
   }, [hasAnimated, prefersReducedMotion]);
 
   return (
-    <SectionShell id="encontra-tu-plan" className="pt-3 md:pt-4" panelClassName="bg-[linear-gradient(170deg,#15161a_0%,#111217_100%)]">
+    <SectionShell id="cuestionario" className="pb-3 pt-2 md:pb-4 md:pt-3" panelClassName="bg-[linear-gradient(170deg,#15161a_0%,#111217_100%)]">
+      <span id="encontra-tu-plan" aria-hidden className="sr-only" />
       <div ref={cardRef} className="relative z-20">
         <div ref={curtainRef} className="pointer-events-none absolute inset-0 z-30 origin-top bg-background" />
 
         <div className="rounded-[14px] bg-[linear-gradient(160deg,#15161a_0%,#131419_46%,#1a0f10_100%)] p-4 shadow-[0_34px_62px_-44px_rgba(122,14,14,0.9)] md:p-5">
-          <div className="flex flex-col gap-4">
-            <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-4">
-              <div className="space-y-2">
-                <Badge className="badge-shimmer w-fit border border-primary/45 bg-primary/90 text-primary-foreground">Plan Finder</Badge>
-                <h3 className="max-w-2xl text-[1.7rem] font-semibold leading-tight md:text-[2.15rem]">
-                  Descubri tu mejor plan en menos de un minuto.
-                </h3>
-                <p className="max-w-2xl text-sm text-muted-foreground md:text-base">
-                  4 pasos, recomendacion directa y acceso inmediato por WhatsApp.
-                </p>
-              </div>
-              <Compass className="hidden size-6 text-primary md:block" />
+          <div className="flex flex-col gap-3.5 md:gap-4">
+            <div className="space-y-2">
+              <h3 className="max-w-2xl text-[2rem] font-semibold leading-[0.95] tracking-[-0.02em] text-foreground md:text-[2.45rem]">
+                Encontra tu plan perfecto
+              </h3>
+              <span className="block h-px w-20 rounded-full bg-[linear-gradient(90deg,rgba(212,20,20,0.9)_0%,rgba(212,20,20,0.08)_100%)]" />
+              <p className="max-w-2xl text-sm text-muted-foreground md:text-base">
+                Responde 4 preguntas y descubri que sistema es ideal para vos.
+              </p>
             </div>
 
             {!expanded ? (
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <Button
-                  type="button"
+              <div className="pt-1">
+                <AnimatedButton
+                  loadingOnClick
                   onClick={() => setExpanded(true)}
-                  className="premium-cta w-full rounded-[10px] bg-[linear-gradient(120deg,#8b0000_0%,#d41414_100%)] px-5 py-5 text-sm font-semibold tracking-[0.02em] sm:w-auto"
+                  className="premium-cta w-full rounded-[12px] border border-primary/35 bg-[linear-gradient(120deg,#8b0000_0%,#d41414_100%)] px-5 py-5 text-[0.8rem] font-bold tracking-[0.08em] shadow-[0_18px_34px_-20px_rgba(212,20,20,0.95)] hover:shadow-[0_22px_40px_-18px_rgba(212,20,20,0.98)] sm:w-auto sm:min-w-[320px]"
                 >
-                  Empezar quiz
-                  <ArrowRight className="premium-arrow size-4" />
-                </Button>
-
-                <details className="rounded-[10px] bg-black/22 px-4 py-2.5 text-sm text-muted-foreground sm:max-w-md">
-                  <summary className="cursor-pointer font-medium text-foreground">Como funciona?</summary>
-                  <p className="mt-1.5">Elegis objetivo, frecuencia y contexto. Te recomendamos un plan exacto para vos.</p>
-                </details>
+                  INICIAR EVALUACION
+                  <ArrowRight className="premium-arrow size-5" />
+                </AnimatedButton>
               </div>
             ) : null}
 

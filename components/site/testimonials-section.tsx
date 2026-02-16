@@ -3,9 +3,8 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
-import { animateFadeSlideIn } from "@/lib/animations";
-import { useInViewAnimation } from "@/hooks/use-in-view-animation";
 import { SectionShell } from "@/components/site/section-shell";
+import { animateCounter } from "@/utils/animations";
 import { cn } from "@/lib/utils";
 
 const transformations = [
@@ -15,7 +14,7 @@ const transformations = [
     timeframe: "12 semanas",
     beforeImage: "/fitness-shirtless.jpg",
     afterImage: "/fitness-shirtless.jpg",
-    testimonial: "Baje grasa, gane fuerza y por primera vez sostuve el proceso sin abandonar.",
+    testimonial: "Baje grasa, gane fuerza y por primera vez sostuve un proceso completo sin abandonar.",
   },
   {
     id: "matias",
@@ -23,7 +22,7 @@ const transformations = [
     timeframe: "90 dias",
     beforeImage: "/fitness-shirtless.jpg",
     afterImage: "/fitness-shirtless.jpg",
-    testimonial: "Con sistema y seguimiento, deje de entrenar al azar y empece a progresar en serio.",
+    testimonial: "Con sistema y seguimiento, deje de entrenar al azar y empece a progresar cada semana.",
   },
   {
     id: "carla",
@@ -31,7 +30,7 @@ const transformations = [
     timeframe: "10 semanas",
     beforeImage: "/fitness-shirtless.jpg",
     afterImage: "/fitness-shirtless.jpg",
-    testimonial: "Entrenando en casa logre recomposicion y mas confianza en mi fisico.",
+    testimonial: "Entrenando en casa logre recomposicion, mas energia y mucha mas seguridad con mi fisico.",
   },
 ];
 
@@ -80,23 +79,46 @@ function BeforeAfterSlider({ beforeImage, afterImage, name }: { beforeImage: str
 }
 
 export function TestimonialsSection() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const { hasEnteredView } = useInViewAnimation(sectionRef, { threshold: 0.12, rootMargin: "0px 0px -12% 0px" });
+  const counterRef = useRef<HTMLSpanElement>(null);
+  const didAnimateCounterRef = useRef(false);
 
   useEffect(() => {
-    if (!hasEnteredView || !sectionRef.current) return;
-    const targets = sectionRef.current.querySelectorAll<HTMLElement>("[data-reveal]");
-    animateFadeSlideIn(targets, { distance: 18, staggerStep: 110 });
-  }, [hasEnteredView]);
+    const node = counterRef.current;
+    if (!node || didAnimateCounterRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        if (!entry?.isIntersecting || didAnimateCounterRef.current) return;
+        didAnimateCounterRef.current = true;
+        animateCounter(node, 100, { from: 0, duration: 1520, prefix: "+" });
+        observer.disconnect();
+      },
+      { threshold: 0.48 }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <SectionShell
       id="resultados"
       eyebrow="RESULTADOS"
-      title="Resultados reales. Personas reales."
-      description="Reemplaza estas imagenes y citas por casos concretos para reforzar prueba social."
+      title="RESULTADOS REALES. SIN EXCUSAS."
+      description="El sistema funciona cuando se aplica con disciplina. No son casos aislados: es ejecucion sostenida."
     >
-      <div ref={sectionRef} className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      <article
+        data-reveal
+        className="mb-4 rounded-[12px] border border-white/12 bg-[linear-gradient(120deg,rgba(15,15,18,0.92)_0%,rgba(45,10,12,0.76)_100%)] px-4 py-3.5 md:mb-5"
+      >
+        <p className="text-[1.55rem] font-semibold leading-none text-white md:text-[2rem]">
+          <span ref={counterRef}>+0</span> procesos completados
+        </p>
+        <p className="mt-1.5 text-xs uppercase tracking-[0.12em] text-white/72">Cambios visibles construidos con estructura y consistencia</p>
+      </article>
+
+      <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         {transformations.map((item, index) => (
           <article
             key={item.id}

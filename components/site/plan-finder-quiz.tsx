@@ -114,9 +114,12 @@ export function PlanFinderQuiz() {
     return (
       <Card className="rounded-[14px] border-white/18 bg-card/95">
         <CardHeader className="space-y-3 border-b border-border/70 pb-4">
-          <Badge className="badge-shimmer w-fit bg-primary/90 text-primary-foreground">Recomendacion final</Badge>
+          <Badge className="badge-shimmer w-fit bg-primary/90 text-primary-foreground">Evaluacion final</Badge>
           <CardTitle className="text-2xl md:text-[1.9rem]">{recommendation.title}</CardTitle>
           <p className="text-sm text-muted-foreground">{recommendation.strapline}</p>
+          <p className="text-sm font-medium text-foreground">
+            Segun tus respuestas, este es el sistema que mejor se adapta a tu perfil.
+          </p>
         </CardHeader>
 
         <CardContent className="space-y-5">
@@ -140,16 +143,16 @@ export function PlanFinderQuiz() {
         <CardFooter className="flex flex-wrap gap-2 pt-1">
           <Button asChild className="rounded-[10px] px-5">
             <SmoothScrollLink href={`/#plan-${recommendation.slug}`} onClick={() => rememberSelectedPlan(recommendation.title)}>
-              Ver detalle
+              Ver plan recomendado
             </SmoothScrollLink>
           </Button>
 
           <WhatsAppButton href={getStickyWhatsAppHref(recommendation.title)} className="px-5">
-            Hablar por WhatsApp
+            Aplicar ahora
           </WhatsAppButton>
 
           <Button variant="ghost" className="rounded-[10px]" onClick={handleReset}>
-            Rehacer quiz
+            Rehacer evaluacion
           </Button>
         </CardFooter>
       </Card>
@@ -170,7 +173,7 @@ export function PlanFinderQuiz() {
           </div>
 
           <Badge variant="secondary">
-            Plan Finder
+            Evaluacion de perfil
           </Badge>
         </div>
 
@@ -226,7 +229,7 @@ export function PlanFinderQuiz() {
           Volver
         </Button>
 
-        <p className="text-xs text-muted-foreground">Elegi una opcion para avanzar</p>
+        <p className="text-xs text-muted-foreground">Responde con honestidad. El sistema correcto depende de tu compromiso.</p>
       </CardFooter>
     </Card>
   );

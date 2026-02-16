@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
-import { Button, type buttonVariants } from "@/components/ui/button";
+import { AnimatedButton } from "@/components/AnimatedButton";
+import { type buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 type ButtonSize = NonNullable<Parameters<typeof buttonVariants>[0]>["size"];
@@ -26,19 +27,22 @@ function WhatsAppIcon({ className }: { className?: string }) {
 }
 
 export function WhatsAppButton({ href, children, className, size = "default" }: WhatsAppButtonProps) {
+  const sizeClass = size === "sm" ? "h-8 px-3 text-sm" : size === "lg" ? "h-10 px-6 text-sm" : "h-9 px-4 text-sm";
+
   return (
-    <Button
-      asChild
-      size={size}
+    <AnimatedButton
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      aria-label="Hablar por WhatsApp"
       className={cn(
         "rounded-[10px] border border-[#25D366] bg-[#25D366] text-[#07371f] shadow-[0_8px_20px_-12px_rgba(37,211,102,0.9)] hover:bg-[#1fbd5b] hover:text-[#062c18] motion-safe:hover:-translate-y-px motion-safe:hover:shadow-[0_16px_24px_-16px_rgba(37,211,102,0.95)]",
+        sizeClass,
         className
       )}
     >
-      <a href={href} target="_blank" rel="noreferrer" aria-label="Hablar por WhatsApp">
-        <WhatsAppIcon />
-        {children}
-      </a>
-    </Button>
+      <WhatsAppIcon />
+      {children}
+    </AnimatedButton>
   );
 }

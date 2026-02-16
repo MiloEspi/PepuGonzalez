@@ -45,8 +45,8 @@ export const QUIZ_COMMITMENT_LABELS: Record<QuizCommitment, string> = {
 export const quizQuestions: QuizQuestion[] = [
   {
     id: "goal",
-    title: "Cual es tu objetivo principal?",
-    subtitle: "Elegi el objetivo que queres atacar primero.",
+    title: "Cual es tu objetivo principal hoy?",
+    subtitle: "Este dato define la estrategia inicial.",
     options: [
       { label: "Ganar masa muscular", value: "masa-muscular" },
       { label: "Definir grasa", value: "definir-grasa" },
@@ -55,8 +55,8 @@ export const quizQuestions: QuizQuestion[] = [
   },
   {
     id: "daysPerWeek",
-    title: "Cuantos dias entrenas por semana?",
-    subtitle: "La recomendacion se ajusta a tu disponibilidad real.",
+    title: "Cuantos dias podes sostener por semana?",
+    subtitle: "Priorizamos lo que realmente podes cumplir.",
     options: [
       { label: "3 dias", value: 3 },
       { label: "4 dias", value: 4 },
@@ -66,8 +66,8 @@ export const quizQuestions: QuizQuestion[] = [
   },
   {
     id: "trainingPlace",
-    title: "Entrenas en gimnasio o en casa?",
-    subtitle: "Necesitamos adaptar el sistema a tu contexto.",
+    title: "Donde vas a entrenar la mayor parte del tiempo?",
+    subtitle: "El entorno cambia la seleccion de ejercicios y progresion.",
     options: [
       { label: "Gimnasio", value: "gimnasio" },
       { label: "En casa", value: "casa" },
@@ -76,7 +76,7 @@ export const quizQuestions: QuizQuestion[] = [
   {
     id: "commitment90",
     title: "Estas dispuesto a comprometerte 90 dias?",
-    subtitle: "La velocidad del resultado depende de tu compromiso.",
+    subtitle: "Sin compromiso no hay transformacion sostenible.",
     options: [
       { label: "Si", value: "si" },
       { label: "No", value: "no" },
