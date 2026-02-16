@@ -2,13 +2,24 @@ export const WHATSAPP_NUMBER = "5492213619007";
 export const WHATSAPP_DEFAULT_MESSAGE =
   "Hola Pepu, quiero evaluar el programa correcto para mi objetivo.";
 
-// Reemplazar por el link real de MercadoPago para fase productiva.
+// Reemplazar por links reales de MercadoPago para fase productiva.
+export const PLAN_INICIO_MERCADOPAGO_URL =
+  "https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=PEPU-PROGRAMA-INICIO-001";
 export const PLAN_BASE_MERCADOPAGO_URL =
   "https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=PEPU-PROGRAMA-BASE-001";
 
-export type OfferSlug = "programa-base" | "programa-transformacion" | "plan-personalizado" | "mentoria-1-1";
+export type OfferSlug = "programa-inicio" | "programa-base" | "programa-transformacion" | "mentoria-1-1";
 export type OfferCtaType = "checkout" | "lead";
-export type OfferTheme = "base" | "transformacion" | "personalizado" | "mentoria";
+export type OfferTheme = "inicio" | "base" | "transformacion" | "mentoria";
+
+export interface OfferComparison {
+  duration: string;
+  personalization: string;
+  nutrition: string;
+  followUp: string;
+  whatsappSupport: string;
+  idealFor: string;
+}
 
 export interface Offer {
   slug: OfferSlug;
@@ -17,9 +28,15 @@ export interface Offer {
   strapline: string;
   pitch: string;
   benefits: string[];
+  durationLabel: string;
+  priceArs: string;
+  priceUsd: string;
+  surveyStatement?: string;
+  featuredTagline?: string;
   ctaLabel: string;
   ctaType: OfferCtaType;
   theme: OfferTheme;
+  comparison: OfferComparison;
   badgeLabel?: string;
   spotsMicrocopy?: string;
   coverImage?: string;
@@ -28,87 +45,140 @@ export interface Offer {
 
 export const offers: Offer[] = [
   {
+    slug: "programa-inicio",
+    title: "PROGRAMA INICIO",
+    shortLabel: "Inicio",
+    strapline: "El punto de partida correcto lo cambia todo.",
+    pitch:
+      "La mayoria empieza mal: entrena sin estructura, copia rutinas y no entiende progresion. El problema no es motivacion. Es la base. Este programa esta disenado para que empieces bien desde el primer dia.",
+    benefits: [
+      "Rutina adaptativa 3-4 dias",
+      "Explicacion clara de ejercicios",
+      "Guia basica de tecnica",
+      "Progresion estructurada",
+      "PDF profesional descargable",
+      "Recomendaciones nutricionales basicas",
+      "Enfoque en base muscular",
+    ],
+    durationLabel: "6-8 semanas",
+    priceArs: "$29.900 ARS",
+    priceUsd: "29 USD",
+    ctaLabel: "QUIERO EMPEZAR CON BASE SOLIDA",
+    ctaType: "checkout",
+    theme: "inicio",
+    badgeLabel: "Inicio",
+    spotsMicrocopy: "Ideal para salir del caos y entrenar con estructura.",
+    coverImage: "/fitness-shirtless.jpg",
+    comparison: {
+      duration: "6-8 semanas",
+      personalization: "Adaptativa inicial",
+      nutrition: "Recomendaciones basicas",
+      followUp: "No incluido",
+      whatsappSupport: "Soporte de entrega",
+      idealFor: "Personas que recien empiezan",
+    },
+  },
+  {
     slug: "programa-base",
     title: "Programa Base",
     shortLabel: "Base",
-    strapline: "Construi tu mejor version.",
-    pitch: "No es una rutina mas. Es el punto donde empezas a progresar en serio.",
+    strapline: "Estructura para progresar en serio sin depender de seguimiento constante.",
+    pitch:
+      "Pensado para quienes ya entrenan y necesitan un sistema claro para sostener progreso durante 8 a 12 semanas.",
     benefits: [
-      "Rutina personalizada (3 a 6 dias)",
-      "Seleccion estrategica de ejercicios",
+      "Plan de entrenamiento adaptado a tu objetivo",
       "Progresion semanal estructurada",
-      "Volumen e intensidad optimizados",
-      "Indicaciones tecnicas detalladas",
+      "Bloques de fuerza e hipertrofia ordenados",
+      "Indicaciones tecnicas claras",
       "PDF profesional descargable",
-      "Posibilidad de actualizacion mensual",
+      "Recomendaciones nutricionales practicas",
+      "Sin seguimiento constante",
     ],
+    durationLabel: "8-12 semanas",
+    priceArs: "$49.900 ARS",
+    priceUsd: "49 USD",
     ctaLabel: "QUIERO EMPEZAR CON EL PROGRAMA BASE",
     ctaType: "checkout",
     theme: "base",
-    spotsMicrocopy: "Ingreso limitado por semana.",
+    spotsMicrocopy: "Estructura profesional para entrenar por cuenta propia.",
+    coverImage: "/fitness-shirtless.jpg",
+    comparison: {
+      duration: "8-12 semanas",
+      personalization: "Adaptado por perfil",
+      nutrition: "Opcional y basica",
+      followUp: "Sin seguimiento constante",
+      whatsappSupport: "Soporte puntual",
+      idealFor: "Intermedios que quieren progresar",
+    },
   },
   {
     slug: "programa-transformacion",
     title: "90 DIAS PARA CAMBIAR TU FISICO",
     shortLabel: "Transformacion",
-    strapline: "Aca no solo entrenas. Aca evolucionas.",
-    pitch: "Proceso estructurado para cambios visibles con entrenamiento, nutricion y control mensual.",
+    strapline: "Programa Transformacion",
+    pitch:
+      "Plan 100% personalizado a traves de encuesta estrategica inicial para construir un cambio real en 90 dias.",
     benefits: [
       "Entrenamiento completamente personalizado",
-      "Plan de alimentacion adaptado",
+      "Encuesta detallada inicial",
+      "Plan nutricional completo",
       "Ajustes cada 30 dias",
       "Seguimiento mensual",
       "Evaluacion de progreso",
       "Soporte por WhatsApp",
-      "Prioridad en actualizaciones",
     ],
-    ctaLabel: "QUIERO MI TRANSFORMACION",
+    durationLabel: "90 dias",
+    priceArs: "$119.900 ARS",
+    priceUsd: "119 USD",
+    surveyStatement: "Se envia encuesta detallada para disenar tu plan completamente adaptado.",
+    featuredTagline: "Plan 100% personalizado a traves de encuesta estrategica inicial.",
+    ctaLabel: "QUIERO MI TRANSFORMACION 100% PERSONALIZADA",
     ctaType: "lead",
     theme: "transformacion",
     badgeLabel: "Mas elegido",
     spotsMicrocopy: "Cupos limitados por cohorte mensual.",
     coverImage: "/fitness-shirtless.jpg",
     featured: true,
-  },
-  {
-    slug: "plan-personalizado",
-    title: "Plan Personalizado",
-    shortLabel: "Personalizado",
-    strapline: "Diseno de precision adaptado a tu contexto real.",
-    pitch: "Estrategia individual para quienes necesitan criterio fino en cada decision de entrenamiento.",
-    benefits: [
-      "Arquitectura semanal segun tu contexto real",
-      "Ajustes por feedback y recuperacion",
-      "Progresion especifica por objetivo",
-      "Soporte directo para decisiones clave",
-    ],
-    ctaLabel: "QUIERO MI PLAN DE PRECISION",
-    ctaType: "lead",
-    theme: "personalizado",
-    coverImage: "/fitness-shirtless.jpg",
-    spotsMicrocopy: "Cupos reducidos para trabajo personalizado.",
+    comparison: {
+      duration: "90 dias",
+      personalization: "100% por encuesta",
+      nutrition: "Completo",
+      followUp: "Mensual",
+      whatsappSupport: "Incluido",
+      idealFor: "Cambio fuerte en 90 dias",
+    },
   },
   {
     slug: "mentoria-1-1",
     title: "Mentoria 1 a 1",
     shortLabel: "Mentoria",
-    strapline: "El nivel mas alto de acompanamiento.",
-    pitch: "Esto no es un plan. Es un proceso personalizado conmigo para alto rendimiento.",
+    strapline: "Maximo nivel de acompanamiento premium.",
+    pitch:
+      "Proceso 1 a 1 con seguimiento semanal, ajustes constantes y contacto directo prioritario para rendimiento alto.",
     benefits: [
-      "Entrenamiento totalmente personalizado",
-      "Nutricion ajustada al detalle",
+      "Entrenamiento personalizado",
+      "Nutricion ajustada semanal",
       "Seguimiento semanal uno a uno",
-      "Ajustes estrategicos continuos",
-      "Analisis tecnico",
+      "Ajustes constantes",
       "Contacto directo prioritario",
-      "Soporte completo por WhatsApp",
     ],
-    ctaLabel: "QUIERO MI ASESORIA PERSONAL",
+    durationLabel: "Continuo 1 a 1",
+    priceArs: "$279.900 ARS",
+    priceUsd: "299 USD",
+    ctaLabel: "QUIERO LA MENTORIA 1 A 1",
     ctaType: "lead",
     theme: "mentoria",
-    badgeLabel: "Exclusivo",
+    badgeLabel: "Premium",
     spotsMicrocopy: "Solo 5 cupos activos",
     coverImage: "/fitness-shirtless.jpg",
+    comparison: {
+      duration: "Continuo",
+      personalization: "Total 1 a 1",
+      nutrition: "Ajuste semanal",
+      followUp: "Semanal",
+      whatsappSupport: "Prioritario",
+      idealFor: "Maximo acompanamiento",
+    },
   },
 ];
 
@@ -130,6 +200,7 @@ export function getWhatsAppUrl(message: string): string {
 
 export function getOfferPrimaryHref(offer: Offer): string {
   if (offer.ctaType === "checkout") {
+    if (offer.slug === "programa-inicio") return PLAN_INICIO_MERCADOPAGO_URL;
     return PLAN_BASE_MERCADOPAGO_URL;
   }
 

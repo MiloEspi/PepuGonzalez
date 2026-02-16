@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowLeft, Check } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Sparkles } from "lucide-react";
 import { animate } from "animejs";
 
 import { SmoothScrollLink } from "@/components/site/smooth-scroll-link";
@@ -12,9 +12,8 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Progress } from "@/components/ui/progress";
 import { getStickyWhatsAppHref } from "@/data/offers";
 import {
+  QUIZ_ANSWER_LABELS,
   QUIZ_COMMITMENT_LABELS,
-  QUIZ_GOAL_LABELS,
-  QUIZ_TRAINING_PLACE_LABELS,
   isQuizComplete,
   quizQuestions,
   recommendPlanFromAnswers,
@@ -24,41 +23,30 @@ import { rememberSelectedPlan } from "@/lib/plan-interest";
 import { shouldReduceMotion } from "@/lib/animations";
 import { cn } from "@/lib/utils";
 
-const dayLabels: Record<QuizAnswers["daysPerWeek"], string> = {
-  3: "3 dias",
-  4: "4 dias",
-  5: "5 dias",
-  6: "6 dias",
-};
-
 function getAnswerLabel<K extends keyof QuizAnswers>(key: K, value: QuizAnswers[K]): string {
-  if (key === "goal") return QUIZ_GOAL_LABELS[value as QuizAnswers["goal"]];
-  if (key === "trainingPlace") return QUIZ_TRAINING_PLACE_LABELS[value as QuizAnswers["trainingPlace"]];
-  if (key === "commitment90") return QUIZ_COMMITMENT_LABELS[value as QuizAnswers["commitment90"]];
-  return dayLabels[value as QuizAnswers["daysPerWeek"]];
+  return QUIZ_ANSWER_LABELS[key][value];
 }
 
 export function PlanFinderQuiz() {
   const [stepIndex, setStepIndex] = useState(0);
   const [answers, setAnswers] = useState<Partial<QuizAnswers>>({});
+  const [showRecommendation, setShowRecommendation] = useState(false);
+  const [direction, setDirection] = useState<"next" | "back">("next");
   const stepPanelRef = useRef<HTMLDivElement>(null);
-  const advanceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const totalSteps = quizQuestions.length;
-  const isComplete = isQuizComplete(answers);
-  const recommendation = useMemo(() => (isComplete ? recommendPlanFromAnswers(answers) : null), [answers, isComplete]);
+  const canRecommend = isQuizComplete(answers);
+  const recommendation = useMemo(() => (canRecommend ? recommendPlanFromAnswers(answers) : null), [answers, canRecommend]);
   const activeQuestion = quizQuestions[stepIndex];
-  const progressValue = isComplete ? 100 : Math.round(((stepIndex + 1) / totalSteps) * 100);
+  const progressValue = showRecommendation ? 100 : Math.round(((stepIndex + 1) / totalSteps) * 100);
+  const selectedValue = activeQuestion ? answers[activeQuestion.id] : undefined;
 
-  useEffect(() => {
-    return () => {
-      if (advanceTimeoutRef.current) clearTimeout(advanceTimeoutRef.current);
-    };
-  }, []);
+  const selectedCommitment =
+    typeof answers.commitmentLevel === "undefined" ? null : QUIZ_COMMITMENT_LABELS[answers.commitmentLevel as QuizAnswers["commitmentLevel"]];
 
   useEffect(() => {
     const panel = stepPanelRef.current;
-    if (!panel || isComplete) return;
+    if (!panel || showRecommendation) return;
 
     if (shouldReduceMotion()) {
       panel.style.opacity = "1";
@@ -67,92 +55,136 @@ export function PlanFinderQuiz() {
     }
 
     panel.style.opacity = "0";
-    panel.style.transform = "translateY(10px)";
+    panel.style.transform = `translateX(${direction === "next" ? "14px" : "-14px"})`;
     const entry = animate(panel, {
       opacity: [0, 1],
-      translateY: [10, 0],
-      duration: 400,
+      translateX: [direction === "next" ? 14 : -14, 0],
+      duration: 320,
       ease: "out(4)",
     });
 
     return () => {
       entry.pause();
     };
-  }, [stepIndex, isComplete]);
+  }, [direction, showRecommendation, stepIndex]);
 
   function handleOptionSelect(value: QuizAnswers[keyof QuizAnswers], target?: HTMLElement) {
     if (!activeQuestion) return;
 
     if (target && !shouldReduceMotion()) {
       animate(target, {
-        scale: [1, 0.97, 1],
-        duration: 210,
+        scale: [1, 0.985, 1.01, 1],
+        duration: 240,
         ease: "out(4)",
       });
     }
 
     setAnswers((prev) => ({ ...prev, [activeQuestion.id]: value }));
-
-    if (stepIndex < totalSteps - 1) {
-      if (advanceTimeoutRef.current) clearTimeout(advanceTimeoutRef.current);
-      advanceTimeoutRef.current = setTimeout(() => {
-        setStepIndex((prev) => Math.min(prev + 1, totalSteps - 1));
-      }, 120);
-    }
   }
 
   function handleBack() {
+    setDirection("back");
     setStepIndex((prev) => Math.max(0, prev - 1));
+  }
+
+  function handleNext() {
+    if (!activeQuestion || typeof selectedValue === "undefined") return;
+
+    if (stepIndex < totalSteps - 1) {
+      setDirection("next");
+      setStepIndex((prev) => Math.min(prev + 1, totalSteps - 1));
+      return;
+    }
+
+    setShowRecommendation(true);
+  }
+
+  function handleEditAnswers() {
+    setShowRecommendation(false);
+    setDirection("back");
+    setStepIndex(totalSteps - 1);
   }
 
   function handleReset() {
     setAnswers({});
     setStepIndex(0);
+    setDirection("next");
+    setShowRecommendation(false);
   }
 
-  if (isComplete && recommendation) {
+  if (showRecommendation && recommendation) {
     return (
-      <Card className="rounded-[14px] border-white/18 bg-card/95">
-        <CardHeader className="space-y-3 border-b border-border/70 pb-4">
-          <Badge className="badge-shimmer w-fit bg-primary/90 text-primary-foreground">Evaluacion final</Badge>
-          <CardTitle className="text-2xl md:text-[1.9rem]">{recommendation.title}</CardTitle>
-          <p className="text-sm text-muted-foreground">{recommendation.strapline}</p>
-          <p className="text-sm font-medium text-foreground">
-            Segun tus respuestas, este es el sistema que mejor se adapta a tu perfil.
+      <Card className="overflow-hidden rounded-[16px] border-primary/35 bg-[linear-gradient(150deg,#1f080a_0%,#121217_54%,#0f0f13_100%)] shadow-[0_38px_70px_-44px_rgba(122,14,14,0.95)]">
+        <CardHeader className="space-y-4 border-b border-white/12 pb-5">
+          <Badge className="badge-shimmer w-fit border border-primary/55 bg-primary/90 px-3 py-1 text-[11px] uppercase tracking-[0.12em] text-primary-foreground">
+            Recomendacion final
+          </Badge>
+
+          <div className="space-y-2">
+            <CardTitle className="text-[1.95rem] leading-[0.95] text-white md:text-[2.4rem]">{recommendation.title}</CardTitle>
+            <p className="max-w-2xl text-sm text-white/84 md:text-base">{recommendation.pitch}</p>
+            <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary/85">{recommendation.durationLabel}</p>
+          </div>
+
+          <div className="rounded-[12px] border border-primary/35 bg-[linear-gradient(130deg,rgba(212,20,20,0.24)_0%,rgba(122,14,14,0.3)_100%)] px-4 py-3">
+            <p className="text-xs uppercase tracking-[0.14em] text-white/72">Precio del programa</p>
+            <p className="mt-1 text-xl font-semibold text-white">
+              {recommendation.priceArs}
+              <span className="px-2 text-white/45">|</span>
+              <span className="text-lg font-medium text-white/88">{recommendation.priceUsd}</span>
+            </p>
+          </div>
+
+          {recommendation.surveyStatement ? (
+            <div className="rounded-[12px] border border-primary/48 bg-primary/16 px-3.5 py-3 text-sm text-white/90">
+              <p className="inline-flex items-start gap-2 font-medium">
+                <Sparkles className="mt-0.5 size-4 shrink-0 text-primary" />
+                {recommendation.surveyStatement}
+              </p>
+            </div>
+          ) : null}
+
+          <p className="text-xs uppercase tracking-[0.16em] text-white/58">
+            Ajustado por tu perfil {selectedCommitment ? `- ${selectedCommitment}` : ""}
           </p>
         </CardHeader>
 
-        <CardContent className="space-y-5">
-          <div className="flex flex-wrap gap-2">
+        <CardContent className="space-y-5 pt-5">
+          <div className="flex flex-wrap gap-2.5">
             {Object.entries(answers).map(([key, value]) => (
-              <Badge key={key} variant="outline" className="border-border/80 bg-background/55">
+              <Badge key={key} variant="outline" className="rounded-[9px] border-white/20 bg-black/30 text-white/80">
                 {getAnswerLabel(key as keyof QuizAnswers, value as QuizAnswers[keyof QuizAnswers])}
               </Badge>
             ))}
           </div>
 
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            {recommendation.benefits.slice(0, 3).map((item) => (
-              <li key={item} className="rounded-[10px] border border-border/75 bg-background/45 px-3 py-2">
+          <ul className="space-y-2 text-sm text-white/84">
+            {recommendation.benefits.slice(0, 4).map((item) => (
+              <li key={item} className="rounded-[10px] border border-white/12 bg-black/24 px-3.5 py-2.5">
                 {item}
               </li>
             ))}
           </ul>
         </CardContent>
 
-        <CardFooter className="flex flex-wrap gap-2 pt-1">
-          <Button asChild className="rounded-[10px] px-5">
+        <CardFooter className="flex flex-col gap-2.5 pt-0 sm:flex-row sm:flex-wrap">
+          <Button asChild className="premium-cta h-12 w-full rounded-[12px] bg-[linear-gradient(120deg,#8b0000_0%,#d41414_100%)] text-[0.78rem] font-bold tracking-[0.08em] sm:w-auto sm:px-6">
             <SmoothScrollLink href={`/#plan-${recommendation.slug}`} onClick={() => rememberSelectedPlan(recommendation.title)}>
-              Ver plan recomendado
+              VER PROGRAMA RECOMENDADO
+              <ArrowRight className="premium-arrow size-4" />
             </SmoothScrollLink>
           </Button>
 
-          <WhatsAppButton href={getStickyWhatsAppHref(recommendation.title)} className="px-5">
-            Aplicar ahora
+          <WhatsAppButton href={getStickyWhatsAppHref(recommendation.title)} className="h-12 w-full rounded-[12px] px-6 text-[0.78rem] font-semibold tracking-[0.05em] sm:w-auto">
+            APLICAR POR WHATSAPP
           </WhatsAppButton>
 
-          <Button variant="ghost" className="rounded-[10px]" onClick={handleReset}>
-            Rehacer evaluacion
+          <Button variant="ghost" className="h-10 w-full rounded-[10px] text-xs text-white/76 hover:text-white sm:w-auto" onClick={handleEditAnswers}>
+            Editar respuestas
+          </Button>
+
+          <Button variant="ghost" className="h-10 w-full rounded-[10px] text-xs text-white/76 hover:text-white sm:w-auto" onClick={handleReset}>
+            Reiniciar encuesta
           </Button>
         </CardFooter>
       </Card>
@@ -162,27 +194,29 @@ export function PlanFinderQuiz() {
   if (!activeQuestion) return null;
 
   return (
-    <Card className="rounded-[14px] border-border/80 bg-card/96 shadow-[0_24px_42px_-36px_rgba(0,0,0,0.9)]">
-      <CardHeader className="space-y-3 pb-3">
-        <div className="flex items-start justify-between gap-4">
-          <div className="space-y-1.5">
-            <p className="text-xs font-semibold tracking-[0.18em] text-muted-foreground">
-              PASO {stepIndex + 1} / {totalSteps}
+    <Card className="overflow-hidden rounded-[16px] border-white/14 bg-[linear-gradient(155deg,#17181d_0%,#101116_44%,#170b0d_100%)] shadow-[0_34px_64px_-40px_rgba(0,0,0,0.95)]">
+      <CardHeader className="space-y-4 border-b border-white/10 pb-5">
+        <div className="flex items-start justify-between gap-3">
+          <div className="space-y-2">
+            <Badge className="w-fit rounded-[8px] border border-white/14 bg-black/32 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/85">
+              Encuesta estrategica
+            </Badge>
+            <p className="text-xs font-semibold tracking-[0.2em] text-primary/88">
+              PASO {stepIndex + 1} DE {totalSteps}
             </p>
-            <CardTitle className="text-[1.9rem] leading-[1.06]">{activeQuestion.title}</CardTitle>
+            <CardTitle className="text-[1.75rem] leading-[0.98] text-white md:text-[2.15rem]">{activeQuestion.title}</CardTitle>
           </div>
-
-          <Badge variant="secondary">
-            Evaluacion de perfil
-          </Badge>
+          <p className="rounded-[9px] border border-primary/35 bg-primary/15 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-primary">
+            100% perfil real
+          </p>
         </div>
 
-        <Progress value={progressValue} className="h-1 bg-white/12 [&_[data-slot=progress-indicator]]:bg-primary" />
-        <p className="text-sm text-muted-foreground">{activeQuestion.subtitle}</p>
+        <Progress value={progressValue} className="h-2 bg-white/12 [&_[data-slot=progress-indicator]]:bg-[linear-gradient(90deg,#8b0000_0%,#d41414_100%)]" />
+        <p className="text-sm text-white/76">{activeQuestion.subtitle}</p>
       </CardHeader>
 
-      <CardContent className="space-y-4">
-        <div ref={stepPanelRef} key={activeQuestion.id} className="space-y-2.5">
+      <CardContent className="space-y-5 pb-4 pt-5">
+        <div ref={stepPanelRef} key={activeQuestion.id} className="space-y-3.5">
           {activeQuestion.options.map((option) => {
             const selected = answers[activeQuestion.id] === option.value;
 
@@ -192,19 +226,18 @@ export function PlanFinderQuiz() {
                 type="button"
                 onClick={(event) => handleOptionSelect(option.value, event.currentTarget)}
                 className={cn(
-                  "group flex w-full items-center justify-between rounded-[10px] border px-3.5 py-2.5 text-left text-sm transition duration-[220ms] ease-[var(--ease-premium)]",
+                  "group relative flex min-h-[66px] w-full items-center justify-between gap-3 overflow-hidden rounded-[12px] border px-4 py-3.5 text-left transition-[transform,border-color,background-color,box-shadow] duration-[240ms] ease-[var(--ease-premium)] active:scale-[0.992]",
                   selected
-                    ? "border-primary/70 bg-[rgba(122,14,14,0.58)] text-foreground shadow-[0_16px_30px_-28px_rgba(212,20,20,0.9)]"
-                    : "border-border/80 bg-background/52 text-muted-foreground hover:border-primary/55 hover:bg-[rgba(122,14,14,0.18)] hover:text-foreground"
+                    ? "border-primary/72 bg-[linear-gradient(132deg,rgba(139,0,0,0.52)_0%,rgba(212,20,20,0.32)_100%)] text-white shadow-[0_22px_34px_-24px_rgba(212,20,20,0.95)]"
+                    : "border-white/14 bg-[linear-gradient(130deg,rgba(18,19,24,0.92)_0%,rgba(14,15,19,0.96)_100%)] text-white/84 hover:border-primary/46 hover:bg-[linear-gradient(132deg,rgba(52,17,19,0.78)_0%,rgba(30,15,18,0.9)_100%)] hover:text-white"
                 )}
+                aria-pressed={selected}
               >
-                <span className="font-medium">{option.label}</span>
+                <span className="text-[0.97rem] font-medium leading-snug">{option.label}</span>
                 <span
                   className={cn(
-                    "grid size-5 place-items-center rounded-[8px] border transition",
-                    selected
-                      ? "border-primary bg-primary text-primary-foreground"
-                      : "border-border/80 bg-background text-transparent group-hover:border-primary/45"
+                    "relative grid size-6 shrink-0 place-items-center rounded-full border transition duration-[220ms]",
+                    selected ? "border-primary bg-primary text-primary-foreground" : "border-white/25 bg-black/38 text-transparent group-hover:border-primary/45"
                   )}
                 >
                   <Check className="size-3.5" />
@@ -214,22 +247,40 @@ export function PlanFinderQuiz() {
           })}
         </div>
 
-        <div className="flex flex-wrap gap-2 pt-1">
+        <div className="flex flex-wrap gap-2">
           {Object.entries(answers).map(([key, value]) => (
-            <Badge key={key} variant="outline">
+            <Badge key={key} variant="outline" className="rounded-[8px] border-white/14 bg-black/32 text-white/74">
               {getAnswerLabel(key as keyof QuizAnswers, value as QuizAnswers[keyof QuizAnswers])}
             </Badge>
           ))}
         </div>
       </CardContent>
 
-      <CardFooter className="flex items-center justify-between">
-        <Button type="button" variant="ghost" size="sm" className="rounded-[10px]" onClick={handleBack} disabled={stepIndex === 0}>
-          <ArrowLeft className="size-4" />
-          Volver
-        </Button>
+      <CardFooter className="flex flex-col gap-3 border-t border-white/10 pb-5 pt-4">
+        <div className="flex w-full items-center justify-between">
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className="rounded-[10px] text-white/82 hover:text-white"
+            onClick={handleBack}
+            disabled={stepIndex === 0}
+          >
+            <ArrowLeft className="size-4" />
+            Volver
+          </Button>
+          <p className="text-xs uppercase tracking-[0.12em] text-white/55">Responde segun tu realidad</p>
+        </div>
 
-        <p className="text-xs text-muted-foreground">Responde con honestidad. El sistema correcto depende de tu compromiso.</p>
+        <Button
+          type="button"
+          onClick={handleNext}
+          disabled={typeof selectedValue === "undefined"}
+          className="premium-cta group h-12 w-full max-w-[320px] rounded-[12px] border border-primary/46 bg-[linear-gradient(120deg,#8b0000_0%,#d41414_100%)] text-[0.78rem] font-bold tracking-[0.12em] shadow-[0_22px_34px_-20px_rgba(212,20,20,0.9)] disabled:border-white/20 disabled:bg-white/10 disabled:text-white/40"
+        >
+          {stepIndex < totalSteps - 1 ? "SIGUIENTE" : "VER RECOMENDACION"}
+          <ArrowRight className="premium-arrow size-4 transition-transform duration-200 group-hover:translate-x-1" />
+        </Button>
       </CardFooter>
     </Card>
   );
