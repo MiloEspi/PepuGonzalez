@@ -28,6 +28,15 @@ export function SectionWrapper({ id, className, children }: SectionWrapperProps)
       return;
     }
 
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+    const rect = section.getBoundingClientRect();
+    const initiallyVisible = rect.top < viewportHeight * 0.96 && rect.bottom > viewportHeight * 0.04;
+
+    if (initiallyVisible) {
+      send({ type: "ENTER_VIEW" });
+      return;
+    }
+
     const cards = Array.from(section.querySelectorAll<HTMLElement>("[data-reveal]"));
     cards.forEach((card) => {
       card.style.opacity = "0";
@@ -44,6 +53,11 @@ export function SectionWrapper({ id, className, children }: SectionWrapperProps)
       return;
     }
 
+    if (typeof window === "undefined" || !("IntersectionObserver" in window)) {
+      send({ type: "ENTER_VIEW" });
+      return;
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         const [entry] = entries;
@@ -52,8 +66,9 @@ export function SectionWrapper({ id, className, children }: SectionWrapperProps)
         observer.unobserve(section);
       },
       {
-        threshold: 0.18,
-        rootMargin: "0px 0px -12% 0px",
+        // On tall sections (mobile), high thresholds can never be reached.
+        threshold: 0,
+        rootMargin: "0px 0px -8% 0px",
       }
     );
 

@@ -7,6 +7,7 @@ import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 import { animate } from "animejs";
 import { useMachine } from "@xstate/react";
 
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { navbarMachine, type NavbarSectionId } from "@/state/navbarMachine";
 import { EASE_OUT_EXPO, pulseActiveTab, prefersReducedMotion } from "@/utils/animations";
 import { cn } from "@/lib/utils";
@@ -61,7 +62,6 @@ export function Navbar() {
   const reducedMotion = useMemo(() => prefersReducedMotion(), []);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLElement>(null);
   const [navOffset, setNavOffset] = useState(104);
 
@@ -145,23 +145,6 @@ export function Navbar() {
       window.removeEventListener("resize", updateFromRects);
     };
   }, [navOffset, pathname, sendNav]);
-
-  useEffect(() => {
-    const menuNode = menuRef.current;
-    if (!menuNode || !isMenuOpen) return;
-
-    const entryAnimation = animate(menuNode, {
-      opacity: [0, 1],
-      translateY: [-8, 0],
-      scale: [0.96, 1],
-      duration: 260,
-      ease: "out(3)",
-    });
-
-    return () => {
-      entryAnimation.pause();
-    };
-  }, [isMenuOpen]);
 
   useEffect(() => {
     const activeHomeSection = pathname === "/" ? navState.context.activeId : "none";
@@ -329,59 +312,70 @@ export function Navbar() {
               <ul className="flex items-center gap-2">{PRIMARY_NAV_ITEMS.map((item) => renderPrimaryItem(item, false))}</ul>
             </nav>
 
-            <div className="ml-auto flex items-center justify-end md:justify-self-end">
-              <button
-                type="button"
-                aria-label={isMenuOpen ? "Cerrar menu" : "Abrir menu"}
-                aria-expanded={isMenuOpen}
-                onClick={() => setIsMenuOpen((prev) => !prev)}
-                className="inline-flex size-9 items-center justify-center rounded-[9px] border border-white/14 bg-white/[0.05] text-white/88 transition-all duration-[220ms] ease-[var(--ease-premium)] hover:border-primary/36 hover:bg-white/[0.09] hover:text-white hover:shadow-[0_0_24px_-15px_rgba(212,20,20,0.92)]"
-              >
-                {isMenuOpen ? <X className="size-4.5" /> : <Menu className="size-4.5" />}
-              </button>
-            </div>
+            <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+              <div className="ml-auto flex items-center justify-end md:justify-self-end">
+                <SheetTrigger asChild>
+                  <button
+                    type="button"
+                    aria-label={isMenuOpen ? "Cerrar menu" : "Abrir menu"}
+                    aria-expanded={isMenuOpen}
+                    className="inline-flex size-9 items-center justify-center rounded-[9px] border border-white/14 bg-white/[0.05] text-white/88 transition-all duration-[220ms] ease-[var(--ease-premium)] hover:border-primary/36 hover:bg-white/[0.09] hover:text-white hover:shadow-[0_0_24px_-15px_rgba(212,20,20,0.92)]"
+                  >
+                    {isMenuOpen ? <X className="size-4.5" /> : <Menu className="size-4.5" />}
+                  </button>
+                </SheetTrigger>
+              </div>
+
+              <SheetContent side="right" className="gap-5 px-4 pb-5 pt-9">
+                <SheetHeader className="space-y-1 border-b border-white/10 pb-4 pr-8">
+                  <SheetTitle className="font-heading text-[1.2rem] font-semibold tracking-[0.02em]">Navegacion</SheetTitle>
+                  <SheetDescription className="text-xs uppercase tracking-[0.14em] text-white/58">
+                    Elegi una seccion para avanzar rapido
+                  </SheetDescription>
+                </SheetHeader>
+
+                <div className="space-y-5 overflow-y-auto pb-2">
+                  <div className="space-y-2">
+                    <p className="px-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/54">Accesos</p>
+                    <ul className="space-y-1.5">
+                      {PRIMARY_NAV_ITEMS.map((item) => (
+                        <li key={`sheet-${item.id}`}>
+                          <a
+                            href={resolveHref(pathname, item.id)}
+                            onClick={(event) => handlePrimaryClick(event, item.id)}
+                            className="inline-flex w-full items-center rounded-[10px] border border-white/12 bg-white/[0.02] px-3 py-2.5 text-sm font-medium text-foreground transition-colors duration-[220ms] ease-[var(--ease-premium)] hover:border-primary/34 hover:bg-primary/10"
+                          >
+                            {item.label}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="space-y-2">
+                    <p className="px-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/54">Explorar</p>
+                    <ul className="space-y-1.5">
+                      {EXTRA_NAV_ITEMS.map((item) => (
+                        <li key={`sheet-extra-${item.id}`}>
+                          <a
+                            href={pathname === "/" ? `#${item.id}` : `/#${item.id}`}
+                            onClick={(event) => handleExtraClick(event, item.id)}
+                            className="inline-flex w-full items-center rounded-[10px] border border-white/10 bg-black/24 px-3 py-2.5 text-sm font-medium text-white/76 transition-colors duration-[220ms] ease-[var(--ease-premium)] hover:border-primary/32 hover:bg-primary/10 hover:text-white"
+                          >
+                            {item.label}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </SheetContent>
+            </Sheet>
           </div>
 
           <nav aria-label="Navegacion principal mobile" className="border-t border-white/8 px-2 pb-2 pt-1.5 md:hidden">
             <ul className="flex flex-wrap gap-1.5">{PRIMARY_NAV_ITEMS.map((item) => renderPrimaryItem(item, true))}</ul>
           </nav>
-
-          {isMenuOpen ? (
-            <div
-              ref={menuRef}
-              className="absolute right-3 top-[calc(100%+0.55rem)] z-40 w-64 max-w-[calc(100vw-2rem)] origin-top-right rounded-[14px] border border-white/[0.14] bg-[rgba(8,8,10,0.9)] p-2.5 opacity-0 shadow-[0_28px_52px_-30px_rgba(0,0,0,0.92)] backdrop-blur-xl"
-            >
-              <p className="px-2 pb-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Accesos</p>
-              <ul className="space-y-1">
-                {PRIMARY_NAV_ITEMS.map((item) => (
-                  <li key={`menu-${item.id}`}>
-                    <a
-                      href={resolveHref(pathname, item.id)}
-                      onClick={(event) => handlePrimaryClick(event, item.id)}
-                      className="inline-flex w-full items-center rounded-[8px] px-2.5 py-2 text-sm font-medium text-foreground transition-colors duration-[220ms] ease-[var(--ease-premium)] hover:bg-white/[0.08]"
-                    >
-                      {item.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-
-              <p className="px-2 pb-1 pt-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Explorar</p>
-              <ul className="space-y-1">
-                {EXTRA_NAV_ITEMS.map((item) => (
-                  <li key={item.id}>
-                    <a
-                      href={pathname === "/" ? `#${item.id}` : `/#${item.id}`}
-                      onClick={(event) => handleExtraClick(event, item.id)}
-                      className="inline-flex w-full items-center rounded-[8px] px-2.5 py-2 text-sm font-medium text-muted-foreground transition-colors duration-[220ms] ease-[var(--ease-premium)] hover:bg-white/[0.08] hover:text-foreground"
-                    >
-                      {item.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ) : null}
         </div>
       </div>
     </header>

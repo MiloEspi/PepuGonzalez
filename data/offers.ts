@@ -1,6 +1,4 @@
-export const WHATSAPP_NUMBER = "5492213619007";
-export const WHATSAPP_DEFAULT_MESSAGE =
-  "Hola Pepu, quiero evaluar el programa correcto para mi objetivo.";
+﻿export const WHATSAPP_NUMBER = "5492213619007";
 
 // Reemplazar por links reales de MercadoPago para fase productiva.
 export const PLAN_INICIO_MERCADOPAGO_URL =
@@ -43,6 +41,15 @@ export interface Offer {
   featured?: boolean;
 }
 
+export interface WhatsAppLeadPayload {
+  planTitle?: string;
+  firstName?: string;
+  lastName?: string;
+  objective?: string;
+  trainingDays?: string;
+  experience?: string;
+}
+
 export const offers: Offer[] = [
   {
     slug: "programa-inicio",
@@ -71,11 +78,11 @@ export const offers: Offer[] = [
     coverImage: "/fitness-shirtless.jpg",
     comparison: {
       duration: "6-8 semanas",
-      personalization: "Adaptativa inicial",
+      personalization: "Adaptado inicial",
       nutrition: "Recomendaciones basicas",
-      followUp: "No incluido",
-      whatsappSupport: "Soporte de entrega",
-      idealFor: "Personas que recien empiezan",
+      followUp: "No",
+      whatsappSupport: "No",
+      idealFor: "Construir base",
     },
   },
   {
@@ -104,11 +111,11 @@ export const offers: Offer[] = [
     coverImage: "/fitness-shirtless.jpg",
     comparison: {
       duration: "8-12 semanas",
-      personalization: "Adaptado por perfil",
-      nutrition: "Opcional y basica",
-      followUp: "Sin seguimiento constante",
-      whatsappSupport: "Soporte puntual",
-      idealFor: "Intermedios que quieren progresar",
+      personalization: "Personalizado estructurado",
+      nutrition: "Recomendaciones generales",
+      followUp: "No",
+      whatsappSupport: "Limitado",
+      idealFor: "Progresar fuerte",
     },
   },
   {
@@ -141,11 +148,11 @@ export const offers: Offer[] = [
     featured: true,
     comparison: {
       duration: "90 dias",
-      personalization: "100% por encuesta",
-      nutrition: "Completo",
+      personalization: "100% personalizado",
+      nutrition: "Plan completo",
       followUp: "Mensual",
-      whatsappSupport: "Incluido",
-      idealFor: "Cambio fuerte en 90 dias",
+      whatsappSupport: "Si",
+      idealFor: "Cambio en 90 dias",
     },
   },
   {
@@ -162,7 +169,7 @@ export const offers: Offer[] = [
       "Ajustes constantes",
       "Contacto directo prioritario",
     ],
-    durationLabel: "Continuo 1 a 1",
+    durationLabel: "3 meses",
     priceArs: "$279.900 ARS",
     priceUsd: "299 USD",
     ctaLabel: "QUIERO LA MENTORIA 1 A 1",
@@ -172,12 +179,12 @@ export const offers: Offer[] = [
     spotsMicrocopy: "Solo 5 cupos activos",
     coverImage: "/fitness-shirtless.jpg",
     comparison: {
-      duration: "Continuo",
-      personalization: "Total 1 a 1",
-      nutrition: "Ajuste semanal",
+      duration: "3 meses",
+      personalization: "Personalizacion total + ajustes constantes",
+      nutrition: "Nutricion ajustada semanal",
       followUp: "Semanal",
       whatsappSupport: "Prioritario",
-      idealFor: "Maximo acompanamiento",
+      idealFor: "Optimizacion total",
     },
   },
 ];
@@ -190,8 +197,39 @@ export function getOfferBySlug(slug: OfferSlug): Offer {
   return offer;
 }
 
-export function buildLeadMessage(planTitle: string): string {
-  return `Hola Pepu, quiero aplicar a ${planTitle}. Nombre: ____ WhatsApp: ____ Objetivo: ____ Disponibilidad: ____`;
+function normalizeLeadValue(value?: string): string {
+  return value?.trim() ?? "";
+}
+
+export function buildLeadMessage(payload: WhatsAppLeadPayload = {}): string {
+  const planTitle = normalizeLeadValue(payload.planTitle);
+
+  if (!planTitle) {
+    return [
+      "Hola Pepu, estoy interesado en el plan:",
+      "",
+      "---",
+      "Nombre:",
+      "Apellido:",
+      "",
+      "---",
+      "Me contas los pasos para empezar?",
+    ].join("\n");
+  }
+
+  return [
+    `Hola Pepu, estoy interesado en el plan: ${planTitle}`,
+    "",
+    "---",
+    `Nombre: ${normalizeLeadValue(payload.firstName)}`,
+    `Apellido: ${normalizeLeadValue(payload.lastName)}`,
+    `Objetivo: ${normalizeLeadValue(payload.objective)}`,
+    `Dias de entrenamiento: ${normalizeLeadValue(payload.trainingDays)}`,
+    `Experiencia: ${normalizeLeadValue(payload.experience)}`,
+    "",
+    "---",
+    "Me contas los pasos para empezar?",
+  ].join("\n");
 }
 
 export function getWhatsAppUrl(message: string): string {
@@ -204,13 +242,10 @@ export function getOfferPrimaryHref(offer: Offer): string {
     return PLAN_BASE_MERCADOPAGO_URL;
   }
 
-  return getWhatsAppUrl(buildLeadMessage(offer.title));
+  return getWhatsAppUrl(buildLeadMessage({ planTitle: offer.title }));
 }
 
 export function getStickyWhatsAppHref(selectedPlan?: string): string {
-  if (!selectedPlan?.trim()) {
-    return getWhatsAppUrl(WHATSAPP_DEFAULT_MESSAGE);
-  }
-
-  return getWhatsAppUrl(`Hola Pepu, quiero aplicar a ${selectedPlan}.`);
+  return getWhatsAppUrl(buildLeadMessage({ planTitle: selectedPlan }));
 }
+

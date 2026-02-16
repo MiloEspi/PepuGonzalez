@@ -8,6 +8,7 @@ import { PlanCard } from "@/components/PlanCard";
 import { SectionShell } from "@/components/site/section-shell";
 import { WhatsAppButton } from "@/components/site/whatsapp-button";
 import { Badge } from "@/components/ui/badge";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { getOfferPrimaryHref, getStickyWhatsAppHref, offers } from "@/data/offers";
 import { rememberSelectedPlan } from "@/lib/plan-interest";
 import { cn } from "@/lib/utils";
@@ -119,6 +120,28 @@ const comparisonRows: Array<{
 ];
 
 export function FeaturedPlans() {
+  if (!offers.length) {
+    return (
+      <SectionShell
+        id="planes"
+        eyebrow="PLANES"
+        title="No se pudieron cargar los planes"
+        description="Reintenta para volver a cargar el catalogo."
+      >
+        <div className="rounded-[12px] border border-white/14 bg-[linear-gradient(145deg,#17181d_0%,#111217_100%)] p-5">
+          <p className="text-sm text-white/78">No se pudieron cargar los planes. Reintenta.</p>
+          <button
+            type="button"
+            onClick={() => window.location.reload()}
+            className="mt-3 inline-flex h-10 items-center justify-center rounded-[10px] border border-primary/45 bg-primary/16 px-4 text-xs font-semibold uppercase tracking-[0.08em] text-white transition-colors duration-200 hover:bg-primary/28"
+          >
+            Reintentar
+          </button>
+        </div>
+      </SectionShell>
+    );
+  }
+
   return (
     <SectionShell
       id="planes"
@@ -144,7 +167,7 @@ export function FeaturedPlans() {
               id={`plan-${offer.slug}`}
               key={offer.slug}
               className={cn(
-                "relative overflow-hidden rounded-[16px] border p-[1px] opacity-0 transition-[transform,box-shadow] duration-[280ms] ease-[var(--ease-premium)] hover:-translate-y-1.5",
+                "relative overflow-hidden rounded-[16px] border p-[1px] transition-[transform,box-shadow] duration-[280ms] ease-[var(--ease-premium)] hover:-translate-y-1.5",
                 styles.shell,
                 isTransformacion ? "md:-translate-y-2 md:scale-[1.04] md:shadow-[0_50px_84px_-42px_rgba(122,14,14,0.98)]" : "",
                 isMentoria ? "before:pointer-events-none before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_82%_14%,rgba(255,214,120,0.18),transparent_44%)]" : ""
@@ -244,11 +267,11 @@ export function FeaturedPlans() {
           <p className="text-xs uppercase tracking-[0.14em] text-white/64">Inicio | Base | Transformacion | Mentoria</p>
         </div>
 
-        <div className="overflow-x-auto pb-1">
-          <table className="min-w-[860px] border-separate border-spacing-2 text-sm">
+        <ScrollArea className="w-full overflow-hidden rounded-[12px] border border-white/12 bg-black/24">
+          <table className="w-max min-w-[940px] border-separate border-spacing-0 text-sm">
             <thead>
               <tr>
-                <th className="rounded-[10px] border border-white/12 bg-black/32 px-3 py-2 text-left text-[11px] uppercase tracking-[0.1em] text-white/68">
+                <th className="sticky left-0 z-30 min-w-[170px] border-b border-r border-white/12 bg-[linear-gradient(150deg,#15161b_0%,#111217_100%)] px-4 py-3 text-left text-[11px] uppercase tracking-[0.1em] text-white/68">
                   Caracteristica
                 </th>
                 {offers.map((offer) => {
@@ -259,14 +282,18 @@ export function FeaturedPlans() {
                     <th
                       key={`head-${offer.slug}`}
                       className={cn(
-                        "rounded-[10px] border px-3 py-2 text-left text-[11px] uppercase tracking-[0.1em]",
+                        "min-w-[190px] border-b border-l border-white/12 px-4 py-3 text-left text-[11px] uppercase tracking-[0.1em]",
                         styles.tableHead,
-                        isTransformacion ? "shadow-[0_14px_24px_-16px_rgba(212,20,20,0.9)]" : ""
+                        isTransformacion ? "border-primary/50 shadow-[0_14px_24px_-16px_rgba(212,20,20,0.9)]" : ""
                       )}
                     >
-                      <span className="inline-flex items-center gap-1.5">
+                      <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
                         {offer.shortLabel}
-                        {isTransformacion ? <span className="rounded-[6px] border border-primary/50 bg-primary/35 px-1.5 py-0.5 text-[9px]">Mas elegido</span> : null}
+                        {isTransformacion ? (
+                          <span className="rounded-[6px] border border-primary/50 bg-primary/35 px-1.5 py-0.5 text-[9px]">
+                            Mas elegido
+                          </span>
+                        ) : null}
                       </span>
                     </th>
                   );
@@ -277,7 +304,7 @@ export function FeaturedPlans() {
             <tbody>
               {comparisonRows.map((row) => (
                 <tr key={row.label}>
-                  <td className="rounded-[10px] border border-white/12 bg-black/26 px-3 py-2.5 text-xs font-semibold uppercase tracking-[0.08em] text-white/76">
+                  <td className="sticky left-0 z-20 border-b border-r border-white/12 bg-[linear-gradient(145deg,#131419_0%,#101116_100%)] px-4 py-3 text-xs font-semibold uppercase tracking-[0.08em] text-white/78">
                     {row.label}
                   </td>
 
@@ -288,9 +315,9 @@ export function FeaturedPlans() {
                       <td
                         key={`${row.label}-${offer.slug}`}
                         className={cn(
-                          "rounded-[10px] border px-3 py-2.5 text-sm",
+                          "border-b border-l border-white/12 px-4 py-3 text-sm",
                           styles.tableCell,
-                          isTransformacion ? "shadow-[0_18px_28px_-18px_rgba(212,20,20,0.85)]" : ""
+                          isTransformacion ? "border-primary/35 shadow-[0_18px_28px_-18px_rgba(212,20,20,0.85)]" : ""
                         )}
                       >
                         {row.getter(offer)}
@@ -301,7 +328,8 @@ export function FeaturedPlans() {
               ))}
             </tbody>
           </table>
-        </div>
+          <ScrollBar orientation="horizontal" className="h-3 px-1.5 py-0.5" />
+        </ScrollArea>
       </div>
     </SectionShell>
   );

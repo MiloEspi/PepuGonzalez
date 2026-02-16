@@ -9,8 +9,9 @@ import { WhatsAppButton } from "@/components/site/whatsapp-button";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
-import { getStickyWhatsAppHref } from "@/data/offers";
+import { buildLeadMessage, getWhatsAppUrl } from "@/data/offers";
 import {
   QUIZ_ANSWER_LABELS,
   QUIZ_COMMITMENT_LABELS,
@@ -32,6 +33,7 @@ export function PlanFinderQuiz() {
   const [answers, setAnswers] = useState<Partial<QuizAnswers>>({});
   const [showRecommendation, setShowRecommendation] = useState(false);
   const [direction, setDirection] = useState<"next" | "back">("next");
+  const [leadData, setLeadData] = useState({ firstName: "", lastName: "" });
   const stepPanelRef = useRef<HTMLDivElement>(null);
 
   const totalSteps = quizQuestions.length;
@@ -40,6 +42,7 @@ export function PlanFinderQuiz() {
   const activeQuestion = quizQuestions[stepIndex];
   const progressValue = showRecommendation ? 100 : Math.round(((stepIndex + 1) / totalSteps) * 100);
   const selectedValue = activeQuestion ? answers[activeQuestion.id] : undefined;
+  const optionsColumnsClass = activeQuestion?.id === "daysPerWeek" ? "grid grid-cols-2 gap-2.5" : "space-y-2.5";
 
   const selectedCommitment =
     typeof answers.commitmentLevel === "undefined" ? null : QUIZ_COMMITMENT_LABELS[answers.commitmentLevel as QuizAnswers["commitmentLevel"]];
@@ -110,9 +113,21 @@ export function PlanFinderQuiz() {
     setStepIndex(0);
     setDirection("next");
     setShowRecommendation(false);
+    setLeadData({ firstName: "", lastName: "" });
   }
 
-  if (showRecommendation && recommendation) {
+  if (showRecommendation && recommendation && isQuizComplete(answers)) {
+    const whatsappHref = getWhatsAppUrl(
+      buildLeadMessage({
+        planTitle: recommendation.title,
+        firstName: leadData.firstName,
+        lastName: leadData.lastName,
+        objective: getAnswerLabel("goal", answers.goal),
+        trainingDays: getAnswerLabel("daysPerWeek", answers.daysPerWeek),
+        experience: getAnswerLabel("trainingExperience", answers.trainingExperience),
+      })
+    );
+
     return (
       <Card className="overflow-hidden rounded-[16px] border-primary/35 bg-[linear-gradient(150deg,#1f080a_0%,#121217_54%,#0f0f13_100%)] shadow-[0_38px_70px_-44px_rgba(122,14,14,0.95)]">
         <CardHeader className="space-y-4 border-b border-white/12 pb-5">
@@ -165,6 +180,49 @@ export function PlanFinderQuiz() {
               </li>
             ))}
           </ul>
+
+          <div className="space-y-3 rounded-[12px] border border-white/14 bg-black/24 p-3.5">
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-white/74">Enviar WhatsApp</p>
+
+            <div className="grid gap-2 sm:grid-cols-2">
+              <label className="space-y-1.5">
+                <span className="text-[11px] uppercase tracking-[0.1em] text-white/64">Nombre</span>
+                <Input
+                  value={leadData.firstName}
+                  onChange={(event) => setLeadData((prev) => ({ ...prev, firstName: event.target.value }))}
+                  placeholder="Tu nombre"
+                  className="h-10 rounded-[10px] border-white/18 bg-black/36 text-sm text-white placeholder:text-white/42"
+                />
+              </label>
+
+              <label className="space-y-1.5">
+                <span className="text-[11px] uppercase tracking-[0.1em] text-white/64">Apellido</span>
+                <Input
+                  value={leadData.lastName}
+                  onChange={(event) => setLeadData((prev) => ({ ...prev, lastName: event.target.value }))}
+                  placeholder="Tu apellido"
+                  className="h-10 rounded-[10px] border-white/18 bg-black/36 text-sm text-white placeholder:text-white/42"
+                />
+              </label>
+            </div>
+
+            <div className="h-px bg-white/10" />
+
+            <div className="grid gap-2 text-xs text-white/70 sm:grid-cols-3">
+              <p className="rounded-[8px] border border-white/10 bg-black/28 px-2.5 py-2">
+                <span className="block text-[10px] uppercase tracking-[0.1em] text-white/52">Objetivo</span>
+                {getAnswerLabel("goal", answers.goal)}
+              </p>
+              <p className="rounded-[8px] border border-white/10 bg-black/28 px-2.5 py-2">
+                <span className="block text-[10px] uppercase tracking-[0.1em] text-white/52">Dias</span>
+                {getAnswerLabel("daysPerWeek", answers.daysPerWeek)}
+              </p>
+              <p className="rounded-[8px] border border-white/10 bg-black/28 px-2.5 py-2">
+                <span className="block text-[10px] uppercase tracking-[0.1em] text-white/52">Experiencia</span>
+                {getAnswerLabel("trainingExperience", answers.trainingExperience)}
+              </p>
+            </div>
+          </div>
         </CardContent>
 
         <CardFooter className="flex flex-col gap-2.5 pt-0 sm:flex-row sm:flex-wrap">
@@ -175,8 +233,8 @@ export function PlanFinderQuiz() {
             </SmoothScrollLink>
           </Button>
 
-          <WhatsAppButton href={getStickyWhatsAppHref(recommendation.title)} className="h-12 w-full rounded-[12px] px-6 text-[0.78rem] font-semibold tracking-[0.05em] sm:w-auto">
-            APLICAR POR WHATSAPP
+          <WhatsAppButton href={whatsappHref} className="h-12 w-full rounded-[12px] px-6 text-[0.78rem] font-semibold tracking-[0.05em] sm:w-auto">
+            ENVIAR WHATSAPP
           </WhatsAppButton>
 
           <Button variant="ghost" className="h-10 w-full rounded-[10px] text-xs text-white/76 hover:text-white sm:w-auto" onClick={handleEditAnswers}>
@@ -195,7 +253,7 @@ export function PlanFinderQuiz() {
 
   return (
     <Card className="overflow-hidden rounded-[16px] border-white/14 bg-[linear-gradient(155deg,#17181d_0%,#101116_44%,#170b0d_100%)] shadow-[0_34px_64px_-40px_rgba(0,0,0,0.95)]">
-      <CardHeader className="space-y-4 border-b border-white/10 pb-5">
+      <CardHeader className="space-y-3 pb-3.5">
         <div className="flex items-start justify-between gap-3">
           <div className="space-y-2">
             <Badge className="w-fit rounded-[8px] border border-white/14 bg-black/32 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/85">
@@ -204,19 +262,17 @@ export function PlanFinderQuiz() {
             <p className="text-xs font-semibold tracking-[0.2em] text-primary/88">
               PASO {stepIndex + 1} DE {totalSteps}
             </p>
-            <CardTitle className="text-[1.75rem] leading-[0.98] text-white md:text-[2.15rem]">{activeQuestion.title}</CardTitle>
+            <CardTitle className="text-[1.46rem] leading-[0.98] text-white md:text-[2rem]">{activeQuestion.title}</CardTitle>
           </div>
-          <p className="rounded-[9px] border border-primary/35 bg-primary/15 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-primary">
-            100% perfil real
-          </p>
+          <p className="rounded-[9px] border border-primary/35 bg-primary/15 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-primary">Perfil real</p>
         </div>
 
         <Progress value={progressValue} className="h-2 bg-white/12 [&_[data-slot=progress-indicator]]:bg-[linear-gradient(90deg,#8b0000_0%,#d41414_100%)]" />
-        <p className="text-sm text-white/76">{activeQuestion.subtitle}</p>
+        <p className="text-[0.82rem] text-white/74">{activeQuestion.subtitle}</p>
       </CardHeader>
 
-      <CardContent className="space-y-5 pb-4 pt-5">
-        <div ref={stepPanelRef} key={activeQuestion.id} className="space-y-3.5">
+      <CardContent className="space-y-3.5 pb-2 pt-2.5">
+        <div ref={stepPanelRef} key={activeQuestion.id} className={optionsColumnsClass}>
           {activeQuestion.options.map((option) => {
             const selected = answers[activeQuestion.id] === option.value;
 
@@ -226,14 +282,14 @@ export function PlanFinderQuiz() {
                 type="button"
                 onClick={(event) => handleOptionSelect(option.value, event.currentTarget)}
                 className={cn(
-                  "group relative flex min-h-[66px] w-full items-center justify-between gap-3 overflow-hidden rounded-[12px] border px-4 py-3.5 text-left transition-[transform,border-color,background-color,box-shadow] duration-[240ms] ease-[var(--ease-premium)] active:scale-[0.992]",
+                  "group relative flex min-h-[56px] w-full items-center justify-between gap-2.5 overflow-hidden rounded-[12px] border px-3.5 py-2.5 text-left transition-[transform,border-color,background-color,box-shadow] duration-[240ms] ease-[var(--ease-premium)] active:scale-[0.992]",
                   selected
                     ? "border-primary/72 bg-[linear-gradient(132deg,rgba(139,0,0,0.52)_0%,rgba(212,20,20,0.32)_100%)] text-white shadow-[0_22px_34px_-24px_rgba(212,20,20,0.95)]"
                     : "border-white/14 bg-[linear-gradient(130deg,rgba(18,19,24,0.92)_0%,rgba(14,15,19,0.96)_100%)] text-white/84 hover:border-primary/46 hover:bg-[linear-gradient(132deg,rgba(52,17,19,0.78)_0%,rgba(30,15,18,0.9)_100%)] hover:text-white"
                 )}
                 aria-pressed={selected}
               >
-                <span className="text-[0.97rem] font-medium leading-snug">{option.label}</span>
+                <span className="text-[0.9rem] font-medium leading-snug">{option.label}</span>
                 <span
                   className={cn(
                     "relative grid size-6 shrink-0 place-items-center rounded-full border transition duration-[220ms]",
@@ -246,30 +302,24 @@ export function PlanFinderQuiz() {
             );
           })}
         </div>
-
-        <div className="flex flex-wrap gap-2">
-          {Object.entries(answers).map(([key, value]) => (
-            <Badge key={key} variant="outline" className="rounded-[8px] border-white/14 bg-black/32 text-white/74">
-              {getAnswerLabel(key as keyof QuizAnswers, value as QuizAnswers[keyof QuizAnswers])}
-            </Badge>
-          ))}
-        </div>
       </CardContent>
 
-      <CardFooter className="flex flex-col gap-3 border-t border-white/10 pb-5 pt-4">
+      <div className="mx-5 h-px bg-white/10" />
+
+      <CardFooter className="sticky bottom-0 z-10 flex flex-col gap-2.5 bg-[linear-gradient(180deg,rgba(16,17,22,0.82)_0%,rgba(16,17,22,0.96)_100%)] px-5 pb-4 pt-3 backdrop-blur-[2px]">
         <div className="flex w-full items-center justify-between">
           <Button
             type="button"
             variant="ghost"
             size="sm"
-            className="rounded-[10px] text-white/82 hover:text-white"
+            className="h-9 rounded-[10px] text-white/82 hover:text-white"
             onClick={handleBack}
             disabled={stepIndex === 0}
           >
             <ArrowLeft className="size-4" />
             Volver
           </Button>
-          <p className="text-xs uppercase tracking-[0.12em] text-white/55">Responde segun tu realidad</p>
+          <p className="text-[11px] uppercase tracking-[0.11em] text-white/55">3-4 minutos</p>
         </div>
 
         <Button
