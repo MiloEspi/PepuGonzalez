@@ -10,10 +10,10 @@ import { SectionShell } from "@/components/site/section-shell";
 import { WhatsAppButton } from "@/components/site/whatsapp-button";
 import { Badge } from "@/components/ui/badge";
 import { getOfferPrimaryHref, getStickyWhatsAppHref, offers } from "@/data/offers";
+import { mapSanityPlansToOffers } from "@/lib/sanity-plan-mapper";
+import type { PlanDoc } from "@/lib/sanity";
 import { rememberSelectedPlan } from "@/lib/plan-interest";
 import { cn } from "@/lib/utils";
-
-const PLAN_FALLBACK_IMAGE = "/fitness-shirtless.jpg";
 
 type OfferTheme = (typeof offers)[number]["theme"];
 
@@ -141,32 +141,33 @@ const mediaZoomBySlug: Partial<Record<(typeof offers)[number]["slug"], string>> 
   "mentoria-1-1": "scale-[1.1] group-hover:scale-[1.15]",
 };
 
-export function FeaturedPlans() {
-  const initialComparisonSlug = offers.find((offer) => offer.slug === "programa-transformacion")?.slug ?? offers[0]?.slug ?? "programa-base";
-  const [selectedComparisonSlug, setSelectedComparisonSlug] = useState(initialComparisonSlug);
+interface FeaturedPlansProps {
+  plans: PlanDoc[];
+}
 
-  if (!offers.length) {
+export function FeaturedPlans({ plans }: FeaturedPlansProps) {
+  const catalogOffers = mapSanityPlansToOffers(plans);
+  const initialComparisonSlug =
+    catalogOffers.find((offer) => offer.slug === "programa-transformacion")?.slug ??
+    catalogOffers.find((offer) => offer.featured)?.slug ??
+    catalogOffers[0]?.slug;
+  const [selectedComparisonSlug, setSelectedComparisonSlug] = useState(initialComparisonSlug ?? "");
+
+  if (!catalogOffers.length) {
     return (
       <SectionShell
         id="planes"
         eyebrow="PLANES"
-        title="No se pudieron cargar los planes"
-        description="Reintenta para volver a cargar el catalogo."
+        title="No hay planes en Sanity"
+        description="Carga los documentos de tipo plan para mostrar esta seccion."
       >
         <div className="rounded-[12px] border border-white/14 bg-[linear-gradient(145deg,#17181d_0%,#111217_100%)] p-5">
-          <p className="text-sm text-white/78">No se pudieron cargar los planes. Reintenta.</p>
-          <button
-            type="button"
-            onClick={() => window.location.reload()}
-            className="mt-3 inline-flex h-10 items-center justify-center rounded-[10px] border border-primary/45 bg-primary/16 px-4 text-xs font-semibold uppercase tracking-[0.08em] text-white transition-colors duration-200 hover:bg-primary/28"
-          >
-            Reintentar
-          </button>
+          <p className="text-sm text-white/78">No se encontraron documentos de planes.</p>
         </div>
       </SectionShell>
     );
   }
-  const selectedComparisonOffer = offers.find((offer) => offer.slug === selectedComparisonSlug) ?? offers[0];
+  const selectedComparisonOffer = catalogOffers.find((offer) => offer.slug === selectedComparisonSlug) ?? catalogOffers[0];
 
   return (
     <SectionShell
@@ -180,10 +181,11 @@ export function FeaturedPlans() {
       </article>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
-        {offers.map((offer) => {
+        {catalogOffers.map((offer) => {
           const styles = themeClasses[offer.theme];
           const Icon = styles.icon;
-          const imageSrc = offer.coverImage ?? PLAN_FALLBACK_IMAGE;
+          const imageSrc = offer.coverImage;
+          if (!imageSrc) return null;
           const isTransformacion = offer.slug === "programa-transformacion";
           const isMentoria = offer.slug === "mentoria-1-1";
           const isPremium = isTransformacion || isMentoria;
@@ -354,7 +356,7 @@ export function FeaturedPlans() {
           </div>
 
           <div className="grid grid-cols-2 gap-2.5 md:grid-cols-4">
-            {offers.map((offer) => {
+            {catalogOffers.map((offer) => {
               const active = offer.slug === selectedComparisonOffer.slug;
               const isTransformacion = offer.slug === "programa-transformacion";
 

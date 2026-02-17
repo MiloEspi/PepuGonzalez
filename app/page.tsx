@@ -5,16 +5,37 @@ import { FinalCTA } from "@/components/site/final-cta";
 import { HeroSection } from "@/components/site/hero-section";
 import { PlanFinderTeaser } from "@/components/site/plan-finder-teaser";
 import { TestimonialsSection } from "@/components/site/testimonials-section";
+import {
+  ABOUT_QUERY,
+  FAQ_QUERY,
+  PLANS_QUERY,
+  RESULTS_QUERY,
+  SETTINGS_QUERY,
+  sanityFetch,
+  type AboutDoc,
+  type FaqDoc,
+  type PlanDoc,
+  type ResultDoc,
+  type SiteSettingsDoc,
+} from "@/lib/sanity";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const [settings, about, plans, results, faqs] = await Promise.all([
+    sanityFetch<SiteSettingsDoc>(SETTINGS_QUERY),
+    sanityFetch<AboutDoc>(ABOUT_QUERY),
+    sanityFetch<PlanDoc[]>(PLANS_QUERY),
+    sanityFetch<ResultDoc[]>(RESULTS_QUERY),
+    sanityFetch<FaqDoc[]>(FAQ_QUERY),
+  ]);
+
   return (
     <main className="space-y-2 pb-10 md:space-y-3">
-      <HeroSection />
+      <HeroSection content={settings} />
       <PlanFinderTeaser />
-      <AboutSection />
-      <FeaturedPlans />
-      <TestimonialsSection />
-      <FAQSection />
+      <AboutSection content={about} />
+      <FeaturedPlans plans={plans} />
+      <TestimonialsSection results={results} />
+      <FAQSection items={faqs} />
       <FinalCTA />
     </main>
   );

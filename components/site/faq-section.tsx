@@ -1,36 +1,39 @@
 import { SectionShell } from "@/components/site/section-shell";
+import type { FaqDoc } from "@/lib/sanity";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
-const faqs = [
-  {
-    question: "En cuanto tiempo voy a ver resultados?",
-    answer: "Si aplicas el sistema con consistencia, los primeros cambios suelen aparecer entre la semana 3 y la 5.",
-  },
-  {
-    question: "Esto es para mi nivel?",
-    answer: "Si. El punto de partida cambia, pero el metodo se adapta para que progreses sin improvisar.",
-  },
-  {
-    question: "Que pasa si no puedo cumplir todo perfecto?",
-    answer: "No busco perfeccion. Ajusto carga, volumen y frecuencia para que puedas sostener avance semana a semana.",
-  },
-  {
-    question: "Como se que esto va a funcionar?",
-    answer: "Porque no depende de motivacion. Hay plan, seguimiento y ajustes segun tu respuesta real.",
-  },
-  {
-    question: "Hay devoluciones?",
-    answer: "Se revisa caso por caso despues de la primera fase, segun cumplimiento y ejecucion del sistema.",
-  },
-];
+interface FAQSectionProps {
+  items: FaqDoc[];
+}
 
-export function FAQSection() {
+export function FAQSection({ items }: FAQSectionProps) {
+  const faqItems = items.map((item) => ({
+    id: item._id,
+    question: item.question,
+    answer: item.answer,
+  }));
+
+  if (!faqItems.length) {
+    return (
+      <SectionShell
+        id="faq"
+        eyebrow="FAQ"
+        title="Preguntas clave antes de aplicar"
+        description="Carga documentos de tipo faq en Sanity para mostrar esta seccion."
+      >
+        <div className="rounded-[12px] border border-white/14 bg-[linear-gradient(145deg,#17181d_0%,#111217_100%)] p-5">
+          <p className="text-sm text-white/78">No se encontraron preguntas frecuentes en Sanity.</p>
+        </div>
+      </SectionShell>
+    );
+  }
+
   return (
     <SectionShell id="faq" eyebrow="FAQ" title="Preguntas clave antes de aplicar" description="Respuestas con postura para que decidas con claridad y compromiso.">
       <div className="rounded-[12px] bg-black/22 px-4">
         <Accordion type="single" collapsible className="w-full">
-          {faqs.map((faq, index) => (
-            <AccordionItem key={faq.question} value={`faq-${index}`}>
+          {faqItems.map((faq, index) => (
+            <AccordionItem key={faq.id} value={`faq-${index}`}>
               <AccordionTrigger className="text-base">{faq.question}</AccordionTrigger>
               <AccordionContent className="text-muted-foreground">{faq.answer}</AccordionContent>
             </AccordionItem>

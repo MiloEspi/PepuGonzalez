@@ -19,17 +19,19 @@ type PrimaryNavItem = {
   label: string;
 };
 
+type ExtraNavItem = {
+  label: string;
+  href: string;
+};
+
+interface NavbarProps {
+  extraNavItems: ExtraNavItem[];
+}
+
 const PRIMARY_NAV_ITEMS: PrimaryNavItem[] = [
   { id: "cuestionario", label: "Cuestionario" },
-  { id: "sobre-mi", label: "Sobre mí" },
+  { id: "sobre-mi", label: "Sobre mi" },
   { id: "planes", label: "Planes" },
-];
-
-const EXTRA_NAV_ITEMS = [
-  { id: "resultados", label: "Resultados" },
-  { id: "faq", label: "FAQ" },
-  { id: "aplicar-ahora", label: "Aplicar" },
-  { id: "contacto", label: "Contacto" },
 ];
 
 const OBSERVER_THRESHOLDS = Array.from({ length: 17 }, (_, index) => index / 16);
@@ -41,12 +43,6 @@ function getViewportCoverage(rect: DOMRect, viewportHeight: number, navOffset: n
   return viewportHeight > 0 ? visibleHeight / viewportHeight : 0;
 }
 
-function normalizePath(path: string): string {
-  if (!path) return "/";
-  if (path === "/") return "/";
-  return path.endsWith("/") ? path.slice(0, -1) : path;
-}
-
 function resolveHref(pathname: string, id: PrimarySectionId) {
   if (id === "planes") {
     return pathname === "/" ? "#planes" : "/planes";
@@ -55,7 +51,7 @@ function resolveHref(pathname: string, id: PrimarySectionId) {
   return pathname === "/" ? `#${id}` : `/#${id}`;
 }
 
-export function Navbar() {
+export function Navbar({ extraNavItems }: NavbarProps) {
   const pathname = usePathname();
   const [navState, sendNav] = useMachine(navbarMachine);
   const reducedMotion = useMemo(() => prefersReducedMotion(), []);
@@ -70,6 +66,9 @@ export function Navbar() {
     return navState.context.activeId;
   }, [navState.context.activeId, pathname]);
 
+  const resolvedExtraNavItems = useMemo(() => {
+    return extraNavItems.filter((item) => item.label?.trim() && item.href?.trim());
+  }, [extraNavItems]);
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -194,24 +193,18 @@ export function Navbar() {
     scrollToSection(id);
   }
 
-  function handleExtraClick(event: MouseEvent<HTMLAnchorElement>, id: string) {
+  function handleExtraClick(event: MouseEvent<HTMLAnchorElement>, href: string) {
     setIsMenuOpen(false);
 
     if (pathname !== "/") return;
+    if (!href.startsWith("#")) return;
 
-    const href = event.currentTarget.getAttribute("href") ?? "";
-    const targetUrl = new URL(href, window.location.href);
-    const currentPath = normalizePath(window.location.pathname);
-    const targetPath = normalizePath(targetUrl.pathname);
-    const hashId = targetUrl.hash.replace("#", "");
-
-    if (targetPath !== currentPath || !hashId) return;
-
-    const section = document.getElementById(id);
+    const sectionId = href.replace("#", "");
+    const section = document.getElementById(sectionId);
     if (!section) return;
 
     event.preventDefault();
-    scrollToSection(id);
+    scrollToSection(sectionId);
   }
 
   const navbarTone = isScrolled || isMenuOpen;
@@ -354,11 +347,11 @@ export function Navbar() {
                   <div className="space-y-2">
                     <p className="px-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/54">Explorar</p>
                     <ul className="space-y-1.5">
-                      {EXTRA_NAV_ITEMS.map((item) => (
-                        <li key={`sheet-extra-${item.id}`}>
+                      {resolvedExtraNavItems.map((item) => (
+                        <li key={`sheet-extra-${item.href}-${item.label}`}>
                           <a
-                            href={pathname === "/" ? `#${item.id}` : `/#${item.id}`}
-                            onClick={(event) => handleExtraClick(event, item.id)}
+                            href={item.href.startsWith("#") && pathname !== "/" ? `/${item.href}` : item.href}
+                            onClick={(event) => handleExtraClick(event, item.href)}
                             className="inline-flex w-full items-center rounded-[10px] border border-white/12 bg-white/[0.04] px-3 py-2.5 text-sm font-medium text-white/80 transition-colors duration-[220ms] ease-[var(--ease-premium)] hover:border-primary/32 hover:bg-primary/10 hover:text-white"
                           >
                             {item.label}
@@ -380,3 +373,4 @@ export function Navbar() {
     </header>
   );
 }
+

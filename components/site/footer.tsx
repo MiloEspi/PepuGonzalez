@@ -1,8 +1,7 @@
 import Image from "next/image";
-import Link from "next/link";
 import { Mail } from "lucide-react";
 
-import { getStickyWhatsAppHref } from "@/data/offers";
+import type { FooterDoc } from "@/lib/sanity";
 import { cn } from "@/lib/utils";
 
 type SocialLink = {
@@ -13,47 +12,63 @@ type SocialLink = {
   iconClassName?: string;
 };
 
-const socialLinks: SocialLink[] = [
-  {
-    label: "Instagram",
-    href: "https://www.instagram.com/pepugonzalezzz/?hl=es",
-    iconSrc: "/image (3).png",
-    previewHref: "instagram.com/pepugonzalezzz",
-    iconClassName: "h-[21px] w-[21px] translate-y-[0.5px]",
-  },
-  {
-    label: "TikTok",
-    href: "https://www.tiktok.com/@pepugonzalezz",
-    iconSrc: "/image (5).png",
-    previewHref: "tiktok.com/@pepugonzalezz",
-    iconClassName: "h-5 w-5",
-  },
-  {
-    label: "WhatsApp",
-    href: getStickyWhatsAppHref(),
-    iconSrc: "/image (2).png",
-    previewHref: "api.whatsapp.com/send",
-    iconClassName: "h-5 w-5 -translate-x-[0.5px] translate-y-[0.5px]",
-  },
-  {
-    label: "YouTube",
-    href: "https://www.youtube.com/@pepugonzalezz",
-    iconSrc: "/image (4).png",
-    previewHref: "youtube.com/@pepugonzalezz",
-    iconClassName: "h-[21px] w-[21px] -translate-x-[0.5px]",
-  },
-  {
-    label: "Kick",
-    href: "https://kick.com/pepugonzalezz",
-    iconSrc: "/kicck.png",
-    previewHref: "kick.com/pepugonzalezz",
-    iconClassName: "h-5 w-5 translate-x-[0.5px] -translate-y-[0.5px]",
-  },
-];
+type LegalLink = {
+  label: string;
+  href: string;
+};
+
+const socialIconByName: Record<string, { iconSrc: string; iconClassName?: string }> = {
+  instagram: { iconSrc: "/image (3).png", iconClassName: "h-[21px] w-[21px] translate-y-[0.5px]" },
+  tiktok: { iconSrc: "/image (5).png", iconClassName: "h-5 w-5" },
+  whatsapp: { iconSrc: "/image (2).png", iconClassName: "h-5 w-5 -translate-x-[0.5px] translate-y-[0.5px]" },
+  youtube: { iconSrc: "/image (4).png", iconClassName: "h-[21px] w-[21px] -translate-x-[0.5px]" },
+  kick: { iconSrc: "/kicck.png", iconClassName: "h-5 w-5 translate-x-[0.5px] -translate-y-[0.5px]" },
+};
+
+function normalizeSocialName(name: string): string {
+  return name.trim().toLowerCase();
+}
+
+function getPreviewHref(href: string): string {
+  try {
+    const parsed = new URL(href);
+    return `${parsed.hostname}${parsed.pathname === "/" ? "" : parsed.pathname}`;
+  } catch {
+    return href;
+  }
+}
+
+function isExternalLink(href: string): boolean {
+  return href.startsWith("http://") || href.startsWith("https://");
+}
 
 const SHOW_DEV_CREDIT = false;
 
-export function Footer() {
+interface FooterProps {
+  content: FooterDoc;
+}
+
+export function Footer({ content }: FooterProps) {
+  const cmsSocialLinks = content.socialLinks
+    .filter((item) => item?.name && item?.href)
+    .map((item) => {
+      const normalizedName = normalizeSocialName(item.name);
+      const iconConfig = socialIconByName[normalizedName] ?? { iconSrc: "/globe.svg" };
+
+      return {
+        label: item.name,
+        href: item.href,
+        iconSrc: iconConfig.iconSrc,
+        iconClassName: iconConfig.iconClassName,
+        previewHref: getPreviewHref(item.href),
+      } satisfies SocialLink;
+    });
+
+  const activeSocialLinks = cmsSocialLinks;
+  const cmsLegalLinks = content.legalLinks.filter((item) => item?.label && item?.href);
+  const activeLegalLinks: LegalLink[] = cmsLegalLinks;
+  const email = content.email;
+
   return (
     <footer
       id="contacto"
@@ -75,12 +90,12 @@ export function Footer() {
             <p className="max-w-xl text-sm text-muted-foreground md:text-base">Contacto directo para resolver dudas y elegir tu plan.</p>
 
             <a
-              href="mailto:contacto@pepugonzalez.com"
+              href={`mailto:${email}`}
               className="group inline-flex w-fit items-center gap-2 text-sm text-muted-foreground transition-colors duration-200 hover:text-foreground"
             >
               <Mail className="size-4" />
               <span className="relative">
-                contacto@pepugonzalez.com
+                {email}
                 <span className="pointer-events-none absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 bg-primary transition-transform duration-300 ease-[var(--ease-premium)] group-hover:scale-x-100" />
               </span>
             </a>
@@ -88,7 +103,7 @@ export function Footer() {
 
           <div className="mt-6">
             <div className="flex flex-wrap items-center gap-3">
-              {socialLinks.map((item) => (
+              {activeSocialLinks.map((item) => (
                 <a
                   key={item.label}
                   href={item.href}
@@ -124,14 +139,18 @@ export function Footer() {
 
           <div className="space-y-2">
             <div className="flex flex-wrap items-center gap-4 text-sm">
-              <Link href="#" className="group relative font-medium text-foreground/94 transition-colors duration-200 hover:text-primary">
-                Politica de privacidad
-                <span className="pointer-events-none absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 bg-primary transition-transform duration-300 ease-[var(--ease-premium)] group-hover:scale-x-100" />
-              </Link>
-              <Link href="#" className="group relative font-medium text-foreground/94 transition-colors duration-200 hover:text-primary">
-                Terminos y condiciones
-                <span className="pointer-events-none absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 bg-primary transition-transform duration-300 ease-[var(--ease-premium)] group-hover:scale-x-100" />
-              </Link>
+              {activeLegalLinks.map((link) => (
+                <a
+                  key={`${link.label}-${link.href}`}
+                  href={link.href}
+                  target={isExternalLink(link.href) ? "_blank" : undefined}
+                  rel={isExternalLink(link.href) ? "noreferrer" : undefined}
+                  className="group relative font-medium text-foreground/94 transition-colors duration-200 hover:text-primary"
+                >
+                  {link.label}
+                  <span className="pointer-events-none absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 bg-primary transition-transform duration-300 ease-[var(--ease-premium)] group-hover:scale-x-100" />
+                </a>
+              ))}
             </div>
 
             {SHOW_DEV_CREDIT ? (
