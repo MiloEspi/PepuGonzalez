@@ -21,13 +21,12 @@ type PrimaryNavItem = {
 
 const PRIMARY_NAV_ITEMS: PrimaryNavItem[] = [
   { id: "cuestionario", label: "Cuestionario" },
-  { id: "sobre-mi", label: "Sobre mi" },
+  { id: "sobre-mi", label: "Sobre mí" },
   { id: "planes", label: "Planes" },
 ];
 
 const EXTRA_NAV_ITEMS = [
   { id: "resultados", label: "Resultados" },
-  { id: "diferenciales", label: "Por que conmigo" },
   { id: "faq", label: "FAQ" },
   { id: "aplicar-ahora", label: "Aplicar" },
   { id: "contacto", label: "Contacto" },
@@ -287,19 +286,19 @@ export function Navbar() {
     <header
       ref={headerRef}
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-all duration-300",
-        navbarTone ? "bg-black/18" : "bg-transparent"
+        "fixed inset-x-0 top-0 z-50 border-b border-white/[0.05] bg-[rgba(10,10,15,0.5)] backdrop-blur-[12px] transition-shadow duration-300",
+        navbarTone ? "shadow-[0_20px_42px_-30px_rgba(0,0,0,0.92)]" : "shadow-[0_12px_28px_-24px_rgba(0,0,0,0.72)]"
       )}
     >
-      <div className="layout-shell py-2 md:py-2.5">
+      <div className="layout-shell py-1.5 md:py-2">
         <div
           data-navbar-shell
           className={cn(
-            "relative overflow-visible rounded-[14px] border border-white/12 bg-black/42 backdrop-blur-[14px] transition-shadow duration-[260ms] ease-[var(--ease-premium)]",
-            navbarTone ? "shadow-[0_24px_44px_-34px_rgba(0,0,0,0.92)]" : "shadow-[0_18px_34px_-30px_rgba(0,0,0,0.86)]"
+            "relative overflow-visible transition-shadow duration-[260ms] ease-[var(--ease-premium)]",
+            navbarTone ? "shadow-[0_16px_30px_-26px_rgba(0,0,0,0.72)]" : "shadow-none"
           )}
         >
-          <div className="flex items-center gap-3 px-3 py-2 md:grid md:grid-cols-[1fr_auto_1fr] md:px-4 md:py-2.5">
+          <div className="flex items-center gap-3 px-2.5 py-2 md:grid md:grid-cols-[1fr_auto_1fr] md:px-3 md:py-2.5">
             <Link
               href="/"
               onClick={handleBrandClick}
@@ -319,7 +318,7 @@ export function Navbar() {
                     type="button"
                     aria-label={isMenuOpen ? "Cerrar menu" : "Abrir menu"}
                     aria-expanded={isMenuOpen}
-                    className="inline-flex size-9 items-center justify-center rounded-[9px] border border-white/14 bg-white/[0.05] text-white/88 transition-all duration-[220ms] ease-[var(--ease-premium)] hover:border-primary/36 hover:bg-white/[0.09] hover:text-white hover:shadow-[0_0_24px_-15px_rgba(212,20,20,0.92)]"
+                    className="inline-flex size-9 items-center justify-center rounded-[9px] border border-white/14 bg-white/[0.06] text-white/88 transition-all duration-[220ms] ease-[var(--ease-premium)] hover:border-primary/36 hover:bg-white/[0.12] hover:text-white hover:shadow-[0_0_24px_-15px_rgba(212,20,20,0.92)]"
                   >
                     {isMenuOpen ? <X className="size-4.5" /> : <Menu className="size-4.5" />}
                   </button>
@@ -343,7 +342,7 @@ export function Navbar() {
                           <a
                             href={resolveHref(pathname, item.id)}
                             onClick={(event) => handlePrimaryClick(event, item.id)}
-                            className="inline-flex w-full items-center rounded-[10px] border border-white/12 bg-white/[0.02] px-3 py-2.5 text-sm font-medium text-foreground transition-colors duration-[220ms] ease-[var(--ease-premium)] hover:border-primary/34 hover:bg-primary/10"
+                            className="inline-flex w-full items-center rounded-[10px] border border-white/14 bg-white/[0.05] px-3 py-2.5 text-sm font-medium text-foreground transition-colors duration-[220ms] ease-[var(--ease-premium)] hover:border-primary/34 hover:bg-primary/12"
                           >
                             {item.label}
                           </a>
@@ -360,7 +359,7 @@ export function Navbar() {
                           <a
                             href={pathname === "/" ? `#${item.id}` : `/#${item.id}`}
                             onClick={(event) => handleExtraClick(event, item.id)}
-                            className="inline-flex w-full items-center rounded-[10px] border border-white/10 bg-black/24 px-3 py-2.5 text-sm font-medium text-white/76 transition-colors duration-[220ms] ease-[var(--ease-premium)] hover:border-primary/32 hover:bg-primary/10 hover:text-white"
+                            className="inline-flex w-full items-center rounded-[10px] border border-white/12 bg-white/[0.04] px-3 py-2.5 text-sm font-medium text-white/80 transition-colors duration-[220ms] ease-[var(--ease-premium)] hover:border-primary/32 hover:bg-primary/10 hover:text-white"
                           >
                             {item.label}
                           </a>
@@ -373,7 +372,7 @@ export function Navbar() {
             </Sheet>
           </div>
 
-          <nav aria-label="Navegacion principal mobile" className="border-t border-white/8 px-2 pb-2 pt-1.5 md:hidden">
+          <nav aria-label="Navegacion principal mobile" className="border-t border-white/[0.07] px-2 pb-2 pt-1.5 md:hidden">
             <ul className="flex flex-wrap gap-1.5">{PRIMARY_NAV_ITEMS.map((item) => renderPrimaryItem(item, true))}</ul>
           </nav>
         </div>

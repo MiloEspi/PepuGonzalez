@@ -75,7 +75,7 @@ export const offers: Offer[] = [
     theme: "inicio",
     badgeLabel: "Inicio",
     spotsMicrocopy: "Ideal para salir del caos y entrenar con estructura.",
-    coverImage: "/fitness-shirtless.jpg",
+    coverImage: "/programa-inicio.jpg",
     comparison: {
       duration: "6-8 semanas",
       personalization: "Adaptado inicial",
@@ -108,7 +108,7 @@ export const offers: Offer[] = [
     ctaType: "checkout",
     theme: "base",
     spotsMicrocopy: "Estructura profesional para entrenar por cuenta propia.",
-    coverImage: "/fitness-shirtless.jpg",
+    coverImage: "/programa-base.jpg",
     comparison: {
       duration: "8-12 semanas",
       personalization: "Personalizado estructurado",
@@ -144,7 +144,7 @@ export const offers: Offer[] = [
     theme: "transformacion",
     badgeLabel: "Mas elegido",
     spotsMicrocopy: "Cupos limitados por cohorte mensual.",
-    coverImage: "/fitness-shirtless.jpg",
+    coverImage: "/DSC02489.jpg",
     featured: true,
     comparison: {
       duration: "90 dias",
@@ -177,7 +177,7 @@ export const offers: Offer[] = [
     theme: "mentoria",
     badgeLabel: "Premium",
     spotsMicrocopy: "Solo 5 cupos activos",
-    coverImage: "/fitness-shirtless.jpg",
+    coverImage: "/DSC02498.jpg",
     comparison: {
       duration: "3 meses",
       personalization: "Personalizacion total + ajustes constantes",

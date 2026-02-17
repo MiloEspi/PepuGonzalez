@@ -27,7 +27,7 @@ const faqs = [
 export function FAQSection() {
   return (
     <SectionShell id="faq" eyebrow="FAQ" title="Preguntas clave antes de aplicar" description="Respuestas con postura para que decidas con claridad y compromiso.">
-      <div className="textured-surface rounded-[14px] border border-border/80 bg-card/90 px-6">
+      <div className="rounded-[12px] bg-black/22 px-4">
         <Accordion type="single" collapsible className="w-full">
           {faqs.map((faq, index) => (
             <AccordionItem key={faq.question} value={`faq-${index}`}>

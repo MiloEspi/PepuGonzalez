@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { ArrowRight, Check, Crown, Flame, Rocket, ShieldCheck, Star, type LucideIcon } from "lucide-react";
+import { useState } from "react";
+import { ArrowRight, Check, Crown, Flame, Rocket, ShieldCheck, type LucideIcon } from "lucide-react";
 
 import { AnimatedButton } from "@/components/AnimatedButton";
 import { PlanCard } from "@/components/PlanCard";
@@ -28,6 +28,8 @@ interface ThemeConfig {
   badge: string;
   accentBadge: string;
   benefitIcon: string;
+  iconWrap: string;
+  iconColor: string;
   cta: string;
   price: string;
   tableHead: string;
@@ -38,15 +40,17 @@ const themeClasses: Record<OfferTheme, ThemeConfig> = {
   inicio: {
     icon: Rocket,
     shell:
-      "border-white/16 bg-[linear-gradient(138deg,rgba(52,56,64,0.82)_0%,rgba(26,29,36,0.92)_48%,rgba(16,17,22,0.96)_100%)] shadow-[0_26px_48px_-34px_rgba(0,0,0,0.95)]",
-    surface: "bg-[linear-gradient(148deg,#17191f_0%,#111216_58%,#0f1014_100%)]",
-    media: "border-white/14 bg-black/70",
-    overlay: "bg-[linear-gradient(180deg,rgba(0,0,0,0.1)_0%,rgba(80,87,101,0.5)_100%)]",
+      "border-[rgba(255,255,255,0.06)] bg-[linear-gradient(135deg,rgba(28,30,36,0.9)_0%,rgba(12,13,16,0.96)_100%)] shadow-[0_24px_46px_-36px_rgba(0,0,0,0.94)]",
+    surface: "bg-[linear-gradient(146deg,#15171d_0%,#0f1013_100%)]",
+    media: "border-[rgba(255,255,255,0.08)] bg-[linear-gradient(160deg,#282c34_0%,#181b22_100%)]",
+    overlay: "bg-[linear-gradient(180deg,rgba(0,0,0,0.14)_0%,rgba(0,0,0,0.54)_100%)]",
     title: "text-white",
-    text: "text-white/82",
-    badge: "border-white/18 bg-black/42 text-white/85",
-    accentBadge: "border-white/16 bg-white/6 text-white/78",
+    text: "text-white/78",
+    badge: "border-[rgba(255,255,255,0.18)] bg-black/48 text-white/84",
+    accentBadge: "border-[rgba(255,255,255,0.12)] bg-black/36 text-white/74",
     benefitIcon: "border-white/25 bg-white/8 text-white/90",
+    iconWrap: "border-[rgba(255,255,255,0.15)] bg-black/40",
+    iconColor: "text-white/84",
     cta: "bg-[linear-gradient(120deg,#222832_0%,#3a414f_100%)] text-white hover:brightness-110",
     price: "border-white/14 bg-black/28 text-white",
     tableHead: "bg-[linear-gradient(160deg,#242933_0%,#181b23_100%)] text-white",
@@ -55,16 +59,18 @@ const themeClasses: Record<OfferTheme, ThemeConfig> = {
   base: {
     icon: ShieldCheck,
     shell:
-      "border-white/16 bg-[linear-gradient(136deg,rgba(98,102,112,0.7)_0%,rgba(45,48,56,0.92)_64%,rgba(33,35,42,0.96)_100%)] shadow-[0_26px_48px_-36px_rgba(0,0,0,0.95)]",
-    surface: "bg-[linear-gradient(145deg,#18191f_0%,#121318_54%,#111216_100%)]",
-    media: "border-white/14 bg-[linear-gradient(145deg,#111216_0%,#0d0e12_100%)]",
-    overlay: "bg-[linear-gradient(180deg,rgba(0,0,0,0.2)_0%,rgba(122,14,14,0.3)_100%)]",
+      "border-[rgba(255,255,255,0.09)] bg-[linear-gradient(135deg,rgba(255,255,255,0.06)_0%,rgba(0,0,0,0.9)_100%)] shadow-[0_24px_46px_-36px_rgba(0,0,0,0.94)] before:pointer-events-none before:absolute before:left-7 before:right-7 before:top-0 before:h-px before:content-[''] before:bg-[linear-gradient(90deg,transparent,rgba(255,0,0,0.42),transparent)]",
+    surface: "bg-[linear-gradient(145deg,#17181f_0%,#101217_56%,#0f1014_100%)]",
+    media: "border-[rgba(255,255,255,0.1)] bg-[linear-gradient(160deg,#2c3038_0%,#191c22_100%)]",
+    overlay: "bg-[linear-gradient(180deg,rgba(0,0,0,0.18)_0%,rgba(122,14,14,0.34)_100%)]",
     title: "text-white",
     text: "text-white/82",
-    badge: "border-white/16 bg-black/58 text-white/88",
-    accentBadge: "border-white/14 bg-black/46 text-white/78",
+    badge: "border-[rgba(255,255,255,0.18)] bg-black/56 text-white/88",
+    accentBadge: "border-primary/26 bg-primary/14 text-white/86",
     benefitIcon: "border-primary/35 bg-primary/16 text-primary",
-    cta: "bg-[linear-gradient(120deg,#8B0000_0%,#D41414_100%)] text-white hover:brightness-110",
+    iconWrap: "border-primary/34 bg-primary/12",
+    iconColor: "text-[#ff7272]",
+    cta: "bg-[linear-gradient(120deg,#700708_0%,#bf1a1a_100%)] text-white hover:brightness-110",
     price: "border-white/14 bg-black/28 text-white",
     tableHead: "bg-[linear-gradient(160deg,#26272f_0%,#171921_100%)] text-white",
     tableCell: "bg-[linear-gradient(160deg,rgba(26,27,34,0.86)_0%,rgba(16,17,23,0.95)_100%)] text-white/84",
@@ -72,16 +78,17 @@ const themeClasses: Record<OfferTheme, ThemeConfig> = {
   transformacion: {
     icon: Flame,
     shell:
-      "border-primary/52 bg-[linear-gradient(145deg,rgba(212,20,20,0.9)_0%,rgba(122,14,14,0.88)_58%,rgba(44,8,9,0.96)_100%)] shadow-[0_40px_70px_-36px_rgba(122,14,14,0.96)]",
-    surface:
-      "bg-[linear-gradient(154deg,#270708_0%,#170709_48%,#101116_100%)] [background-image:linear-gradient(154deg,#270708_0%,#170709_48%,#101116_100%),repeating-linear-gradient(132deg,rgba(255,255,255,0.014)_0_1px,transparent_1px_6px)]",
-    media: "border-primary/58 bg-black/74",
-    overlay: "bg-[linear-gradient(180deg,rgba(0,0,0,0.1)_0%,rgba(122,14,14,0.72)_100%)]",
-    title: "text-white",
+      "border-[rgba(255,0,0,0.25)] bg-[linear-gradient(135deg,rgba(255,0,0,0.22)_0%,rgba(0,0,0,0.92)_60%)] shadow-[0_36px_68px_-36px_rgba(170,20,20,0.72)]",
+    surface: "bg-[linear-gradient(152deg,rgba(34,7,9,0.92)_0%,rgba(12,12,14,0.98)_70%)]",
+    media: "border-[rgba(255,0,0,0.36)] bg-[linear-gradient(170deg,#2d2427_0%,#17151a_100%)]",
+    overlay: "bg-[linear-gradient(180deg,rgba(0,0,0,0.18)_0%,rgba(120,10,10,0.64)_100%)]",
+    title: "text-[#ff4d4d]",
     text: "text-white/88",
-    badge: "border-primary/45 bg-primary text-primary-foreground",
-    accentBadge: "border-primary/50 bg-black/45 text-white",
+    badge: "border-[rgba(255,0,0,0.42)] bg-[rgba(35,8,10,0.56)] text-white/96 backdrop-blur-[8px]",
+    accentBadge: "border-[rgba(255,0,0,0.4)] bg-[rgba(24,8,10,0.58)] text-white backdrop-blur-[10px]",
     benefitIcon: "border-primary/50 bg-primary/20 text-white",
+    iconWrap: "border-[rgba(255,0,0,0.42)] bg-[rgba(25,8,10,0.6)]",
+    iconColor: "text-[#ff3434]",
     cta: "bg-[linear-gradient(120deg,#9E0808_0%,#D41414_64%,#EF2D2D_100%)] text-white hover:brightness-110",
     price: "border-primary/40 bg-[linear-gradient(128deg,rgba(122,14,14,0.35)_0%,rgba(212,20,20,0.24)_100%)] text-white",
     tableHead: "border-primary/50 bg-[linear-gradient(155deg,#8f0c0c_0%,#55090b_100%)] text-white",
@@ -90,16 +97,17 @@ const themeClasses: Record<OfferTheme, ThemeConfig> = {
   mentoria: {
     icon: Crown,
     shell:
-      "border-[#c8a34f]/56 bg-[linear-gradient(138deg,rgba(200,163,79,0.92)_0%,rgba(144,118,58,0.7)_48%,rgba(22,18,12,0.97)_100%)] shadow-[0_34px_62px_-40px_rgba(200,163,79,0.66)]",
-    surface:
-      "bg-[linear-gradient(146deg,#0c0c0f_0%,#101116_54%,#0d0d10_100%)] [background-image:linear-gradient(146deg,#0c0c0f_0%,#101116_54%,#0d0d10_100%),radial-gradient(circle_at_80%_22%,rgba(200,163,79,0.22),transparent_46%)]",
-    media: "border-[#c8a34f]/55 bg-black/82",
-    overlay: "bg-[linear-gradient(180deg,rgba(0,0,0,0.14)_0%,rgba(200,163,79,0.42)_100%)]",
+      "border-[rgba(255,200,80,0.28)] bg-[linear-gradient(135deg,rgba(255,200,80,0.18)_0%,rgba(0,0,0,0.92)_60%)] shadow-[0_34px_66px_-38px_rgba(190,146,64,0.62)] before:pointer-events-none before:absolute before:-top-10 before:-right-8 before:size-40 before:content-[''] before:bg-[radial-gradient(circle_at_80%_0%,rgba(255,200,80,0.3),transparent_55%)] before:blur-[24px] before:opacity-80",
+    surface: "bg-[linear-gradient(146deg,#14110d_0%,#111216_52%,#0c0c0f_100%)]",
+    media: "border-[rgba(255,200,80,0.4)] bg-[linear-gradient(165deg,#31291d_0%,#19140e_100%)]",
+    overlay: "bg-[linear-gradient(180deg,rgba(0,0,0,0.18)_0%,rgba(145,104,40,0.44)_100%)]",
     title: "text-[#f6e8c3]",
     text: "text-white/86",
-    badge: "border-[#c8a34f]/56 bg-[#c8a34f]/94 text-black",
-    accentBadge: "border-[#c8a34f]/44 bg-black/56 text-[#debf76]",
+    badge: "border-[rgba(255,200,80,0.38)] bg-[rgba(62,44,18,0.48)] text-[#f7e0a7] backdrop-blur-[8px]",
+    accentBadge: "border-[rgba(255,200,80,0.34)] bg-[rgba(41,30,13,0.5)] text-[#f6db9a] backdrop-blur-[10px]",
     benefitIcon: "border-[#c8a34f]/52 bg-[#c8a34f]/14 text-[#d9b661]",
+    iconWrap: "border-[rgba(255,200,80,0.38)] bg-[rgba(49,36,16,0.52)]",
+    iconColor: "text-[#f3cf84]",
     cta: "border border-[#c8a34f]/64 bg-black text-[#e3c57d] hover:border-[#d6b86d] hover:bg-[#c8a34f] hover:text-black",
     price: "border-[#c8a34f]/42 bg-black/34 text-[#f1d99d]",
     tableHead: "border-[#c8a34f]/48 bg-[linear-gradient(155deg,#8e7238_0%,#4b3919_100%)] text-[#f6e8c3]",
@@ -119,61 +127,23 @@ const comparisonRows: Array<{
   { label: "Ideal para", getter: (offer) => offer.comparison.idealFor },
 ];
 
+const mediaObjectPositionBySlug: Partial<Record<(typeof offers)[number]["slug"], string>> = {
+  "programa-inicio": "object-[center_29%]",
+  "programa-base": "object-[center_23%]",
+  "programa-transformacion": "object-[center_18%]",
+  "mentoria-1-1": "object-[center_16%]",
+};
+
+const mediaZoomBySlug: Partial<Record<(typeof offers)[number]["slug"], string>> = {
+  "programa-inicio": "scale-[1.03] group-hover:scale-[1.08]",
+  "programa-base": "scale-[1.03] group-hover:scale-[1.08]",
+  "programa-transformacion": "scale-[1.1] group-hover:scale-[1.15]",
+  "mentoria-1-1": "scale-[1.1] group-hover:scale-[1.15]",
+};
+
 export function FeaturedPlans() {
-  const comparisonViewportRef = useRef<HTMLDivElement>(null);
-  const animationFrameRef = useRef<number | null>(null);
-  const [comparisonProgress, setComparisonProgress] = useState({
-    hasOverflow: false,
-    progress: 0,
-    thumbWidth: 100,
-    hasInteracted: false,
-  });
-
-  const updateComparisonMetrics = useCallback(() => {
-    const node = comparisonViewportRef.current;
-    if (!node) return;
-
-    const maxScroll = node.scrollWidth - node.clientWidth;
-    const hasOverflow = maxScroll > 2;
-    const progress = hasOverflow ? Math.min(Math.max(node.scrollLeft / maxScroll, 0), 1) : 0;
-    const thumbWidth = hasOverflow ? Math.max((node.clientWidth / node.scrollWidth) * 100, 14) : 100;
-
-    setComparisonProgress((prev) => {
-      const hasInteracted = prev.hasInteracted || node.scrollLeft > 6;
-      if (
-        prev.hasOverflow === hasOverflow &&
-        Math.abs(prev.progress - progress) < 0.005 &&
-        Math.abs(prev.thumbWidth - thumbWidth) < 0.5 &&
-        prev.hasInteracted === hasInteracted
-      ) {
-        return prev;
-      }
-
-      return { hasOverflow, progress, thumbWidth, hasInteracted };
-    });
-  }, []);
-
-  const scheduleComparisonMetricsUpdate = useCallback(() => {
-    if (typeof window === "undefined") return;
-    if (animationFrameRef.current !== null) return;
-
-    animationFrameRef.current = window.requestAnimationFrame(() => {
-      animationFrameRef.current = null;
-      updateComparisonMetrics();
-    });
-  }, [updateComparisonMetrics]);
-
-  useEffect(() => {
-    scheduleComparisonMetricsUpdate();
-    window.addEventListener("resize", scheduleComparisonMetricsUpdate);
-
-    return () => {
-      window.removeEventListener("resize", scheduleComparisonMetricsUpdate);
-      if (animationFrameRef.current !== null) {
-        window.cancelAnimationFrame(animationFrameRef.current);
-      }
-    };
-  }, [scheduleComparisonMetricsUpdate]);
+  const initialComparisonSlug = offers.find((offer) => offer.slug === "programa-transformacion")?.slug ?? offers[0]?.slug ?? "programa-base";
+  const [selectedComparisonSlug, setSelectedComparisonSlug] = useState(initialComparisonSlug);
 
   if (!offers.length) {
     return (
@@ -196,6 +166,7 @@ export function FeaturedPlans() {
       </SectionShell>
     );
   }
+  const selectedComparisonOffer = offers.find((offer) => offer.slug === selectedComparisonSlug) ?? offers[0];
 
   return (
     <SectionShell
@@ -205,7 +176,7 @@ export function FeaturedPlans() {
       description="Cuatro niveles claros. Un solo objetivo: progreso real con estructura."
     >
       <article className="mb-5 rounded-[12px] border border-primary/35 bg-[linear-gradient(126deg,rgba(122,14,14,0.3)_0%,rgba(40,12,15,0.72)_100%)] px-4 py-3 text-sm text-white/86">
-        Se envia encuesta detallada para diseñar tu plan completamente adaptado. En el sistema Transformacion, esta personalizacion es total.
+        Cada nivel suma personalizacion y soporte. Transformacion y Mentoria concentran la experiencia premium completa.
       </article>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -215,6 +186,18 @@ export function FeaturedPlans() {
           const imageSrc = offer.coverImage ?? PLAN_FALLBACK_IMAGE;
           const isTransformacion = offer.slug === "programa-transformacion";
           const isMentoria = offer.slug === "mentoria-1-1";
+          const isPremium = isTransformacion || isMentoria;
+          const visibleBenefits = offer.benefits.slice(0, 3);
+          const duplicatedBadgeLabel =
+            typeof offer.badgeLabel === "string" && offer.badgeLabel.toLowerCase().trim() === offer.shortLabel.toLowerCase().trim();
+          const mediaHeightClass = isPremium ? "h-[200px] md:h-[212px]" : "h-[160px] md:h-[180px]";
+          const mediaObjectPositionClass = mediaObjectPositionBySlug[offer.slug] ?? "object-[center_20%]";
+          const mediaZoomClass = mediaZoomBySlug[offer.slug] ?? "scale-[1.02] group-hover:scale-[1.06]";
+          const mediaImageClass = cn(
+            "object-cover brightness-[0.92] saturate-[1.06] transition-transform duration-[260ms] ease-[var(--ease-premium)]",
+            mediaObjectPositionClass,
+            mediaZoomClass
+          );
 
           return (
             <PlanCard
@@ -225,67 +208,112 @@ export function FeaturedPlans() {
                 "relative overflow-hidden rounded-[16px] border p-[1px] transition-[transform,box-shadow] duration-[280ms] ease-[var(--ease-premium)] hover:-translate-y-1.5",
                 styles.shell,
                 isTransformacion ? "md:-translate-y-2 md:scale-[1.04] md:shadow-[0_50px_84px_-42px_rgba(122,14,14,0.98)]" : "",
-                isMentoria
-                  ? "before:pointer-events-none before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_82%_14%,rgba(255,214,120,0.18),transparent_44%)]"
-                  : ""
+                isMentoria ? "md:shadow-[0_42px_74px_-40px_rgba(210,170,86,0.58)]" : ""
               )}
             >
-              <div className={cn("relative flex h-full flex-col rounded-[15px] p-3.5 md:p-4", styles.surface)}>
-                <div className={cn("relative mb-4 h-40 overflow-hidden rounded-[11px] border md:h-44", styles.media)}>
+              <div className={cn("relative flex h-full flex-col rounded-[15px] p-5 md:p-5", styles.surface)}>
+                <div
+                  className={cn(
+                    "relative z-10 mb-4 overflow-hidden rounded-[11px] border",
+                    mediaHeightClass,
+                    styles.media
+                  )}
+                >
                   <Image
                     data-plan-media-image
                     src={imageSrc}
                     alt={offer.title}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1400px) 50vw, 25vw"
-                    className="object-cover grayscale contrast-[1.14] brightness-[0.78] transition-transform duration-[260ms] ease-[var(--ease-premium)] group-hover:scale-[1.05]"
+                    className={mediaImageClass}
                   />
+
                   <div className={cn("pointer-events-none absolute inset-0", styles.overlay)} />
-                  <div data-plan-media-overlay className="pointer-events-none absolute inset-0 bg-black/45" />
+                  <div data-plan-media-overlay className="pointer-events-none absolute inset-0 bg-black/38" />
 
                   <div className="absolute left-3 top-3 flex flex-wrap gap-2">
-                    <Badge className={cn("rounded-[8px] border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em]", styles.badge)}>
+                    <Badge
+                      className={cn(
+                        "rounded-[8px] border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em]",
+                        isPremium ? "badge-shimmer relative overflow-hidden" : "",
+                        styles.badge
+                      )}
+                    >
                       {offer.shortLabel}
                     </Badge>
                     {isTransformacion ? (
-                      <Badge className={cn("rounded-[8px] border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em]", styles.accentBadge)}>
-                        <Star className="size-3.5" />
+                      <Badge
+                        className={cn(
+                          "badge-shimmer relative overflow-hidden rounded-[999px] border bg-[linear-gradient(180deg,rgba(255,255,255,0.18)_0%,rgba(255,0,0,0.22)_26%,rgba(10,10,14,0.58)_100%)] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] shadow-[0_14px_24px_-18px_rgba(212,20,20,0.92)]",
+                          styles.accentBadge
+                        )}
+                      >
+                        <Flame className="size-3.5 text-[#ff2a2a]" />
                         Mas elegido
                       </Badge>
                     ) : null}
-                    {offer.badgeLabel && !isTransformacion ? (
-                      <Badge className={cn("rounded-[8px] border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em]", styles.accentBadge)}>
+                    {offer.badgeLabel && !isTransformacion && !duplicatedBadgeLabel ? (
+                      <Badge
+                        className={cn(
+                          "rounded-[8px] border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em]",
+                          isMentoria ? "badge-shimmer relative overflow-hidden" : "",
+                          styles.accentBadge
+                        )}
+                      >
                         {offer.badgeLabel}
                       </Badge>
                     ) : null}
                   </div>
 
-                  <span className="absolute right-3 top-3 inline-flex size-8 items-center justify-center rounded-[8px] border border-white/16 bg-black/38">
-                    <Icon className="size-4 text-white/86" />
+                  <span className={cn("absolute right-3 top-3 inline-flex size-8 items-center justify-center rounded-[8px] border", styles.iconWrap)}>
+                    <Icon className={cn("size-4", styles.iconColor)} />
                   </span>
                 </div>
 
                 <div data-plan-copy className="space-y-3.5">
-                  <h3 className={cn("text-[1.52rem] leading-[0.96] md:text-[1.72rem]", styles.title)}>{offer.title}</h3>
-                  <p className={cn("text-[0.92rem] font-medium leading-snug", styles.text)}>{offer.strapline}</p>
-                  <p className={cn("text-sm leading-relaxed", styles.text)}>{offer.pitch}</p>
+                  {isTransformacion ? (
+                    <div className="relative isolate space-y-1.5 before:pointer-events-none before:absolute before:-left-5 before:-top-6 before:h-24 before:w-44 before:rounded-full before:bg-[radial-gradient(circle_at_20%_10%,rgba(255,0,0,0.35),transparent_55%)] before:blur-[24px] before:opacity-90 before:content-['']">
+                      <h3 className="relative z-10 text-[1.6rem] font-black leading-[0.94] tracking-[0.04em] text-[#ff3b3b] md:text-[1.82rem]">
+                        TRANSFORMACION
+                      </h3>
+                      <p className="relative z-10 text-[0.95rem] font-semibold leading-tight text-white/92 md:text-[1.02rem]">
+                        90 dias para cambiar tu fisico
+                      </p>
+                    </div>
+                  ) : (
+                    <div
+                      className={cn(
+                        "space-y-1.5",
+                        isMentoria
+                          ? "relative isolate before:pointer-events-none before:absolute before:-right-4 before:-top-5 before:h-20 before:w-36 before:rounded-full before:bg-[radial-gradient(circle_at_80%_0%,rgba(255,200,80,0.3),transparent_55%)] before:blur-[24px] before:opacity-90 before:content-['']"
+                          : ""
+                      )}
+                    >
+                      <h3 className={cn("relative z-10 text-[1.52rem] leading-[0.96] md:text-[1.72rem]", styles.title)}>{offer.title}</h3>
+                      <p className={cn("line-clamp-2 text-[0.92rem] font-medium leading-snug", styles.text)}>{offer.strapline}</p>
+                    </div>
+                  )}
+                  <p className={cn("line-clamp-2 text-sm leading-relaxed", styles.text)}>{offer.pitch}</p>
 
                   {offer.surveyStatement ? (
-                    <p className="rounded-[10px] border border-primary/42 bg-primary/14 px-3 py-2 text-xs font-semibold tracking-[0.04em] text-white">
+                    <p className="line-clamp-2 rounded-[10px] border border-primary/42 bg-primary/14 px-3 py-2 text-xs font-semibold tracking-[0.04em] text-white">
                       {offer.surveyStatement}
                     </p>
                   ) : null}
 
                   <ul className="space-y-2.5">
-                    {offer.benefits.map((benefit) => (
+                    {visibleBenefits.map((benefit) => (
                       <li key={benefit} className="flex items-start gap-2.5 text-sm text-white/88">
                         <span className={cn("mt-0.5 inline-flex size-5 shrink-0 items-center justify-center rounded-[8px] border", styles.benefitIcon)}>
                           <Check className="size-3.5" />
                         </span>
-                        <span>{benefit}</span>
+                        <span className="line-clamp-1">{benefit}</span>
                       </li>
                     ))}
                   </ul>
+                  {offer.benefits.length > visibleBenefits.length ? (
+                    <p className="text-xs text-white/64">+{offer.benefits.length - visibleBenefits.length} puntos extra segun tu diagnostico.</p>
+                  ) : null}
 
                   <div className={cn("rounded-[11px] border px-3.5 py-3", styles.price)}>
                     <p className="text-[10px] uppercase tracking-[0.16em] text-white/68">Precio</p>
@@ -318,114 +346,52 @@ export function FeaturedPlans() {
         })}
       </div>
 
-      <div className="mt-8 rounded-[14px] border border-white/14 bg-[linear-gradient(145deg,#17181d_0%,#111217_100%)] p-3.5 md:p-4">
-        <div className="mb-3 flex items-center gap-2">
-          <Badge className="rounded-[8px] border border-primary/45 bg-primary/18 text-primary">Comparativa</Badge>
-          <p className="text-xs uppercase tracking-[0.14em] text-white/64">Inicio | Base | Transformacion | Mentoria</p>
-        </div>
-
-        <div className="relative">
-          <div
-            ref={comparisonViewportRef}
-            onScroll={scheduleComparisonMetricsUpdate}
-            className="w-full touch-pan-x overflow-x-auto overflow-y-hidden rounded-[12px] border border-white/12 bg-black/24 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
-            style={{ WebkitOverflowScrolling: "touch" }}
-          >
-            <table className="w-max min-w-[780px] border-separate border-spacing-0 text-sm md:min-w-[1040px]">
-              <thead>
-                <tr>
-                  <th className="sticky left-0 z-30 min-w-[176px] border-b border-r border-white/12 bg-[linear-gradient(150deg,#15161b_0%,#111217_100%)] px-4 py-3 text-left text-[11px] uppercase tracking-[0.1em] text-white/68">
-                    Caracteristica
-                  </th>
-                  {offers.map((offer) => {
-                    const styles = themeClasses[offer.theme];
-                    const isTransformacion = offer.slug === "programa-transformacion";
-
-                    return (
-                      <th
-                        key={`head-${offer.slug}`}
-                        className={cn(
-                          "min-w-[182px] border-b border-l border-white/12 px-4 py-3 text-left text-[11px] uppercase tracking-[0.1em]",
-                          styles.tableHead,
-                          isTransformacion ? "border-primary/50 shadow-[0_14px_24px_-16px_rgba(212,20,20,0.9)]" : ""
-                        )}
-                      >
-                        <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
-                          {offer.shortLabel}
-                          {isTransformacion ? (
-                            <span className="rounded-[6px] border border-primary/50 bg-primary/35 px-1.5 py-0.5 text-[9px]">
-                              Mas elegido
-                            </span>
-                          ) : null}
-                        </span>
-                      </th>
-                    );
-                  })}
-                </tr>
-              </thead>
-
-              <tbody>
-                {comparisonRows.map((row) => (
-                  <tr key={row.label}>
-                    <td className="sticky left-0 z-20 border-b border-r border-white/12 bg-[linear-gradient(145deg,#131419_0%,#101116_100%)] px-4 py-3.5 text-xs font-semibold uppercase tracking-[0.08em] text-white/78">
-                      {row.label}
-                    </td>
-
-                    {offers.map((offer) => {
-                      const styles = themeClasses[offer.theme];
-                      const isTransformacion = offer.slug === "programa-transformacion";
-                      return (
-                        <td
-                          key={`${row.label}-${offer.slug}`}
-                          className={cn(
-                            "border-b border-l border-white/12 px-4 py-3.5 text-sm",
-                            styles.tableCell,
-                            isTransformacion ? "border-primary/35 shadow-[0_18px_28px_-18px_rgba(212,20,20,0.85)]" : ""
-                          )}
-                        >
-                          {row.getter(offer)}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+      <div className="mt-7 rounded-[16px] border border-white/14 bg-[linear-gradient(145deg,#17181d_0%,#111217_100%)] p-4 md:p-5">
+        <div className="space-y-3.5">
+          <div className="flex items-center gap-2">
+            <Badge className="rounded-[8px] border border-primary/45 bg-primary/18 text-primary">Comparativa</Badge>
+            <p className="text-xs uppercase tracking-[0.12em] text-white/62">Sin scroll horizontal</p>
           </div>
 
-          <div
-            aria-hidden
-            className={cn(
-              "pointer-events-none absolute inset-y-0 left-0 w-6 bg-[linear-gradient(90deg,rgba(17,18,23,0.98)_0%,rgba(17,18,23,0)_100%)] transition-opacity duration-200",
-              comparisonProgress.hasOverflow && comparisonProgress.progress > 0.02 ? "opacity-100" : "opacity-0"
-            )}
-          />
-          <div
-            aria-hidden
-            className={cn(
-              "pointer-events-none absolute inset-y-0 right-0 w-6 bg-[linear-gradient(270deg,rgba(17,18,23,0.98)_0%,rgba(17,18,23,0)_100%)] transition-opacity duration-200",
-              comparisonProgress.hasOverflow && comparisonProgress.progress < 0.98 ? "opacity-100" : "opacity-0"
-            )}
-          />
+          <div className="grid grid-cols-2 gap-2.5 md:grid-cols-4">
+            {offers.map((offer) => {
+              const active = offer.slug === selectedComparisonOffer.slug;
+              const isTransformacion = offer.slug === "programa-transformacion";
+
+              return (
+                <button
+                  key={`compact-comparison-${offer.slug}`}
+                  type="button"
+                  onClick={() => setSelectedComparisonSlug(offer.slug)}
+                  className={cn(
+                    "h-10 rounded-[10px] border px-3 text-xs font-semibold uppercase tracking-[0.08em] transition-[border-color,background-color,color,box-shadow] duration-[220ms]",
+                    active
+                      ? "border-primary/68 bg-[linear-gradient(122deg,#8b0000_0%,#d41414_100%)] text-white shadow-[0_16px_28px_-20px_rgba(212,20,20,0.92)]"
+                      : "border-white/16 bg-black/28 text-white/76 hover:border-white/30 hover:text-white",
+                    isTransformacion && !active ? "border-primary/35 text-white/86" : ""
+                  )}
+                  aria-pressed={active}
+                >
+                  {offer.shortLabel}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
-        {comparisonProgress.hasOverflow ? (
-          <div className="mt-3 space-y-2">
-            {!comparisonProgress.hasInteracted ? (
-              <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-white/58 md:hidden">Desliza -&gt;</p>
-            ) : null}
+        <ul className="mt-4 space-y-2.5">
+          {comparisonRows.map((row) => (
+            <li
+              key={`compact-row-${row.label}`}
+              className="rounded-[11px] border border-white/12 bg-[linear-gradient(140deg,rgba(20,21,28,0.92)_0%,rgba(13,14,18,0.98)_100%)] px-4 py-3.5"
+            >
+              <p className="text-[11px] font-semibold uppercase tracking-[0.11em] text-white/56">{row.label}</p>
+              <p className="mt-1.5 text-sm font-medium text-white/90">{row.getter(selectedComparisonOffer)}</p>
+            </li>
+          ))}
+        </ul>
 
-            <div className="relative h-1.5 w-full overflow-hidden rounded-full bg-white/14">
-              <span
-                className="absolute top-0 h-full rounded-full bg-[linear-gradient(90deg,#8b0000_0%,#d41414_100%)] transition-transform duration-150 ease-linear"
-                style={{
-                  width: `${comparisonProgress.thumbWidth}%`,
-                  transform: `translateX(${comparisonProgress.progress * (100 - comparisonProgress.thumbWidth)}%)`,
-                }}
-              />
-            </div>
-          </div>
-        ) : null}
+        <p className="mt-4 text-[11px] text-white/58">Cambia de plan arriba para comparar en segundos.</p>
       </div>
     </SectionShell>
   );

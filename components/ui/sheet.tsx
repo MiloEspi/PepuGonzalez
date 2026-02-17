@@ -39,7 +39,7 @@ function SheetOverlay({
     <DialogPrimitive.Overlay
       data-slot="sheet-overlay"
       className={cn(
-        "fixed inset-0 z-[70] bg-black/72 backdrop-blur-[1px] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+        "fixed inset-0 z-[70] bg-[rgba(6,7,12,0.3)] backdrop-blur-[5px] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
         className
       )}
       {...props}
@@ -48,7 +48,7 @@ function SheetOverlay({
 }
 
 const sheetVariants = cva(
-  "fixed z-[80] flex flex-col gap-4 border-white/14 bg-[linear-gradient(150deg,#111216_0%,#0d0e12_100%)] p-5 shadow-[0_30px_54px_-28px_rgba(0,0,0,0.95)] duration-300 outline-none data-[state=open]:animate-in data-[state=closed]:animate-out",
+  "fixed z-[80] flex flex-col gap-4 border-white/14 bg-[rgba(10,10,15,0.66)] p-5 shadow-[0_32px_58px_-30px_rgba(0,0,0,0.95)] backdrop-blur-[20px] supports-[backdrop-filter]:bg-[rgba(10,10,15,0.56)] duration-300 outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0",
   {
     variants: {
       side: {
