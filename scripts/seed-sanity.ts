@@ -5,7 +5,7 @@ import { createReadStream } from "node:fs";
 import { loadEnvConfig } from "@next/env";
 import { createClient } from "@sanity/client";
 
-import { getStickyWhatsAppHref, offers } from "../data/offers";
+import { getOfferPrimaryHref, getStickyWhatsAppHref, offers } from "../data/offers";
 
 type SeedDocument = Record<string, unknown> & { _id: string; _type: string };
 
@@ -272,11 +272,20 @@ async function buildSeedDocuments(): Promise<SeedDocument[]> {
         tier,
         title: offer.title,
         subtitle: offer.strapline,
+        descriptionLong: offer.descriptionLong,
         priceARS: parseCurrencyValue(offer.priceArs),
         priceUSD: parseCurrencyValue(offer.priceUsd),
         durationLabel: offer.durationLabel,
         shortDesc: offer.pitch,
+        idealFor: offer.idealFor,
+        resultExpected: offer.resultExpected,
+        limits: offer.limits,
+        conversionFlow: offer.conversionFlow,
+        badgeLabel: offer.badgeLabel,
         features: ensureFeatureList(offer.benefits),
+        ctaLabel: offer.ctaLabel,
+        ctaType: offer.ctaType,
+        checkoutUrl: offer.ctaType === "checkout" ? getOfferPrimaryHref(offer) : undefined,
         image,
         isFeatured: Boolean(offer.featured),
       } satisfies SeedDocument;

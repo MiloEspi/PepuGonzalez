@@ -35,11 +35,20 @@ export type PlanDoc = {
   tier: "inicio" | "base" | "transformacion" | "mentoria";
   title: string;
   subtitle?: string;
+  descriptionLong?: string;
   priceARS: number;
   priceUSD?: number;
   durationLabel: string;
   shortDesc: string;
+  idealFor?: string;
+  resultExpected?: string;
+  limits?: string;
+  conversionFlow?: string;
+  badgeLabel?: string;
   features: string[];
+  ctaLabel?: string;
+  ctaType?: "checkout" | "lead";
+  checkoutUrl?: string;
   imageUrl: string;
   isFeatured?: boolean;
 };
@@ -93,11 +102,20 @@ export const PLANS_QUERY = `*[_type=="plan"]|order(tier asc){
   tier,
   title,
   subtitle,
+  descriptionLong,
   priceARS,
   priceUSD,
   durationLabel,
   shortDesc,
+  idealFor,
+  resultExpected,
+  limits,
+  conversionFlow,
+  badgeLabel,
   features,
+  ctaLabel,
+  ctaType,
+  checkoutUrl,
   "imageUrl": image.asset->url,
   isFeatured
 }`;

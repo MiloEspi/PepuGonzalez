@@ -2,11 +2,8 @@ import { PROGRAMAS, TABLA_COMPARATIVA, type ProgramaTier } from "@/data/programa
 
 export const WHATSAPP_NUMBER = "5492213619007";
 
-// Reemplazar por links reales de MercadoPago para fase productiva.
-export const PLAN_INICIO_MERCADOPAGO_URL =
-  "https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=PEPU-PROGRAMA-INICIO-001";
-export const PLAN_BASE_MERCADOPAGO_URL =
-  "https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=PEPU-PROGRAMA-BASE-001";
+export const PLAN_INICIO_MERCADOPAGO_URL = "https://mpago.la/2zWr5ch";
+export const PLAN_BASE_MERCADOPAGO_URL = "https://mpago.la/1zUeoxB";
 
 export type OfferSlug = "programa-inicio" | "programa-base" | "programa-transformacion" | "mentoria-1-1";
 export type OfferDetailSlug = "inicio" | "base" | "transformacion" | "mentoria";
@@ -42,6 +39,7 @@ export interface Offer {
   featuredTagline?: string;
   ctaLabel: string;
   ctaType: OfferCtaType;
+  checkoutUrl?: string;
   theme: OfferTheme;
   comparison: OfferComparison;
   badgeLabel?: string;
@@ -121,6 +119,12 @@ function getPitchFromDescription(descriptionLong: string): string {
   return lines.slice(0, 3).join(" ");
 }
 
+function getCheckoutUrlByTier(tier: ProgramaTier): string | undefined {
+  if (tier === "inicio") return PLAN_INICIO_MERCADOPAGO_URL;
+  if (tier === "base") return PLAN_BASE_MERCADOPAGO_URL;
+  return undefined;
+}
+
 export const offers: Offer[] = PROGRAMAS.map((programa) => {
   const slug = OFFER_SLUG_BY_TIER[programa.tier];
   return {
@@ -143,6 +147,7 @@ export const offers: Offer[] = PROGRAMAS.map((programa) => {
     featuredTagline: programa.conversionFlow,
     ctaLabel: programa.ctaLabel,
     ctaType: programa.tier === "inicio" || programa.tier === "base" ? "checkout" : "lead",
+    checkoutUrl: getCheckoutUrlByTier(programa.tier),
     theme: programa.tier,
     comparison: getComparisonByTier(programa.tier),
     badgeLabel: programa.badges?.[0],
@@ -206,8 +211,9 @@ export function getWhatsAppUrl(message: string): string {
 
 export function getOfferPrimaryHref(offer: Offer): string {
   if (offer.ctaType === "checkout") {
+    if (offer.checkoutUrl) return offer.checkoutUrl;
     if (offer.slug === "programa-inicio") return PLAN_INICIO_MERCADOPAGO_URL;
-    return PLAN_BASE_MERCADOPAGO_URL;
+    if (offer.slug === "programa-base") return PLAN_BASE_MERCADOPAGO_URL;
   }
 
   return getWhatsAppUrl(buildLeadMessage({ planTitle: offer.title }));
