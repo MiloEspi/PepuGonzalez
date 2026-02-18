@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { ArrowRight, Check, Crown, Flame, Rocket, ShieldCheck, type LucideIcon } from "lucide-react";
 
 import { AnimatedButton } from "@/components/AnimatedButton";
@@ -151,42 +151,43 @@ interface ComparisonOptionButtonProps {
   onSelect: (slug: (typeof offers)[number]["slug"]) => void;
 }
 
+function normalizePreviewText(value: string): string {
+  return value.replace(/\s+/g, " ").trim();
+}
+
+function truncateAtLogicalBoundary(value: string, maxChars: number, minChars = Math.floor(maxChars * 0.6)): string {
+  const normalized = normalizePreviewText(value);
+  if (!normalized) return "";
+  if (normalized.length <= maxChars) return normalized;
+
+  const candidate = normalized.slice(0, maxChars);
+  const sentenceBoundaryRegex = /[.!?](?=\s|$)/g;
+  const boundaries = [...candidate.matchAll(sentenceBoundaryRegex)];
+  const fallbackMin = Math.min(Math.max(minChars, 30), maxChars - 1);
+
+  for (let index = boundaries.length - 1; index >= 0; index -= 1) {
+    const boundaryIndex = (boundaries[index].index ?? 0) + 1;
+    if (boundaryIndex >= fallbackMin) {
+      const safeSentence = candidate.slice(0, boundaryIndex).trim().replace(/[.,;:!?]+$/g, "");
+      if (safeSentence) return `${safeSentence}...`;
+    }
+  }
+
+  const separatorPositions = [candidate.lastIndexOf(";"), candidate.lastIndexOf(","), candidate.lastIndexOf(" "), candidate.lastIndexOf("-")].filter(
+    (position) => position >= fallbackMin
+  );
+  const cutAt = separatorPositions.length ? Math.max(...separatorPositions) : maxChars;
+  const safeText = candidate.slice(0, cutAt).trim().replace(/[.,;:!?]+$/g, "");
+  return `${safeText || candidate.trim()}...`;
+}
+
 function TransformacionHeadline() {
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  const [hasMobileOverflow, setHasMobileOverflow] = useState(false);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const heading = headingRef.current;
-    if (!heading) return;
-
-    const measure = () => {
-      if (window.innerWidth >= 450) {
-        setHasMobileOverflow(false);
-        return;
-      }
-      setHasMobileOverflow(heading.scrollWidth > heading.clientWidth + 1);
-    };
-
-    measure();
-    window.addEventListener("resize", measure);
-
-    const resizeObserver = typeof ResizeObserver !== "undefined" ? new ResizeObserver(measure) : undefined;
-    resizeObserver?.observe(heading);
-
-    return () => {
-      window.removeEventListener("resize", measure);
-      resizeObserver?.disconnect();
-    };
-  }, []);
-
+  // Root cause: in <405px this title used ResizeObserver and oscillated between two sizes
+  // (overflow/no-overflow), triggering continuous relayout and scroll jitter in this section.
+  // Fix: static <405px classes + safe wrapping, without reactive self-measurement.
   return (
     <h3
-      ref={headingRef}
-      className={cn(
-        "relative z-10 text-[1.6rem] font-black leading-[0.94] tracking-[0.04em] text-[#ff3b3b] md:text-[1.82rem]",
-        hasMobileOverflow ? "origin-left scale-[0.95] text-[1.48rem]" : ""
-      )}
+      className="relative z-10 max-w-full text-[1.6rem] font-black leading-[0.94] tracking-[0.04em] text-[#ff3b3b] [overflow-wrap:anywhere] max-[404px]:text-[1.48rem] max-[404px]:tracking-[0.024em] md:text-[1.82rem]"
     >
       TRANSFORMACION
     </h3>
@@ -194,51 +195,22 @@ function TransformacionHeadline() {
 }
 
 function ComparisonOptionButton({ offer, active, onSelect }: ComparisonOptionButtonProps) {
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const [needsCompactLabel, setNeedsCompactLabel] = useState(false);
   const isTransformacion = offer.slug === "programa-transformacion";
-
-  useEffect(() => {
-    if (!isTransformacion || typeof window === "undefined") return;
-    const button = buttonRef.current;
-    if (!button) return;
-
-    const measure = () => {
-      if (window.innerWidth >= 450) {
-        setNeedsCompactLabel(false);
-        return;
-      }
-      setNeedsCompactLabel(button.scrollWidth > button.clientWidth + 1 || button.scrollHeight > button.clientHeight + 1);
-    };
-
-    measure();
-    window.addEventListener("resize", measure);
-
-    const resizeObserver = typeof ResizeObserver !== "undefined" ? new ResizeObserver(measure) : undefined;
-    resizeObserver?.observe(button);
-
-    return () => {
-      window.removeEventListener("resize", measure);
-      resizeObserver?.disconnect();
-    };
-  }, [isTransformacion]);
 
   return (
     <button
-      ref={buttonRef}
       type="button"
       onClick={() => onSelect(offer.slug)}
       className={cn(
-        "h-10 rounded-[10px] border px-3 text-xs font-semibold uppercase tracking-[0.08em] transition-[border-color,background-color,color,box-shadow,transform] duration-[220ms]",
+        "min-h-10 rounded-[10px] border px-2.5 py-2 text-center text-[0.68rem] font-semibold uppercase leading-tight tracking-[0.06em] whitespace-normal break-words transition-[border-color,background-color,color,box-shadow,transform] duration-[220ms] sm:px-3 sm:text-xs sm:tracking-[0.08em]",
         active
           ? "border-primary/68 bg-[linear-gradient(122deg,#8b0000_0%,#d41414_100%)] text-white shadow-[0_16px_28px_-20px_rgba(212,20,20,0.92)]"
           : "border-white/16 bg-black/28 text-white/76 hover:border-white/30 hover:text-white",
-        isTransformacion && !active ? "border-primary/35 text-white/86" : "",
-        isTransformacion && needsCompactLabel ? "origin-center scale-[0.95] text-[0.68rem] tracking-[0.04em]" : ""
+        isTransformacion && !active ? "border-primary/35 text-white/86" : ""
       )}
       aria-pressed={active}
     >
-      {offer.shortLabel}
+      <span className="block w-full">{offer.shortLabel}</span>
     </button>
   );
 }
@@ -298,6 +270,9 @@ export function FeaturedPlans({ plans }: FeaturedPlansProps) {
             mediaObjectPositionClass,
             mediaZoomClass
           );
+          const straplinePreview = truncateAtLogicalBoundary(offer.strapline, 82);
+          const pitchPreview = truncateAtLogicalBoundary(offer.pitch, 124);
+          const surveyStatementPreview = offer.surveyStatement ? truncateAtLogicalBoundary(offer.surveyStatement, 96) : undefined;
 
           return (
             <PlanCard
@@ -386,14 +361,14 @@ export function FeaturedPlans({ plans }: FeaturedPlansProps) {
                       )}
                     >
                       <h3 className={cn("relative z-10 text-[1.52rem] leading-[0.96] md:text-[1.72rem]", styles.title)}>{offer.title}</h3>
-                      <p className={cn("line-clamp-2 text-[0.92rem] font-medium leading-snug", styles.text)}>{offer.strapline}</p>
+                      <p className={cn("text-[0.92rem] font-medium leading-snug", styles.text)}>{straplinePreview || offer.strapline}</p>
                     </div>
                   )}
-                  <p className={cn("line-clamp-2 text-sm leading-relaxed", styles.text)}>{offer.pitch}</p>
+                  <p className={cn("text-sm leading-relaxed", styles.text)}>{pitchPreview || offer.pitch}</p>
 
-                  {offer.surveyStatement ? (
-                    <p className="line-clamp-2 rounded-[10px] border border-primary/42 bg-primary/14 px-3 py-2 text-xs font-semibold tracking-[0.04em] text-white">
-                      {offer.surveyStatement}
+                  {surveyStatementPreview ? (
+                    <p className="rounded-[10px] border border-primary/42 bg-primary/14 px-3 py-2 text-xs font-semibold tracking-[0.04em] text-white">
+                      {surveyStatementPreview}
                     </p>
                   ) : null}
 

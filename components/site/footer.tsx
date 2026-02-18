@@ -23,6 +23,7 @@ const socialIconByName: Record<string, { iconSrc: string; iconClassName?: string
   youtube: { iconSrc: "/social/youtube.png", iconClassName: "h-5 w-5" },
   kick: { iconSrc: "/social/kick.png", iconClassName: "h-5 w-5" },
 };
+const CONTACT_EMAIL = "pepugonzalez1@gmail.com";
 
 function normalizeSocialName(name: string): string {
   return name.trim().toLowerCase();
@@ -58,7 +59,7 @@ export function Footer({ content }: FooterProps) {
     activeSocialLinks.find((item) => normalizeSocialName(item.label) === "linkedin")?.href ??
     activeLegalLinks.find((item) => item.href.toLowerCase().includes("linkedin.com/in/"))?.href ??
     "https://www.linkedin.com/in/camilo-espinazo-b46a3832a/";
-  const email = content.email;
+  const email = CONTACT_EMAIL;
 
   return (
     <footer

@@ -102,6 +102,7 @@ export function TestimonialsSection({ results }: TestimonialsSectionProps) {
       title="Transformaciones reales"
       description="Cada caso muestra su antes y despues. Usa las flechas para ver cada proceso."
     >
+      {/* Causa raiz: combinacion de track con -ml/pl + padding del shell; sin min-w-0/max-w-full en el item de grid aparecia overflow horizontal y se sentia jank al scrollear sobre el carrusel. */}
       <Carousel
         setApi={setApi}
         opts={{
@@ -110,9 +111,9 @@ export function TestimonialsSection({ results }: TestimonialsSectionProps) {
           dragFree: false,
           slidesToScroll: 1,
         }}
-        className="relative w-full pb-4 [touch-action:pan-y] overscroll-x-contain"
+        className="relative w-full max-w-full min-w-0 overflow-x-clip pb-4 [touch-action:pan-y]"
       >
-        <CarouselContent className="-ml-2 pr-6">
+        <CarouselContent className="-ml-2 max-w-full pr-2 sm:pr-4">
           {testimonialsData.map((item) => (
             <CarouselItem
               key={item.id}

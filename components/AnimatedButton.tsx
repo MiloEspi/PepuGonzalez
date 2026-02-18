@@ -209,7 +209,7 @@ export function AnimatedButton(props: AnimatedButtonProps) {
         aria-hidden
         className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,26,26,0.28),transparent_72%)] opacity-16"
       />
-      <span ref={labelRef} className="relative z-10 inline-flex items-center gap-2">
+      <span ref={labelRef} data-button-label className="relative z-10 inline-flex min-w-0 items-center gap-2">
         {props.children}
       </span>
       <span ref={spinnerRef} className="pointer-events-none absolute inset-0 z-10 grid place-items-center opacity-0">

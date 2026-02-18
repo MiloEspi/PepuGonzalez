@@ -121,7 +121,7 @@ function Carousel({
     >
       <div
         onKeyDownCapture={handleKeyDown}
-        className={cn("relative", className)}
+        className={cn("relative max-w-full min-w-0", className)}
         role="region"
         aria-roledescription="carousel"
         data-slot="carousel"
@@ -139,7 +139,7 @@ function CarouselContent({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       ref={carouselRef}
-      className="overflow-hidden [touch-action:pan-y] overscroll-x-contain"
+      className="max-w-full min-w-0 overflow-hidden [touch-action:pan-y]"
       data-slot="carousel-content"
     >
       <div

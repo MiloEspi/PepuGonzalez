@@ -216,7 +216,7 @@ async function buildSeedDocuments(): Promise<SeedDocument[]> {
   const footerDoc: SeedDocument = {
     _id: "footer",
     _type: "footer",
-    email: "contacto@pepugonzalez.com",
+    email: "pepugonzalez1@gmail.com",
     socialLinks: [
       {
         _key: "instagram",

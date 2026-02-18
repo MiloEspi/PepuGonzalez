@@ -5,6 +5,7 @@ import { Navbar } from "@/components/Navbar";
 import { SvgFilters } from "@/components/SvgFilters";
 import { Footer } from "@/components/site/footer";
 import { MobileWhatsAppSticky } from "@/components/site/mobile-whatsapp-sticky";
+import { OverflowDebug } from "@/components/dev/overflow-debug";
 import { FOOTER_QUERY, SETTINGS_QUERY, sanityFetch, type FooterDoc, type SiteSettingsDoc } from "@/lib/sanity";
 import "./globals.css";
 
@@ -40,6 +41,7 @@ export default async function RootLayout({
     <html lang="es">
       <body className={`${headingFont.variable} ${bodyFont.variable} antialiased`}>
         <div className="relative min-h-screen bg-background pt-[var(--navbar-height)] text-foreground">
+          {process.env.NODE_ENV === "development" ? <OverflowDebug /> : null}
           <SvgFilters />
           <Navbar extraNavItems={settings.navItems} />
           {children}
