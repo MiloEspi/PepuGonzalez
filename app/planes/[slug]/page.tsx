@@ -1,159 +1,160 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Check } from "lucide-react";
+import { CheckCircle2, Dumbbell, Gauge, LineChart, ShieldCheck, Sparkles } from "lucide-react";
 
-import { AnimatedButton } from "@/components/AnimatedButton";
+import { WhatsAppButton } from "@/components/site/whatsapp-button";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
-import { PROGRAMAS, getProgramaBySlug } from "@/data/programas";
-import { getStickyWhatsAppHref } from "@/data/offers";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { GOAL_LABELS, LEVEL_LABELS, WHATSAPP_DIRECT_URL, getPlanBySlug, plans } from "@/data/plans";
 
 interface PlanDetailPageProps {
   params: Promise<{ slug: string }>;
 }
 
-export async function generateStaticParams() {
-  return PROGRAMAS.map((programa) => ({ slug: programa.slug }));
-}
+const includeIcons = [Dumbbell, Gauge, ShieldCheck, Sparkles, LineChart, CheckCircle2];
 
-export async function generateMetadata({ params }: PlanDetailPageProps): Promise<Metadata> {
-  const { slug } = await params;
-  const programa = getProgramaBySlug(slug);
-  if (!programa) return {};
-
-  return {
-    title: `${programa.title} – ${programa.subtitle} | Pepu Gonzalez`,
-    description: programa.descriptionLong.split("\n").filter(Boolean).slice(0, 2).join(" "),
-  };
-}
-
-function PriceDisplay({ ars, usd, note }: { ars?: string; usd?: string; note?: string }) {
+function EditorialDivider({ label }: { label: string }) {
   return (
-    <div className="rounded-[12px] border border-white/14 bg-black/30 px-4 py-3.5">
-      <p className="text-[10px] uppercase tracking-[0.15em] text-white/60">Precio</p>
-      <p className="mt-1 text-xl font-semibold text-white">
-        {ars ?? "Consultar ARS"}
-        <span className="px-2 text-white/38">|</span>
-        <span className="text-base font-medium text-white/86">{usd ?? "Consultar USD"}</span>
-      </p>
-      {note ? <p className="mt-1 text-xs text-white/70">{note}</p> : null}
+    <div className="mx-auto flex w-full max-w-6xl items-center gap-3 px-5">
+      <p className="shrink-0 text-xs font-semibold tracking-[0.18em] text-muted-foreground">{label}</p>
+      <Separator className="bg-border/80" />
     </div>
   );
 }
 
+export async function generateStaticParams() {
+  return plans.map((plan) => ({ slug: plan.slug }));
+}
+
+export async function generateMetadata({ params }: PlanDetailPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const plan = getPlanBySlug(slug);
+  if (!plan) return {};
+  return {
+    title: `${plan.title} | Pepu Gonzalez`,
+    description: plan.description,
+  };
+}
+
 export default async function PlanDetailPage({ params }: PlanDetailPageProps) {
   const { slug } = await params;
-  const programa = getProgramaBySlug(slug);
-  if (!programa) notFound();
+  const plan = getPlanBySlug(slug);
+  if (!plan) notFound();
+
+  const keyOutcomes = [
+    { label: "Frecuencia", value: `${plan.daysPerWeek} dias por semana` },
+    { label: "Nivel recomendado", value: LEVEL_LABELS[plan.level] },
+    { label: "Objetivo principal", value: GOAL_LABELS[plan.goal] },
+  ];
 
   return (
     <main className="pb-16 pt-6">
-      <section className="mx-auto w-full max-w-6xl px-5 py-8">
-        <Link href="/#planes" className="inline-flex items-center gap-2 text-sm text-white/70 hover:text-white">
-          <ArrowLeft className="size-4" />
-          Volver a Planes y Programas
+      <section className="mx-auto w-full max-w-6xl px-5 py-10">
+        <Link href="/planes" className="text-sm text-muted-foreground hover:text-foreground">
+          Volver a planes
         </Link>
 
-        <article className="mt-5 rounded-[18px] border border-white/14 bg-[linear-gradient(146deg,#17181d_0%,#101116_100%)] p-5 shadow-[0_34px_62px_-42px_rgba(0,0,0,0.95)] md:p-7">
+        <div className="mt-5 rounded-3xl border border-border/80 bg-card p-6 shadow-[0_22px_44px_-36px_rgba(0,0,0,0.92)] md:p-8">
           <div className="flex flex-wrap gap-2">
-            <Badge className="rounded-[9px] border border-white/18 bg-black/35 px-2.5 py-1 text-[10px] tracking-[0.11em] text-white/88">
-              {programa.title}
-            </Badge>
-            {programa.badges.map((badge) => (
-              <Badge
-                key={`${programa.slug}-${badge}`}
-                className="rounded-[999px] border border-primary/42 bg-primary/20 px-2.5 py-1 text-[10px] tracking-[0.11em] text-white"
-              >
-                {badge}
-              </Badge>
-            ))}
+            <Badge variant="secondary">{GOAL_LABELS[plan.goal]}</Badge>
+            <Badge variant="outline">{LEVEL_LABELS[plan.level]}</Badge>
+            <Badge variant="outline">{plan.daysPerWeek} dias por semana</Badge>
           </div>
 
-          <h1 className="mt-4 text-[2rem] font-black leading-[0.97] tracking-[0.03em] text-white md:text-[2.6rem]">{programa.subtitle}</h1>
+          <h1 className="mt-4 text-3xl font-semibold md:text-4xl">{plan.title}</h1>
+          <p className="mt-3 max-w-3xl text-base text-muted-foreground">{plan.description}</p>
+          <p className="mt-4 text-lg font-semibold text-foreground">{plan.priceLabel}</p>
 
-          {programa.limits ? (
-            <p className="mt-2 inline-flex rounded-[10px] border border-primary/44 bg-primary/16 px-3 py-1.5 text-xs font-medium text-white/92">{programa.limits}</p>
-          ) : null}
-
-          <div className="mt-5">
-            <PriceDisplay ars={programa.pricing.ars} usd={programa.pricing.usd} note={programa.pricing.note} />
+          <div className="mt-6 flex flex-wrap gap-3">
+            <WhatsAppButton href={WHATSAPP_DIRECT_URL}>Hablar por WhatsApp</WhatsAppButton>
+            <Button asChild variant="outline" className="rounded-full px-6">
+              <Link href="/#cuestionario">Encontra tu plan</Link>
+            </Button>
           </div>
-
-          <div className="mt-5 grid gap-2.5 sm:grid-cols-2">
-            <AnimatedButton
-              href={getStickyWhatsAppHref(programa.title)}
-              target="_blank"
-              rel="noreferrer"
-              className="h-11 w-full justify-between rounded-[10px] border border-primary/58 bg-[linear-gradient(120deg,#8b0000_0%,#d41414_100%)] px-4 text-[0.74rem] font-bold tracking-[0.1em] text-white"
-            >
-              <span>{programa.ctaLabel}</span>
-            </AnimatedButton>
-
-            <AnimatedButton
-              href="/#planes"
-              className="h-11 w-full justify-center rounded-[10px] border border-white/20 bg-white/10 px-4 text-[0.74rem] font-semibold tracking-[0.08em] text-white hover:bg-white/14"
-            >
-              Ver otros programas
-            </AnimatedButton>
-          </div>
-        </article>
+        </div>
       </section>
 
-      <section className="mx-auto grid w-full max-w-6xl gap-5 px-5">
-        <article className="rounded-[14px] border border-white/14 bg-[linear-gradient(146deg,#17181d_0%,#101116_100%)] p-5">
-          <h2 className="text-lg font-semibold text-white">Descripción persuasiva completa</h2>
-          <div className="mt-3 space-y-2.5 text-sm leading-relaxed text-white/84">
-            {programa.descriptionLong.split("\n").map((line, index) => (
-              <p key={`${programa.slug}-description-${index}`}>{line}</p>
-            ))}
-          </div>
-        </article>
+      <section className="mx-auto w-full max-w-6xl px-5">
+        <div className="grid gap-3 rounded-2xl border border-border/80 bg-secondary/40 p-5 md:grid-cols-3">
+          {keyOutcomes.map((item) => (
+            <article key={item.label} className="rounded-xl border border-border/75 bg-background/70 p-4">
+              <p className="text-xs font-semibold tracking-[0.14em] text-muted-foreground">{item.label}</p>
+              <p className="mt-2 font-heading text-lg font-semibold">{item.value}</p>
+            </article>
+          ))}
+        </div>
+      </section>
 
-        <article className="rounded-[14px] border border-white/14 bg-[linear-gradient(146deg,#17181d_0%,#101116_100%)] p-5">
-          <h2 className="text-lg font-semibold text-white">Incluye</h2>
-          <ul className="mt-3 space-y-2.5">
-            {programa.includes.map((item) => (
-              <li key={`${programa.slug}-include-${item}`} className="flex items-start gap-2.5 rounded-[10px] border border-white/12 bg-black/24 px-3 py-2.5 text-sm text-white/86">
-                <span className="mt-0.5 inline-flex size-5 shrink-0 items-center justify-center rounded-[7px] border border-primary/35 bg-primary/12 text-primary">
-                  <Check className="size-3.5" />
-                </span>
-                <span>{item}</span>
+      <section className="mt-10">
+        <EditorialDivider label="WHAT YOU GET" />
+      </section>
+
+      <section className="mx-auto mt-6 w-full max-w-6xl px-5">
+        <div className="grid gap-4 md:grid-cols-2">
+          {plan.includes.map((item, index) => {
+            const Icon = includeIcons[index % includeIcons.length];
+            return (
+              <article
+                key={item}
+                className="flex items-start gap-3 rounded-2xl border border-border/80 bg-card px-4 py-4 shadow-[0_14px_24px_-24px_rgba(0,0,0,0.86)]"
+              >
+                <div className="rounded-lg border border-primary/20 bg-primary/8 p-2">
+                  <Icon className="size-4 text-primary" />
+                </div>
+                <p className="text-sm text-muted-foreground">{item}</p>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className="mt-10">
+        <EditorialDivider label="FIT MATCH" />
+      </section>
+
+      <section className="mx-auto mt-6 grid w-full max-w-6xl gap-5 px-5 md:grid-cols-2">
+        <article className="rounded-2xl border border-primary/40 bg-primary/10 p-5">
+          <h2 className="text-lg font-semibold">Ideal para</h2>
+          <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
+            {plan.forWho.map((item) => (
+              <li key={item} className="rounded-lg border border-primary/25 bg-background/80 px-3 py-2">
+                {item}
               </li>
             ))}
           </ul>
         </article>
 
-        <article className="rounded-[14px] border border-white/14 bg-[linear-gradient(146deg,#17181d_0%,#101116_100%)] p-5">
-          <h2 className="text-lg font-semibold text-white">Ideal para</h2>
-          <p className="mt-3 text-sm leading-relaxed text-white/84">{programa.idealFor}</p>
+        <article className="rounded-2xl border border-destructive/35 bg-destructive/10 p-5">
+          <h2 className="text-lg font-semibold">No ideal para</h2>
+          <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
+            {plan.notFor.map((item) => (
+              <li key={item} className="rounded-lg border border-destructive/20 bg-background/80 px-3 py-2">
+                {item}
+              </li>
+            ))}
+          </ul>
         </article>
+      </section>
 
-        {programa.resultExpected ? (
-          <article className="rounded-[14px] border border-white/14 bg-[linear-gradient(146deg,#17181d_0%,#101116_100%)] p-5">
-            <h2 className="text-lg font-semibold text-white">Resultado esperado</h2>
-            <p className="mt-3 text-sm leading-relaxed text-white/84">{programa.resultExpected}</p>
-          </article>
-        ) : null}
+      <section className="mt-10">
+        <EditorialDivider label="FAQ" />
+      </section>
 
-        {programa.conversionFlow ? (
-          <article className="rounded-[14px] border border-white/14 bg-[linear-gradient(146deg,#17181d_0%,#101116_100%)] p-5">
-            <h2 className="text-lg font-semibold text-white">Flujo de conversión</h2>
-            <p className="mt-3 text-sm leading-relaxed text-white/84">{programa.conversionFlow}</p>
-          </article>
-        ) : null}
-
-        <article className="rounded-[14px] border border-primary/42 bg-[linear-gradient(146deg,rgba(122,14,14,0.32)_0%,rgba(26,9,11,0.9)_100%)] p-5">
-          <h2 className="text-lg font-semibold text-white">CTA final</h2>
-          <p className="mt-2 text-sm text-white/86">{programa.ctaLabel}</p>
-          <AnimatedButton
-            href={getStickyWhatsAppHref(programa.title)}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-4 h-11 w-full justify-between rounded-[10px] border border-primary/58 bg-[linear-gradient(120deg,#8b0000_0%,#d41414_100%)] px-4 text-[0.74rem] font-bold tracking-[0.1em] text-white sm:w-auto"
-          >
-            <span>{programa.ctaLabel}</span>
-          </AnimatedButton>
-        </article>
+      <section className="mx-auto mt-6 w-full max-w-6xl px-5">
+        <div className="rounded-2xl border border-border/80 bg-card px-6">
+          <h2 className="pt-6 text-2xl font-semibold">Preguntas frecuentes del plan</h2>
+          <Accordion type="single" collapsible className="mt-2">
+            {plan.faqs.map((faq, index) => (
+              <AccordionItem key={faq.question} value={`${plan.slug}-faq-${index}`}>
+                <AccordionTrigger className="text-base">{faq.question}</AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">{faq.answer}</AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
       </section>
     </main>
   );

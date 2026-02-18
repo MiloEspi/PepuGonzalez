@@ -8,19 +8,22 @@ import { TestimonialsSection } from "@/components/site/testimonials-section";
 import {
   ABOUT_QUERY,
   FAQ_QUERY,
+  PLANS_QUERY,
   RESULTS_QUERY,
   SETTINGS_QUERY,
   sanityFetch,
   type AboutDoc,
   type FaqDoc,
+  type PlanDoc,
   type ResultDoc,
   type SiteSettingsDoc,
 } from "@/lib/sanity";
 
 export default async function HomePage() {
-  const [settings, about, results, faqs] = await Promise.all([
+  const [settings, about, plans, results, faqs] = await Promise.all([
     sanityFetch<SiteSettingsDoc>(SETTINGS_QUERY),
     sanityFetch<AboutDoc>(ABOUT_QUERY),
+    sanityFetch<PlanDoc[]>(PLANS_QUERY),
     sanityFetch<ResultDoc[]>(RESULTS_QUERY),
     sanityFetch<FaqDoc[]>(FAQ_QUERY),
   ]);
@@ -30,7 +33,7 @@ export default async function HomePage() {
       <HeroSection content={settings} />
       <PlanFinderTeaser />
       <AboutSection content={about} />
-      <FeaturedPlans />
+      <FeaturedPlans plans={plans} />
       <TestimonialsSection results={results} />
       <FAQSection items={faqs} />
       <FinalCTA />
