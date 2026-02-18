@@ -1,24 +1,16 @@
 import type { Metadata } from "next";
 
-import { PlansCatalog } from "@/components/site/plans-catalog";
-import { SectionShell } from "@/components/site/section-shell";
+import { FeaturedPlans } from "@/components/site/featured-plans";
 
 export const metadata: Metadata = {
   title: "Planes | Pepu Gonzalez",
-  description: "Catalogo de planes personalizados para definicion, volumen y rendimiento.",
+  description: "Planes y programas de Pepu Gonzalez con detalle completo por nivel.",
 };
 
 export default function PlansPage() {
   return (
-    <main className="pb-16 pt-6">
-      <SectionShell
-        eyebrow="CATALOGO"
-        title="Planes de entrenamiento"
-        description="Filtra por objetivo, nivel y disponibilidad para encontrar el programa que mejor encaja con tu proceso."
-        className="pb-6"
-      >
-        <PlansCatalog />
-      </SectionShell>
+    <main className="pb-16 pt-6 md:pt-8">
+      <FeaturedPlans />
     </main>
   );
 }

@@ -7,8 +7,10 @@ import { SectionShell } from "@/components/site/section-shell";
 import { WhatsAppButton } from "@/components/site/whatsapp-button";
 import { Button } from "@/components/ui/button";
 import { getStickyWhatsAppHref } from "@/data/offers";
+import { PROGRAMAS, PROGRAMA_MAS_ELEGIDO_TIER } from "@/data/programas";
 
-const APPLY_LINK = getStickyWhatsAppHref("Programa Transformacion");
+const featuredProgram = PROGRAMAS.find((programa) => programa.tier === PROGRAMA_MAS_ELEGIDO_TIER);
+const APPLY_LINK = getStickyWhatsAppHref(featuredProgram?.title);
 
 export function FinalCTA() {
   return (
