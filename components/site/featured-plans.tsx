@@ -189,7 +189,7 @@ function TransformacionHeadline() {
     <h3
       className="relative z-10 max-w-full text-[1.6rem] font-black leading-[0.94] tracking-[0.04em] text-[#ff3b3b] [overflow-wrap:anywhere] max-[404px]:text-[1.48rem] max-[404px]:tracking-[0.024em] md:text-[1.82rem]"
     >
-      TRANSFORMACION
+      TRANSFORMACIÓN
     </h3>
   );
 }
@@ -229,7 +229,7 @@ export function FeaturedPlans({ plans }: FeaturedPlansProps) {
         id="planes"
         eyebrow="PLANES"
         title="No hay planes en Sanity"
-        description="Carga los documentos de tipo plan para mostrar esta seccion."
+        description="Carga los documentos de tipo plan para mostrar esta sección."
       >
         <div className="rounded-[12px] border border-white/14 bg-[linear-gradient(145deg,#17181d_0%,#111217_100%)] p-5">
           <p className="text-sm text-white/78">No se encontraron documentos de planes.</p>
@@ -243,11 +243,11 @@ export function FeaturedPlans({ plans }: FeaturedPlansProps) {
     <SectionShell
       id="planes"
       eyebrow="PLANES"
-      title="Elegi tu nivel de transformacion"
+      title="Elegí tu nivel de transformación"
       description="Cuatro niveles claros. Un solo objetivo: progreso real con estructura."
     >
       <article className="mb-5 rounded-[12px] border border-primary/35 bg-[linear-gradient(126deg,rgba(122,14,14,0.3)_0%,rgba(40,12,15,0.72)_100%)] px-4 py-3 text-sm text-white/86">
-        Cada nivel suma personalizacion y soporte. Transformacion y Mentoria concentran la experiencia premium completa.
+        Cada nivel suma personalización y soporte. Transformación y Mentoría concentran la experiencia premium completa.
       </article>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -383,7 +383,7 @@ export function FeaturedPlans({ plans }: FeaturedPlansProps) {
                     ))}
                   </ul>
                   {offer.benefits.length > visibleBenefits.length ? (
-                    <p className="text-xs text-white/64">+{offer.benefits.length - visibleBenefits.length} puntos extra segun tu diagnostico.</p>
+                    <p className="text-xs text-white/64">+{offer.benefits.length - visibleBenefits.length} puntos extra según tu diagnóstico.</p>
                   ) : null}
 
                   <div className={cn("rounded-[11px] border px-3.5 py-3", styles.price)}>
@@ -393,7 +393,7 @@ export function FeaturedPlans({ plans }: FeaturedPlansProps) {
                       <span className="px-2 text-white/40">|</span>
                       <span className="text-base font-medium text-white/86">{offer.priceUsd}</span>
                     </p>
-                    <p className="mt-1 text-xs text-white/72">Duracion: {offer.durationLabel}</p>
+                    <p className="mt-1 text-xs text-white/72">Duración: {offer.durationLabel}</p>
                   </div>
                 </div>
 

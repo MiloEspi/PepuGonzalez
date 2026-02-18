@@ -4,8 +4,8 @@ import { FeaturedPlans } from "@/components/site/featured-plans";
 import { PLANS_QUERY, sanityFetch, type PlanDoc } from "@/lib/sanity";
 
 export const metadata: Metadata = {
-  title: "Programas | Pepu Gonzalez",
-  description: "Planes y programas de Pepu Gonzalez.",
+  title: "Programas | Pepu González",
+  description: "Planes y programas de Pepu González.",
 };
 
 export default async function ProgramasPage() {

@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: ProgramaDetailPageProps): Pro
   const offer = catalogOffers.find((item) => item.slug === slug);
   if (!offer) return {};
   return {
-    title: `${offer.title} | Pepu Gonzalez`,
+    title: `${offer.title} | Pepu González`,
     description: offer.pitch,
   };
 }

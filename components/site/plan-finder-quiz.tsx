@@ -132,7 +132,7 @@ export function PlanFinderQuiz() {
       <Card className="overflow-hidden rounded-[16px] border-primary/35 bg-[linear-gradient(150deg,#1f080a_0%,#121217_54%,#0f0f13_100%)] shadow-[0_38px_70px_-44px_rgba(122,14,14,0.95)]">
         <CardHeader className="space-y-4 border-b border-white/12 pb-5">
           <Badge className="badge-shimmer w-fit border border-primary/55 bg-primary/90 px-3 py-1 text-[11px] uppercase tracking-[0.12em] text-primary-foreground">
-            Recomendacion final
+            Recomendación final
           </Badge>
 
           <div className="space-y-2">
@@ -214,7 +214,7 @@ export function PlanFinderQuiz() {
                 {getAnswerLabel("goal", answers.goal)}
               </p>
               <p className="rounded-[8px] border border-white/10 bg-black/28 px-2.5 py-2">
-                <span className="block text-[10px] uppercase tracking-[0.1em] text-white/52">Dias</span>
+                <span className="block text-[10px] uppercase tracking-[0.1em] text-white/52">Días</span>
                 {getAnswerLabel("daysPerWeek", answers.daysPerWeek)}
               </p>
               <p className="rounded-[8px] border border-white/10 bg-black/28 px-2.5 py-2">
@@ -257,7 +257,7 @@ export function PlanFinderQuiz() {
         <div className="flex items-start justify-between gap-3">
           <div className="space-y-2">
             <Badge className="w-fit rounded-[8px] border border-white/14 bg-black/32 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/85">
-              Encuesta estrategica
+              Encuesta estratégica
             </Badge>
             <p className="text-xs font-semibold tracking-[0.2em] text-primary/88">
               PASO {stepIndex + 1} DE {totalSteps}
@@ -328,7 +328,7 @@ export function PlanFinderQuiz() {
           disabled={typeof selectedValue === "undefined"}
           className="premium-cta group h-12 w-full max-w-[320px] rounded-[12px] border border-primary/46 bg-[linear-gradient(120deg,#8b0000_0%,#d41414_100%)] text-[0.78rem] font-bold tracking-[0.12em] shadow-[0_22px_34px_-20px_rgba(212,20,20,0.9)] disabled:border-white/20 disabled:bg-white/10 disabled:text-white/40"
         >
-          {stepIndex < totalSteps - 1 ? "SIGUIENTE" : "VER RECOMENDACION"}
+          {stepIndex < totalSteps - 1 ? "SIGUIENTE" : "VER RECOMENDACIÓN"}
           <ArrowRight className="premium-arrow size-4 transition-transform duration-200 group-hover:translate-x-1" />
         </Button>
       </CardFooter>

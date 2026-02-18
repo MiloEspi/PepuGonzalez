@@ -74,7 +74,7 @@ export function Footer({ content }: FooterProps) {
                 <span className="font-heading text-sm font-bold">PG</span>
               </div>
               <div>
-                <p className="font-heading text-[1.1rem] font-semibold tracking-[0.05em] text-foreground">Pepu Gonzalez</p>
+                <p className="font-heading text-[1.1rem] font-semibold tracking-[0.05em] text-foreground">Pepu González</p>
                 <p className="text-[11px] tracking-[0.2em] text-muted-foreground">COACHING</p>
               </div>
             </div>
@@ -154,7 +154,7 @@ export function Footer({ content }: FooterProps) {
               </span>
             </a>
 
-            <p className="text-xs text-muted-foreground/90">(c) 2026 Pepu Gonzalez. Todos los derechos reservados.</p>
+            <p className="text-xs text-muted-foreground/90">(c) 2026 Pepu González. Todos los derechos reservados.</p>
           </div>
         </div>
       </div>

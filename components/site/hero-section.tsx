@@ -146,7 +146,7 @@ export function HeroSection({ content }: HeroSectionProps) {
                 <Image
                   key={heroImages[imageIndex]}
                   src={heroImages[imageIndex]}
-                  alt="Pepu Gonzalez en entrenamiento"
+                  alt="Pepu González en entrenamiento"
                   fill
                   priority
                   sizes="100vw"

@@ -22,7 +22,7 @@ export function AboutSection({ content }: AboutSectionProps) {
         <div className="relative aspect-[4/5] w-full sm:aspect-[16/10]">
           <Image
             src={imageSrc}
-            alt="Pepu Gonzalez entrenando"
+            alt="Pepu González entrenando"
             fill
             sizes="(max-width: 768px) 100vw, 82vw"
             className="object-cover object-[center_18%] scale-[1.08]"
@@ -34,7 +34,7 @@ export function AboutSection({ content }: AboutSectionProps) {
               data-section-title
               className="section-shell-title inline-flex rounded-[10px] border border-white/14 bg-[rgba(8,9,12,0.52)] px-3 py-1.5 text-[0.88rem] font-bold uppercase tracking-[0.14em] text-white backdrop-blur-[8px] drop-shadow-[0_6px_14px_rgba(0,0,0,0.7)]"
             >
-              Sobre mi
+              Sobre mí
             </h2>
           </div>
         </div>

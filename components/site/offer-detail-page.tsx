@@ -96,7 +96,7 @@ export function OfferDetailPage({ offer }: OfferDetailPageProps) {
                   <span className="px-2 text-white/36">|</span>
                   <span className="text-lg font-semibold text-white/84 sm:text-xl">{offer.priceUsd}</span>
                 </p>
-                <p className="mt-2 text-xs font-medium uppercase tracking-[0.08em] text-white/74">Duracion: {offer.durationLabel}</p>
+                <p className="mt-2 text-xs font-medium uppercase tracking-[0.08em] text-white/74">Duración: {offer.durationLabel}</p>
                 {offer.pricingNote ? <p className="mt-1 text-xs text-white/70">{offer.pricingNote}</p> : null}
               </div>
 
@@ -115,8 +115,8 @@ export function OfferDetailPage({ offer }: OfferDetailPageProps) {
                 </WhatsAppButton>
                 <p className="text-[11px] text-white/58">
                   {isCheckoutPlan
-                    ? "Pago directo disponible para este plan. Si tenes dudas, escribi por WhatsApp."
-                    : "Este plan se activa por WhatsApp con mensaje predefinido para iniciar tu evaluacion."}
+                    ? "Pago directo disponible para este plan. Si tenés dudas, escribí por WhatsApp."
+                    : "Este plan se activa por WhatsApp con mensaje predefinido para iniciar tu evaluación."}
                 </p>
               </div>
             </div>

@@ -39,32 +39,32 @@ export interface QuizQuestion<T extends QuizQuestionId = QuizQuestionId> {
 export const QUIZ_GOAL_LABELS: Record<QuizGoal, string> = {
   "ganar-masa": "Ganar masa",
   "perder-grasa": "Perder grasa",
-  recomposicion: "Recomposicion",
+  recomposicion: "Recomposición",
   "mejorar-rendimiento": "Mejorar rendimiento",
 };
 
 export const QUIZ_TRAINING_EXPERIENCE_LABELS: Record<QuizTrainingExperience, string> = {
-  nunca: "Nunca entrene",
+  nunca: "Nunca entrené",
   "menos-6-meses": "Menos de 6 meses",
   "seis-meses-dos-años": "6 meses a 2 años",
-  "mas-2-años": "Mas de 2 años",
+  "mas-2-años": "Más de 2 años",
 };
 
 export const QUIZ_DAYS_LABELS: Record<QuizDaysPerWeek, string> = {
-  3: "3 dias",
-  4: "4 dias",
-  5: "5 dias",
-  6: "6 dias",
+  3: "3 días",
+  4: "4 días",
+  5: "5 días",
+  6: "6 días",
 };
 
 export const QUIZ_ROUTINE_STRUCTURE_LABELS: Record<QuizRoutineStructure, string> = {
   no: "No",
-  "mas-o-menos": "Mas o menos",
-  si: "Si",
+  "mas-o-menos": "Más o menos",
+  si: "Sí",
 };
 
 export const QUIZ_NUTRITION_LABELS: Record<QuizNutritionPlan, string> = {
-  si: "Plan nutricional: Si",
+  si: "Plan nutricional: Sí",
   no: "Plan nutricional: No",
 };
 
@@ -77,8 +77,8 @@ export const QUIZ_FOLLOW_UP_LABELS: Record<QuizFollowUp, string> = {
 export const QUIZ_COMMITMENT_LABELS: Record<QuizCommitment, string> = {
   "empezar-aprender": "Quiero empezar y aprender",
   "progresar-serio": "Quiero progresar en serio",
-  "cambio-fuerte-90": "Quiero un cambio fuerte en 90 dias",
-  "maximo-acompañamiento": "Quiero el maximo acompañamiento",
+  "cambio-fuerte-90": "Quiero un cambio fuerte en 90 días",
+  "maximo-acompañamiento": "Quiero el máximo acompañamiento",
 };
 
 export const QUIZ_ANSWER_LABELS: {
@@ -97,7 +97,7 @@ export const quizQuestions: QuizQuestion[] = [
   {
     id: "goal",
     title: "Objetivo principal",
-    subtitle: "Definimos la direccion principal del proceso.",
+    subtitle: "Definimos la dirección principal del proceso.",
     options: [
       { label: "Ganar masa", value: "ganar-masa" },
       { label: "Perder grasa", value: "perder-grasa" },
@@ -110,46 +110,46 @@ export const quizQuestions: QuizQuestion[] = [
     title: "Tiempo entrenando",
     subtitle: "Esto ajusta el nivel de complejidad inicial.",
     options: [
-      { label: "Nunca entrene", value: "nunca" },
+      { label: "Nunca entrené", value: "nunca" },
       { label: "Menos de 6 meses", value: "menos-6-meses" },
       { label: "6 meses a 2 años", value: "seis-meses-dos-años" },
-      { label: "Mas de 2 años", value: "mas-2-años" },
+      { label: "Más de 2 años", value: "mas-2-años" },
     ],
   },
   {
     id: "daysPerWeek",
-    title: "Dias disponibles",
+    title: "Días disponibles",
     subtitle: "Armamos el sistema sobre tu disponibilidad real.",
     options: [
-      { label: "3 dias", value: 3 },
-      { label: "4 dias", value: 4 },
-      { label: "5 dias", value: 5 },
-      { label: "6 dias", value: 6 },
+      { label: "3 días", value: 3 },
+      { label: "4 días", value: 4 },
+      { label: "5 días", value: 5 },
+      { label: "6 días", value: 6 },
     ],
   },
   {
     id: "routineStructure",
-    title: "Sabes estructurar rutina",
-    subtitle: "Detectamos cuanto soporte tecnico necesitas.",
+    title: "Sabés estructurar rutina",
+    subtitle: "Detectamos cuánto soporte técnico necesitas.",
     options: [
       { label: "No", value: "no" },
-      { label: "Mas o menos", value: "mas-o-menos" },
-      { label: "Si", value: "si" },
+      { label: "Más o menos", value: "mas-o-menos" },
+      { label: "Sí", value: "si" },
     ],
   },
   {
     id: "wantsNutritionPlan",
-    title: "Queres plan nutricional completo",
-    subtitle: "Sumamos nutricion completa solo si realmente la necesitas.",
+    title: "Querés plan nutricional completo",
+    subtitle: "Sumamos nutrición completa solo si realmente la necesitas.",
     options: [
-      { label: "Si", value: "si" },
+      { label: "Sí", value: "si" },
       { label: "No", value: "no" },
     ],
   },
   {
     id: "followUp",
-    title: "Queres seguimiento",
-    subtitle: "Defini la intensidad de acompañamiento que buscas.",
+    title: "Querés seguimiento",
+    subtitle: "Definí la intensidad de acompañamiento que buscas.",
     options: [
       { label: "No, solo el plan", value: "solo-plan" },
       { label: "Seguimiento mensual", value: "seguimiento-mensual" },
@@ -163,8 +163,8 @@ export const quizQuestions: QuizQuestion[] = [
     options: [
       { label: "Quiero empezar y aprender", value: "empezar-aprender" },
       { label: "Quiero progresar en serio", value: "progresar-serio" },
-      { label: "Quiero un cambio fuerte en 90 dias", value: "cambio-fuerte-90" },
-      { label: "Quiero el maximo acompañamiento", value: "maximo-acompañamiento" },
+      { label: "Quiero un cambio fuerte en 90 días", value: "cambio-fuerte-90" },
+      { label: "Quiero el máximo acompañamiento", value: "maximo-acompañamiento" },
     ],
   },
 ];

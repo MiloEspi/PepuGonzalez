@@ -8,7 +8,7 @@ import { WhatsAppButton } from "@/components/site/whatsapp-button";
 import { Button } from "@/components/ui/button";
 import { getStickyWhatsAppHref } from "@/data/offers";
 
-const APPLY_LINK = getStickyWhatsAppHref("Programa Transformacion");
+const APPLY_LINK = getStickyWhatsAppHref("Programa Transformación");
 
 export function FinalCTA() {
   return (
@@ -18,8 +18,8 @@ export function FinalCTA() {
       cardClassName="border-primary/36 bg-[linear-gradient(145deg,#7a0e0e_0%,#3f0f14_44%,#101116_100%)] shadow-[0_40px_78px_-42px_rgba(122,14,14,0.94)]"
       contentClassName="pt-1.5"
     >
-      <h2 className="text-[1.95rem] font-semibold leading-[0.95] text-white md:text-[2.5rem]">Tu transformacion arranca hoy.</h2>
-      <p className="max-w-3xl text-sm text-white/86 md:text-base">Elegi tu plan y empeza con una estrategia real, clara y sostenible.</p>
+      <h2 className="text-[1.95rem] font-semibold leading-[0.95] text-white md:text-[2.5rem]">Tu transformación arranca hoy.</h2>
+      <p className="max-w-3xl text-sm text-white/86 md:text-base">Elegí tu plan y empezá con una estrategia real, clara y sostenible.</p>
 
       <div className="grid gap-2.5 sm:grid-cols-2">
         <Button
@@ -38,7 +38,7 @@ export function FinalCTA() {
         </WhatsAppButton>
       </div>
 
-      <p className="text-xs text-white/72">Evaluacion rapida. Cupos limitados por programa.</p>
+      <p className="text-xs text-white/72">Evaluación rápida. Cupos limitados por programa.</p>
     </SectionShell>
   );
 }

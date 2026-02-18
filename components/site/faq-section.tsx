@@ -19,7 +19,7 @@ export function FAQSection({ items }: FAQSectionProps) {
         id="faq"
         eyebrow="FAQ"
         title="Preguntas clave antes de aplicar"
-        description="Carga documentos de tipo faq en Sanity para mostrar esta seccion."
+        description="Carga documentos de tipo faq en Sanity para mostrar esta sección."
       >
         <div className="rounded-[12px] border border-white/14 bg-[linear-gradient(145deg,#17181d_0%,#111217_100%)] p-5">
           <p className="text-sm text-white/78">No se encontraron preguntas frecuentes en Sanity.</p>

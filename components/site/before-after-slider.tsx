@@ -22,7 +22,7 @@ export function BeforeAfterSlider({
   beforeSrc,
   afterSrc,
   beforeAlt = "Antes",
-  afterAlt = "Despues",
+  afterAlt = "Después",
   className,
 }: BeforeAfterSliderProps) {
   const [position, setPosition] = useState(50);
@@ -64,7 +64,7 @@ export function BeforeAfterSlider({
         <Image src={afterSrc} alt={afterAlt} fill sizes="(max-width: 768px) 100vw, 60vw" className="object-cover object-center" onError={() => setAfterError(true)} />
       ) : (
         <div className="flex h-full items-center justify-center bg-[linear-gradient(135deg,#17181d_0%,#111217_100%)] px-5 text-center text-sm text-white/72">
-          Subi tu imagen final en {afterSrc}
+          Subí tu imagen final en {afterSrc}
         </div>
       )}
 
@@ -80,7 +80,7 @@ export function BeforeAfterSlider({
           />
         ) : (
           <div className="flex h-full items-center justify-center bg-[linear-gradient(135deg,#181119_0%,#101116_100%)] px-5 text-center text-sm text-white/72">
-            Subi tu imagen inicial en {beforeSrc}
+            Subí tu imagen inicial en {beforeSrc}
           </div>
         )}
       </div>
@@ -94,11 +94,11 @@ export function BeforeAfterSlider({
 
       <div className="pointer-events-none absolute inset-x-3 top-3 flex items-center justify-between text-[10px] font-semibold uppercase tracking-[0.12em] text-white/86">
         <span className="rounded-[7px] border border-white/22 bg-black/45 px-2 py-1">Antes</span>
-        <span className="rounded-[7px] border border-white/22 bg-black/45 px-2 py-1">Despues</span>
+        <span className="rounded-[7px] border border-white/22 bg-black/45 px-2 py-1">Después</span>
       </div>
 
       <label className="sr-only" htmlFor="about-before-after-range">
-        Slider antes y despues
+        Slider antes y después
       </label>
       <input
         id="about-before-after-range"

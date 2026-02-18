@@ -30,7 +30,7 @@ interface NavbarProps {
 
 const PRIMARY_NAV_ITEMS: PrimaryNavItem[] = [
   { id: "cuestionario", label: "Cuestionario" },
-  { id: "sobre-mi", label: "Sobre mi" },
+  { id: "sobre-mi", label: "Sobre mí" },
   { id: "planes", label: "Planes" },
 ];
 
@@ -297,10 +297,10 @@ export function Navbar({ extraNavItems }: NavbarProps) {
               onClick={handleBrandClick}
               className="min-w-0 truncate font-heading text-[1.12rem] font-extrabold tracking-[-0.02em] text-white/90 transition-colors duration-200 hover:text-white sm:text-[1.34rem]"
             >
-              Pepu Gonzalez
+              Pepu González
             </Link>
 
-            <nav aria-label="Navegacion principal" className="hidden md:block md:justify-self-center">
+            <nav aria-label="Navegación principal" className="hidden md:block md:justify-self-center">
               <ul className="flex items-center gap-2">{PRIMARY_NAV_ITEMS.map((item) => renderPrimaryItem(item, false))}</ul>
             </nav>
 
@@ -309,7 +309,7 @@ export function Navbar({ extraNavItems }: NavbarProps) {
                 <SheetTrigger asChild>
                   <button
                     type="button"
-                    aria-label={isMenuOpen ? "Cerrar menu" : "Abrir menu"}
+                    aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú"}
                     aria-expanded={isMenuOpen}
                     className="inline-flex size-9 items-center justify-center rounded-[9px] border border-white/14 bg-white/[0.06] text-white/88 transition-all duration-[220ms] ease-[var(--ease-premium)] hover:border-primary/36 hover:bg-white/[0.12] hover:text-white hover:shadow-[0_0_24px_-15px_rgba(212,20,20,0.92)]"
                   >
@@ -320,9 +320,9 @@ export function Navbar({ extraNavItems }: NavbarProps) {
 
               <SheetContent side="right" className="gap-5 px-4 pb-5 pt-9">
                 <SheetHeader className="space-y-1 border-b border-white/10 pb-4 pr-8">
-                  <SheetTitle className="font-heading text-[1.2rem] font-semibold tracking-[0.02em]">Navegacion</SheetTitle>
+                  <SheetTitle className="font-heading text-[1.2rem] font-semibold tracking-[0.02em]">Navegación</SheetTitle>
                   <SheetDescription className="text-xs uppercase tracking-[0.14em] text-white/58">
-                    Elegi una seccion para avanzar rapido
+                    Elegí una sección para avanzar rápido
                   </SheetDescription>
                 </SheetHeader>
 
@@ -365,7 +365,7 @@ export function Navbar({ extraNavItems }: NavbarProps) {
             </Sheet>
           </div>
 
-          <nav aria-label="Navegacion principal mobile" className="border-t border-white/[0.07] px-2 pb-2 pt-1.5 md:hidden">
+          <nav aria-label="Navegación principal mobile" className="border-t border-white/[0.07] px-2 pb-2 pt-1.5 md:hidden">
             <ul className="flex flex-wrap gap-1.5">{PRIMARY_NAV_ITEMS.map((item) => renderPrimaryItem(item, true))}</ul>
           </nav>
         </div>

@@ -186,7 +186,7 @@ export function buildLeadMessage(payload: WhatsAppLeadPayload = {}): string {
       "Apellido:",
       "",
       "---",
-      "Me contas los pasos para empezar?",
+      "¿Me contás los pasos para empezar?",
     ].join("\n");
   }
 
@@ -197,11 +197,11 @@ export function buildLeadMessage(payload: WhatsAppLeadPayload = {}): string {
     `Nombre: ${normalizeLeadValue(payload.firstName)}`,
     `Apellido: ${normalizeLeadValue(payload.lastName)}`,
     `Objetivo: ${normalizeLeadValue(payload.objective)}`,
-    `Dias de entrenamiento: ${normalizeLeadValue(payload.trainingDays)}`,
+    `Días de entrenamiento: ${normalizeLeadValue(payload.trainingDays)}`,
     `Experiencia: ${normalizeLeadValue(payload.experience)}`,
     "",
     "---",
-    "Me contas los pasos para empezar?",
+    "¿Me contás los pasos para empezar?",
   ].join("\n");
 }
 

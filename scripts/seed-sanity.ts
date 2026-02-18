@@ -59,71 +59,71 @@ const TIER_BY_OFFER_SLUG: Record<(typeof offers)[number]["slug"], PlanTier> = {
 const FAQ_ITEMS = [
   {
     order: 1,
-    question: "En cuanto tiempo voy a ver resultados?",
-    answer: "Si aplicas el sistema con consistencia, los primeros cambios suelen aparecer entre la semana 3 y la 5.",
+    question: "¿En cuánto tiempo voy a ver resultados?",
+    answer: "Si aplicás el sistema con consistencia, los primeros cambios suelen aparecer entre la semana 3 y la 5.",
   },
   {
     order: 2,
-    question: "Esto es para mi nivel?",
-    answer: "Si. El punto de partida cambia, pero el metodo se adapta para que progreses sin improvisar.",
+    question: "¿Esto es para mi nivel?",
+    answer: "Sí. El punto de partida cambia, pero el método se adapta para que progreses sin improvisar.",
   },
   {
     order: 3,
-    question: "Que pasa si no puedo cumplir todo perfecto?",
-    answer: "No busco perfeccion. Ajusto carga, volumen y frecuencia para que puedas sostener avance semana a semana.",
+    question: "¿Qué pasa si no puedo cumplir todo perfecto?",
+    answer: "No busco perfección. Ajusto carga, volumen y frecuencia para que puedas sostener avance semana a semana.",
   },
   {
     order: 4,
-    question: "Como se que esto va a funcionar?",
-    answer: "Porque no depende de motivacion. Hay plan, seguimiento y ajustes segun tu respuesta real.",
+    question: "¿Cómo sé que esto va a funcionar?",
+    answer: "Porque no depende de motivación. Hay plan, seguimiento y ajustes según tu respuesta real.",
   },
   {
     order: 5,
-    question: "Hay devoluciones?",
-    answer: "Se revisa caso por caso despues de la primera fase, segun cumplimiento y ejecucion del sistema.",
+    question: "¿Hay devoluciones?",
+    answer: "Se revisa caso por caso después de la primera fase, según cumplimiento y ejecución del sistema.",
   },
 ];
 
 const RESULT_ITEMS = [
   {
     id: "nico",
-    personName: "Nicolas M.",
-    testimonial: "Pase de entrenar sin direccion a tener estructura clara. Subi masa y mejore fuerza sin romper adherencia.",
+    personName: "Nicolás M.",
+    testimonial: "Pasé de entrenar sin dirección a tener estructura clara. Subí masa y mejoré fuerza sin romper adherencia.",
     resultMetric: "+8kg",
     durationLabel: "16 semanas",
     beforeImagePath: "/isi antes.jpeg",
     afterImagePath: "/isi despues.jpeg",
-    tagLabel: "TRANSFORMACION REAL",
+    tagLabel: "TRANSFORMACIÓN REAL",
   },
   {
     id: "lucia",
-    personName: "Lucia R.",
+    personName: "Lucía R.",
     testimonial: "Con seguimiento y plan ordenado pude sostener constancia real. El cambio visual en 3 meses fue gigante.",
     resultMetric: "-12kg",
-    durationLabel: "90 dias",
+    durationLabel: "90 días",
     beforeImagePath: "/isi antes.jpeg",
     afterImagePath: "/isi despues.jpeg",
-    tagLabel: "TRANSFORMACION REAL",
+    tagLabel: "TRANSFORMACIÓN REAL",
   },
   {
     id: "carla",
     personName: "Carla V.",
-    testimonial: "Entendi como progresar semana a semana. Mejor postura, mas energia y mucho mas control de mi entrenamiento.",
+    testimonial: "Entendí cómo progresar semana a semana. Mejor postura, más energía y mucho más control de mi entrenamiento.",
     resultMetric: "+5kg magros",
     durationLabel: "14 semanas",
     beforeImagePath: "/isi antes.jpeg",
     afterImagePath: "/isi despues.jpeg",
-    tagLabel: "TRANSFORMACION REAL",
+    tagLabel: "TRANSFORMACIÓN REAL",
   },
   {
     id: "franco",
     personName: "Franco A.",
-    testimonial: "Por primera vez deje de improvisar. El sistema fue simple de ejecutar y los resultados aparecieron rapido.",
+    testimonial: "Por primera vez dejé de improvisar. El sistema fue simple de ejecutar y los resultados aparecieron rápido.",
     resultMetric: "-9cm cintura",
     durationLabel: "12 semanas",
     beforeImagePath: "/isi antes.jpeg",
     afterImagePath: "/isi despues.jpeg",
-    tagLabel: "TRANSFORMACION REAL",
+    tagLabel: "TRANSFORMACIÓN REAL",
   },
 ];
 
@@ -189,13 +189,13 @@ async function buildSeedDocuments(): Promise<SeedDocument[]> {
   const siteSettingsDoc: SeedDocument = {
     _id: "siteSettings",
     _type: "siteSettings",
-    heroTitle: "Transforma tu fisico.\nConstrui tu mejor version.",
-    heroSubtitle: "Entrenamiento personalizado para fuerza, recomposicion y rendimiento.",
+    heroTitle: "Transforma tu físico.\nConstruí tu mejor versión.",
+    heroSubtitle: "Entrenamiento personalizado para fuerza, recomposición y rendimiento.",
     heroImage,
-    primaryCtaText: "Iniciar evaluacion",
+    primaryCtaText: "Iniciar evaluación",
     primaryCtaHref: "https://pepugonzalez.com/#cuestionario",
     whatsappCtaText: "Hablar por WhatsApp",
-    whatsappCtaHref: getStickyWhatsAppHref("Programa Transformacion"),
+    whatsappCtaHref: getStickyWhatsAppHref("Programa Transformación"),
     navItems: [
       { _key: "resultados", label: "Resultados", href: "#resultados" },
       { _key: "faq", label: "FAQ", href: "#faq" },
@@ -210,7 +210,7 @@ async function buildSeedDocuments(): Promise<SeedDocument[]> {
     headline: "De entrenar sin rumbo a construir un sistema",
     aboutImage,
     shortBio:
-      "Soy Pepu Gonzalez. Soy de La Plata, Argentina, y converti mi propio cambio fisico en un sistema claro que hoy aplico con mis alumnos. Trabajo con estructura, seguimiento y decisiones simples para que progreses de verdad, sin improvisar ni perder tiempo.",
+      "Soy Pepu González. Soy de La Plata, Argentina, y convertí mi propio cambio físico en un sistema claro que hoy aplico con mis alumnos. Trabajo con estructura, seguimiento y decisiones simples para que progreses de verdad, sin improvisar ni perder tiempo.",
   };
 
   const footerDoc: SeedDocument = {
@@ -247,12 +247,12 @@ async function buildSeedDocuments(): Promise<SeedDocument[]> {
     legalLinks: [
       {
         _key: "privacidad",
-        label: "Politica de privacidad",
+        label: "Política de privacidad",
         href: "https://pepugonzalez.com/politica-de-privacidad",
       },
       {
         _key: "terminos",
-        label: "Terminos y condiciones",
+        label: "Términos y condiciones",
         href: "https://pepugonzalez.com/terminos-y-condiciones",
       },
     ],

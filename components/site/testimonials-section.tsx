@@ -100,7 +100,7 @@ export function TestimonialsSection({ results }: TestimonialsSectionProps) {
       id="resultados"
       eyebrow="RESULTADOS"
       title="Transformaciones reales"
-      description="Cada caso muestra su antes y despues. Usa las flechas para ver cada proceso."
+      description="Cada caso muestra su antes y después. Usa las flechas para ver cada proceso."
     >
       {/* Causa raiz: combinacion de track con -ml/pl + padding del shell; sin min-w-0/max-w-full en el item de grid aparecia overflow horizontal y se sentia jank al scrollear sobre el carrusel. */}
       <Carousel
@@ -139,13 +139,13 @@ export function TestimonialsSection({ results }: TestimonialsSectionProps) {
                       <div className="relative h-full w-full overflow-hidden rounded-[10px]">
                         <Image
                           src={item.afterImage}
-                          alt={`Despues de ${item.name}`}
+                          alt={`Después de ${item.name}`}
                           fill
                           sizes="(max-width: 640px) 38vw, 140px"
                           className="object-cover object-center brightness-[0.94] contrast-[1.04] saturate-[1.08] transition-transform duration-[260ms] ease-[var(--ease-premium)] group-hover:scale-[1.04]"
                         />
                         <Badge className="absolute left-2 top-2 rounded-[999px] border border-primary/35 bg-[rgba(122,14,14,0.46)] px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.1em] text-white backdrop-blur-[8px]">
-                          DESPUES
+                          DESPUÉS
                         </Badge>
                       </div>
                     </div>
