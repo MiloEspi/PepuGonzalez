@@ -1,4 +1,4 @@
-import type { Offer, OfferComparison, OfferSlug, OfferTheme } from "@/data/offers";
+import { sortOffersByDisplayOrder, type Offer, type OfferComparison, type OfferSlug, type OfferTheme } from "@/data/offers";
 import type { PlanDoc } from "@/lib/sanity";
 
 type TierConfig = {
@@ -116,5 +116,5 @@ export function mapSanityPlansToOffers(plans: PlanDoc[]): Offer[] {
     if (!byTier.has(plan.tier)) byTier.set(plan.tier, plan);
   });
 
-  return Array.from(byTier.values()).map(buildOfferFromPlan);
+  return sortOffersByDisplayOrder(Array.from(byTier.values()).map(buildOfferFromPlan));
 }

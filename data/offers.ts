@@ -7,6 +7,7 @@ export const PLAN_BASE_MERCADOPAGO_URL =
   "https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=PEPU-PROGRAMA-BASE-001";
 
 export type OfferSlug = "programa-inicio" | "programa-base" | "programa-transformacion" | "mentoria-1-1";
+export type OfferDetailSlug = "inicio" | "base" | "transformacion" | "mentoria";
 export type OfferCtaType = "checkout" | "lead";
 export type OfferTheme = "inicio" | "base" | "transformacion" | "mentoria";
 
@@ -49,6 +50,22 @@ export interface WhatsAppLeadPayload {
   trainingDays?: string;
   experience?: string;
 }
+
+export const OFFER_DISPLAY_ORDER: OfferSlug[] = ["programa-inicio", "programa-base", "programa-transformacion", "mentoria-1-1"];
+
+const OFFER_DETAIL_SLUG_BY_OFFER_SLUG: Record<OfferSlug, OfferDetailSlug> = {
+  "programa-inicio": "inicio",
+  "programa-base": "base",
+  "programa-transformacion": "transformacion",
+  "mentoria-1-1": "mentoria",
+};
+
+const OFFER_SLUG_BY_DETAIL_SLUG: Record<OfferDetailSlug, OfferSlug> = {
+  inicio: "programa-inicio",
+  base: "programa-base",
+  transformacion: "programa-transformacion",
+  mentoria: "mentoria-1-1",
+};
 
 export const offers: Offer[] = [
   {
@@ -189,6 +206,11 @@ export const offers: Offer[] = [
   },
 ];
 
+export function sortOffersByDisplayOrder<T extends { slug: OfferSlug }>(items: T[]): T[] {
+  const orderRank = new Map(OFFER_DISPLAY_ORDER.map((slug, index) => [slug, index]));
+  return [...items].sort((a, b) => (orderRank.get(a.slug) ?? Number.MAX_SAFE_INTEGER) - (orderRank.get(b.slug) ?? Number.MAX_SAFE_INTEGER));
+}
+
 export function getOfferBySlug(slug: OfferSlug): Offer {
   const offer = offers.find((item) => item.slug === slug);
   if (!offer) {
@@ -247,5 +269,19 @@ export function getOfferPrimaryHref(offer: Offer): string {
 
 export function getStickyWhatsAppHref(selectedPlan?: string): string {
   return getWhatsAppUrl(buildLeadMessage({ planTitle: selectedPlan }));
+}
+
+export function getOfferDetailSlug(offerSlug: OfferSlug): OfferDetailSlug {
+  return OFFER_DETAIL_SLUG_BY_OFFER_SLUG[offerSlug];
+}
+
+export function getOfferDetailHref(offerSlug: OfferSlug): `/planes/${OfferDetailSlug}` {
+  return `/planes/${getOfferDetailSlug(offerSlug)}`;
+}
+
+export function getOfferByDetailSlug(detailSlug: string): Offer | undefined {
+  const offerSlug = OFFER_SLUG_BY_DETAIL_SLUG[detailSlug as OfferDetailSlug];
+  if (!offerSlug) return undefined;
+  return offers.find((offer) => offer.slug === offerSlug);
 }
 

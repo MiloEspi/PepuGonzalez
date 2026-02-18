@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Check, Crown, Flame, Rocket, ShieldCheck, type LucideIcon } from "lucide-react";
 
 import { AnimatedButton } from "@/components/AnimatedButton";
@@ -9,7 +9,7 @@ import { PlanCard } from "@/components/PlanCard";
 import { SectionShell } from "@/components/site/section-shell";
 import { WhatsAppButton } from "@/components/site/whatsapp-button";
 import { Badge } from "@/components/ui/badge";
-import { getOfferPrimaryHref, getStickyWhatsAppHref, offers } from "@/data/offers";
+import { getOfferDetailHref, getStickyWhatsAppHref, offers, sortOffersByDisplayOrder } from "@/data/offers";
 import { mapSanityPlansToOffers } from "@/lib/sanity-plan-mapper";
 import type { PlanDoc } from "@/lib/sanity";
 import { rememberSelectedPlan } from "@/lib/plan-interest";
@@ -43,7 +43,7 @@ const themeClasses: Record<OfferTheme, ThemeConfig> = {
       "border-[rgba(255,255,255,0.06)] bg-[linear-gradient(135deg,rgba(28,30,36,0.9)_0%,rgba(12,13,16,0.96)_100%)] shadow-[0_24px_46px_-36px_rgba(0,0,0,0.94)]",
     surface: "bg-[linear-gradient(146deg,#15171d_0%,#0f1013_100%)]",
     media: "border-[rgba(255,255,255,0.08)] bg-[linear-gradient(160deg,#282c34_0%,#181b22_100%)]",
-    overlay: "bg-[linear-gradient(180deg,rgba(0,0,0,0.14)_0%,rgba(0,0,0,0.54)_100%)]",
+    overlay: "bg-[linear-gradient(180deg,rgba(0,0,0,0.08)_0%,rgba(0,0,0,0.34)_100%)]",
     title: "text-white",
     text: "text-white/78",
     badge: "border-[rgba(255,255,255,0.18)] bg-black/48 text-white/84",
@@ -62,7 +62,7 @@ const themeClasses: Record<OfferTheme, ThemeConfig> = {
       "border-[rgba(255,255,255,0.09)] bg-[linear-gradient(135deg,rgba(255,255,255,0.06)_0%,rgba(0,0,0,0.9)_100%)] shadow-[0_24px_46px_-36px_rgba(0,0,0,0.94)] before:pointer-events-none before:absolute before:left-7 before:right-7 before:top-0 before:h-px before:content-[''] before:bg-[linear-gradient(90deg,transparent,rgba(255,0,0,0.42),transparent)]",
     surface: "bg-[linear-gradient(145deg,#17181f_0%,#101217_56%,#0f1014_100%)]",
     media: "border-[rgba(255,255,255,0.1)] bg-[linear-gradient(160deg,#2c3038_0%,#191c22_100%)]",
-    overlay: "bg-[linear-gradient(180deg,rgba(0,0,0,0.18)_0%,rgba(122,14,14,0.34)_100%)]",
+    overlay: "bg-[linear-gradient(180deg,rgba(0,0,0,0.1)_0%,rgba(122,14,14,0.2)_100%)]",
     title: "text-white",
     text: "text-white/82",
     badge: "border-[rgba(255,255,255,0.18)] bg-black/56 text-white/88",
@@ -81,7 +81,7 @@ const themeClasses: Record<OfferTheme, ThemeConfig> = {
       "border-[rgba(255,0,0,0.25)] bg-[linear-gradient(135deg,rgba(255,0,0,0.22)_0%,rgba(0,0,0,0.92)_60%)] shadow-[0_36px_68px_-36px_rgba(170,20,20,0.72)]",
     surface: "bg-[linear-gradient(152deg,rgba(34,7,9,0.92)_0%,rgba(12,12,14,0.98)_70%)]",
     media: "border-[rgba(255,0,0,0.36)] bg-[linear-gradient(170deg,#2d2427_0%,#17151a_100%)]",
-    overlay: "bg-[linear-gradient(180deg,rgba(0,0,0,0.18)_0%,rgba(120,10,10,0.64)_100%)]",
+    overlay: "bg-[linear-gradient(180deg,rgba(0,0,0,0.1)_0%,rgba(120,10,10,0.28)_100%)]",
     title: "text-[#ff4d4d]",
     text: "text-white/88",
     badge: "border-[rgba(255,0,0,0.42)] bg-[rgba(35,8,10,0.56)] text-white/96 backdrop-blur-[8px]",
@@ -100,7 +100,7 @@ const themeClasses: Record<OfferTheme, ThemeConfig> = {
       "border-[rgba(255,200,80,0.28)] bg-[linear-gradient(135deg,rgba(255,200,80,0.18)_0%,rgba(0,0,0,0.92)_60%)] shadow-[0_34px_66px_-38px_rgba(190,146,64,0.62)] before:pointer-events-none before:absolute before:-top-10 before:-right-8 before:size-40 before:content-[''] before:bg-[radial-gradient(circle_at_80%_0%,rgba(255,200,80,0.3),transparent_55%)] before:blur-[24px] before:opacity-80",
     surface: "bg-[linear-gradient(146deg,#14110d_0%,#111216_52%,#0c0c0f_100%)]",
     media: "border-[rgba(255,200,80,0.4)] bg-[linear-gradient(165deg,#31291d_0%,#19140e_100%)]",
-    overlay: "bg-[linear-gradient(180deg,rgba(0,0,0,0.18)_0%,rgba(145,104,40,0.44)_100%)]",
+    overlay: "bg-[linear-gradient(180deg,rgba(0,0,0,0.1)_0%,rgba(145,104,40,0.24)_100%)]",
     title: "text-[#f6e8c3]",
     text: "text-white/86",
     badge: "border-[rgba(255,200,80,0.38)] bg-[rgba(62,44,18,0.48)] text-[#f7e0a7] backdrop-blur-[8px]",
@@ -135,18 +135,116 @@ const mediaObjectPositionBySlug: Partial<Record<(typeof offers)[number]["slug"],
 };
 
 const mediaZoomBySlug: Partial<Record<(typeof offers)[number]["slug"], string>> = {
-  "programa-inicio": "scale-[1.03] group-hover:scale-[1.08]",
-  "programa-base": "scale-[1.03] group-hover:scale-[1.08]",
-  "programa-transformacion": "scale-[1.1] group-hover:scale-[1.15]",
-  "mentoria-1-1": "scale-[1.1] group-hover:scale-[1.15]",
+  "programa-inicio": "scale-[1.01] group-hover:scale-[1.03]",
+  "programa-base": "scale-[1.01] group-hover:scale-[1.03]",
+  "programa-transformacion": "scale-[1.03] group-hover:scale-[1.05]",
+  "mentoria-1-1": "scale-[1.03] group-hover:scale-[1.05]",
 };
 
 interface FeaturedPlansProps {
   plans: PlanDoc[];
 }
 
+interface ComparisonOptionButtonProps {
+  offer: (typeof offers)[number];
+  active: boolean;
+  onSelect: (slug: (typeof offers)[number]["slug"]) => void;
+}
+
+function TransformacionHeadline() {
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const [hasMobileOverflow, setHasMobileOverflow] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const heading = headingRef.current;
+    if (!heading) return;
+
+    const measure = () => {
+      if (window.innerWidth >= 450) {
+        setHasMobileOverflow(false);
+        return;
+      }
+      setHasMobileOverflow(heading.scrollWidth > heading.clientWidth + 1);
+    };
+
+    measure();
+    window.addEventListener("resize", measure);
+
+    const resizeObserver = typeof ResizeObserver !== "undefined" ? new ResizeObserver(measure) : undefined;
+    resizeObserver?.observe(heading);
+
+    return () => {
+      window.removeEventListener("resize", measure);
+      resizeObserver?.disconnect();
+    };
+  }, []);
+
+  return (
+    <h3
+      ref={headingRef}
+      className={cn(
+        "relative z-10 text-[1.6rem] font-black leading-[0.94] tracking-[0.04em] text-[#ff3b3b] md:text-[1.82rem]",
+        hasMobileOverflow ? "origin-left scale-[0.95] text-[1.48rem]" : ""
+      )}
+    >
+      TRANSFORMACION
+    </h3>
+  );
+}
+
+function ComparisonOptionButton({ offer, active, onSelect }: ComparisonOptionButtonProps) {
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const [needsCompactLabel, setNeedsCompactLabel] = useState(false);
+  const isTransformacion = offer.slug === "programa-transformacion";
+
+  useEffect(() => {
+    if (!isTransformacion || typeof window === "undefined") return;
+    const button = buttonRef.current;
+    if (!button) return;
+
+    const measure = () => {
+      if (window.innerWidth >= 450) {
+        setNeedsCompactLabel(false);
+        return;
+      }
+      setNeedsCompactLabel(button.scrollWidth > button.clientWidth + 1 || button.scrollHeight > button.clientHeight + 1);
+    };
+
+    measure();
+    window.addEventListener("resize", measure);
+
+    const resizeObserver = typeof ResizeObserver !== "undefined" ? new ResizeObserver(measure) : undefined;
+    resizeObserver?.observe(button);
+
+    return () => {
+      window.removeEventListener("resize", measure);
+      resizeObserver?.disconnect();
+    };
+  }, [isTransformacion]);
+
+  return (
+    <button
+      ref={buttonRef}
+      type="button"
+      onClick={() => onSelect(offer.slug)}
+      className={cn(
+        "h-10 rounded-[10px] border px-3 text-xs font-semibold uppercase tracking-[0.08em] transition-[border-color,background-color,color,box-shadow,transform] duration-[220ms]",
+        active
+          ? "border-primary/68 bg-[linear-gradient(122deg,#8b0000_0%,#d41414_100%)] text-white shadow-[0_16px_28px_-20px_rgba(212,20,20,0.92)]"
+          : "border-white/16 bg-black/28 text-white/76 hover:border-white/30 hover:text-white",
+        isTransformacion && !active ? "border-primary/35 text-white/86" : "",
+        isTransformacion && needsCompactLabel ? "origin-center scale-[0.95] text-[0.68rem] tracking-[0.04em]" : ""
+      )}
+      aria-pressed={active}
+    >
+      {offer.shortLabel}
+    </button>
+  );
+}
+
 export function FeaturedPlans({ plans }: FeaturedPlansProps) {
-  const catalogOffers = mapSanityPlansToOffers(plans);
+  const catalogOffers = sortOffersByDisplayOrder(mapSanityPlansToOffers(plans));
   const initialComparisonSlug =
     catalogOffers.find((offer) => offer.slug === "programa-transformacion")?.slug ??
     catalogOffers.find((offer) => offer.featured)?.slug ??
@@ -194,9 +292,9 @@ export function FeaturedPlans({ plans }: FeaturedPlansProps) {
             typeof offer.badgeLabel === "string" && offer.badgeLabel.toLowerCase().trim() === offer.shortLabel.toLowerCase().trim();
           const mediaHeightClass = isPremium ? "h-[200px] md:h-[212px]" : "h-[160px] md:h-[180px]";
           const mediaObjectPositionClass = mediaObjectPositionBySlug[offer.slug] ?? "object-[center_20%]";
-          const mediaZoomClass = mediaZoomBySlug[offer.slug] ?? "scale-[1.02] group-hover:scale-[1.06]";
+          const mediaZoomClass = mediaZoomBySlug[offer.slug] ?? "scale-[1.01] group-hover:scale-[1.04]";
           const mediaImageClass = cn(
-            "object-cover brightness-[0.92] saturate-[1.06] transition-transform duration-[260ms] ease-[var(--ease-premium)]",
+            "object-cover brightness-[0.97] saturate-[1.02] transition-transform duration-[260ms] ease-[var(--ease-premium)]",
             mediaObjectPositionClass,
             mediaZoomClass
           );
@@ -231,7 +329,7 @@ export function FeaturedPlans({ plans }: FeaturedPlansProps) {
                   />
 
                   <div className={cn("pointer-events-none absolute inset-0", styles.overlay)} />
-                  <div data-plan-media-overlay className="pointer-events-none absolute inset-0 bg-black/38" />
+                  <div data-plan-media-overlay className="pointer-events-none absolute inset-0 bg-black/18" />
 
                   <div className="absolute left-3 top-3 flex flex-wrap gap-2">
                     <Badge
@@ -275,9 +373,7 @@ export function FeaturedPlans({ plans }: FeaturedPlansProps) {
                 <div data-plan-copy className="space-y-3.5">
                   {isTransformacion ? (
                     <div className="relative isolate space-y-1.5 before:pointer-events-none before:absolute before:-left-5 before:-top-6 before:h-24 before:w-44 before:rounded-full before:bg-[radial-gradient(circle_at_20%_10%,rgba(255,0,0,0.35),transparent_55%)] before:blur-[24px] before:opacity-90 before:content-['']">
-                      <h3 className="relative z-10 text-[1.6rem] font-black leading-[0.94] tracking-[0.04em] text-[#ff3b3b] md:text-[1.82rem]">
-                        TRANSFORMACION
-                      </h3>
+                      <TransformacionHeadline />
                       <p className="relative z-10 text-[0.95rem] font-semibold leading-tight text-white/92 md:text-[1.02rem]">
                         90 dias para cambiar tu fisico
                       </p>
@@ -329,9 +425,7 @@ export function FeaturedPlans({ plans }: FeaturedPlansProps) {
                 </div>
 
                 <AnimatedButton
-                  href={getOfferPrimaryHref(offer)}
-                  target="_blank"
-                  rel="noreferrer"
+                  href={getOfferDetailHref(offer.slug)}
                   className={cn("premium-cta mt-4 h-11 w-full justify-between rounded-[10px] px-4 text-[0.69rem] font-bold tracking-[0.1em]", styles.cta)}
                   onClick={() => rememberSelectedPlan(offer.title)}
                 >
@@ -358,25 +452,7 @@ export function FeaturedPlans({ plans }: FeaturedPlansProps) {
           <div className="grid grid-cols-2 gap-2.5 md:grid-cols-4">
             {catalogOffers.map((offer) => {
               const active = offer.slug === selectedComparisonOffer.slug;
-              const isTransformacion = offer.slug === "programa-transformacion";
-
-              return (
-                <button
-                  key={`compact-comparison-${offer.slug}`}
-                  type="button"
-                  onClick={() => setSelectedComparisonSlug(offer.slug)}
-                  className={cn(
-                    "h-10 rounded-[10px] border px-3 text-xs font-semibold uppercase tracking-[0.08em] transition-[border-color,background-color,color,box-shadow] duration-[220ms]",
-                    active
-                      ? "border-primary/68 bg-[linear-gradient(122deg,#8b0000_0%,#d41414_100%)] text-white shadow-[0_16px_28px_-20px_rgba(212,20,20,0.92)]"
-                      : "border-white/16 bg-black/28 text-white/76 hover:border-white/30 hover:text-white",
-                    isTransformacion && !active ? "border-primary/35 text-white/86" : ""
-                  )}
-                  aria-pressed={active}
-                >
-                  {offer.shortLabel}
-                </button>
-              );
+              return <ComparisonOptionButton key={`compact-comparison-${offer.slug}`} offer={offer} active={active} onSelect={setSelectedComparisonSlug} />;
             })}
           </div>
         </div>

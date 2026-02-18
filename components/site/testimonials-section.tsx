@@ -1,15 +1,14 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
   type CarouselApi,
 } from "@/components/ui/carousel";
 import { SectionShell } from "@/components/site/section-shell";
@@ -43,21 +42,43 @@ export function TestimonialsSection({ results }: TestimonialsSectionProps) {
     tagLabel: item.tagLabel,
   }));
   const [api, setApi] = useState<CarouselApi>();
-  const [selectedSnap, setSelectedSnap] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const snapCount = api?.scrollSnapList().length ?? testimonialsData.length;
+  const maxIndex = Math.max(snapCount - 1, 0);
+  const clampIndex = useCallback((index: number) => Math.min(Math.max(index, 0), maxIndex), [maxIndex]);
+
+  const goToIndex = useCallback((index: number) => {
+    api?.scrollTo(clampIndex(index));
+  }, [api, clampIndex]);
+
+  const goToPrev = useCallback(() => {
+    api?.scrollTo(clampIndex(activeIndex - 1));
+  }, [api, activeIndex, clampIndex]);
+
+  const goToNext = useCallback(() => {
+    api?.scrollTo(clampIndex(activeIndex + 1));
+  }, [api, activeIndex, clampIndex]);
 
   useEffect(() => {
     if (!api) return;
 
-    const handleSelect = () => setSelectedSnap(api.selectedScrollSnap());
-    handleSelect();
-    api.on("select", handleSelect);
-    api.on("reInit", handleSelect);
+    const onSelect = () => {
+      const safeMaxIndex = Math.max(api.scrollSnapList().length - 1, 0);
+      setActiveIndex(Math.min(api.selectedScrollSnap(), safeMaxIndex));
+    };
+
+    onSelect();
+    api.on("select", onSelect);
+    api.on("reInit", onSelect);
 
     return () => {
-      api.off("select", handleSelect);
-      api.off("reInit", handleSelect);
+      api.off("select", onSelect);
+      api.off("reInit", onSelect);
     };
   }, [api]);
+
+  const isPrevDisabled = activeIndex <= 0;
+  const isNextDisabled = activeIndex >= maxIndex;
 
   if (!testimonialsData.length) {
     return (
@@ -79,17 +100,25 @@ export function TestimonialsSection({ results }: TestimonialsSectionProps) {
       id="resultados"
       eyebrow="RESULTADOS"
       title="Transformaciones reales"
-      description="Cada caso muestra su antes y despues. Desliza para ver cada proceso."
+      description="Cada caso muestra su antes y despues. Usa las flechas para ver cada proceso."
     >
       <Carousel
         setApi={setApi}
-        opts={{ align: "start", containScroll: "trimSnaps" }}
-        className="w-full pb-16"
+        opts={{
+          align: "start",
+          containScroll: false,
+          dragFree: false,
+          slidesToScroll: 1,
+        }}
+        className="relative w-full pb-4 [touch-action:pan-y] overscroll-x-contain"
       >
-        <CarouselContent className="-ml-3">
+        <CarouselContent className="-ml-2 pr-6">
           {testimonialsData.map((item) => (
-            <CarouselItem key={item.id} className="basis-auto pl-3">
-              <article className="group flex h-full w-[min(82vw,18.5rem)] flex-col overflow-hidden rounded-[14px] border border-white/14 bg-[linear-gradient(150deg,#17181e_0%,#101116_100%)] shadow-[0_30px_58px_-38px_rgba(0,0,0,0.95)] transition-[transform,box-shadow] duration-[240ms] ease-[var(--ease-premium)] hover:-translate-y-1 hover:shadow-[0_36px_62px_-34px_rgba(122,14,14,0.84)]">
+            <CarouselItem
+              key={item.id}
+              className="basis-[74%] max-w-[74vw] pl-2 sm:basis-[68%] md:basis-[18.5rem] md:max-w-[18.5rem]"
+            >
+              <article className="group flex h-full w-full max-w-none flex-col overflow-hidden rounded-[14px] border border-white/14 bg-[linear-gradient(150deg,#17181e_0%,#101116_100%)] shadow-[0_30px_58px_-38px_rgba(0,0,0,0.95)] transition-[transform,box-shadow] duration-[240ms] ease-[var(--ease-premium)] hover:-translate-y-1 hover:shadow-[0_36px_62px_-34px_rgba(122,14,14,0.84)]">
                 <div className="w-full overflow-hidden border-b border-white/10">
                   <div className="relative aspect-[4/3] w-full p-2.5">
                     <div className="grid h-full w-full grid-cols-2 gap-2.5">
@@ -146,20 +175,38 @@ export function TestimonialsSection({ results }: TestimonialsSectionProps) {
           ))}
         </CarouselContent>
 
-        <CarouselPrevious className="z-30 !bottom-4 !left-auto !right-[4.25rem] !top-auto !size-11 !translate-x-0 !translate-y-0 rounded-[12px] border-white/24 bg-[rgba(8,10,14,0.64)] text-white backdrop-blur-[10px] transition-[transform,border-color,background-color,opacity] duration-[220ms] hover:border-primary/42 hover:bg-primary/16 disabled:opacity-45" />
-        <CarouselNext className="z-30 !bottom-4 !right-4 !top-auto !size-11 !translate-x-0 !translate-y-0 rounded-[12px] border-white/24 bg-[rgba(8,10,14,0.64)] text-white backdrop-blur-[10px] transition-[transform,border-color,background-color,opacity] duration-[220ms] hover:border-primary/42 hover:bg-primary/16 disabled:opacity-45" />
+        <div className="mt-4 relative flex min-h-10 items-center justify-end gap-3 pb-2 z-[90]">
+          <div className="absolute left-0 top-1/2 z-[100] flex -translate-y-1/2 items-center gap-2">
+            <button
+              type="button"
+              aria-label="Ver testimonio anterior"
+              onClick={goToPrev}
+              disabled={isPrevDisabled}
+              className="inline-flex size-9 items-center justify-center rounded-full border border-white/20 bg-[rgba(8,10,14,0.62)] text-white/88 backdrop-blur-[10px] transition-[transform,border-color,background-color,opacity,box-shadow] duration-[220ms] ease-out hover:scale-[1.03] hover:border-primary/38 hover:bg-primary/12 hover:shadow-[0_12px_24px_-16px_rgba(255,0,0,0.7)] active:scale-[0.95] disabled:opacity-45"
+            >
+              <ChevronLeft className="size-4" />
+            </button>
+            <button
+              type="button"
+              aria-label="Ver siguiente testimonio"
+              onClick={goToNext}
+              disabled={isNextDisabled}
+              className="inline-flex size-9 items-center justify-center rounded-full border border-white/20 bg-[rgba(8,10,14,0.62)] text-white/88 backdrop-blur-[10px] transition-[transform,border-color,background-color,opacity,box-shadow] duration-[220ms] ease-out hover:scale-[1.03] hover:border-primary/38 hover:bg-primary/12 hover:shadow-[0_12px_24px_-16px_rgba(255,0,0,0.7)] active:scale-[0.95] disabled:opacity-45"
+            >
+              <ChevronRight className="size-4" />
+            </button>
+          </div>
 
-        <div className="absolute bottom-4 left-4 z-30 flex items-center justify-center gap-3">
-          <div className="flex items-center gap-1.5">
-            {testimonialsData.map((item, index) => (
+          <div className="flex items-center gap-1.5 pl-24">
+            {Array.from({ length: snapCount }, (_, index) => (
               <button
-                key={`dot-${item.id}`}
+                key={`dot-${index}`}
                 type="button"
-                aria-label={`Ir al testimonio ${index + 1}`}
-                onClick={() => api?.scrollTo(index)}
+                aria-label={`Ir al resultado ${index + 1}`}
+                onClick={() => goToIndex(index)}
                 className={cn(
-                  "h-2.5 rounded-full transition-all duration-[220ms]",
-                  selectedSnap === index ? "w-6 bg-primary" : "w-2.5 bg-white/28 hover:bg-white/46"
+                  "h-2.5 rounded-full transition-all duration-200",
+                  activeIndex === index ? "w-6 bg-primary" : "w-2.5 bg-white/28 hover:bg-white/46"
                 )}
               />
             ))}
