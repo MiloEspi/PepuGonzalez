@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Montserrat } from "next/font/google";
+import Script from "next/script";
+import { Analytics } from "@vercel/analytics/next";
 
 import { Navbar } from "@/components/Navbar";
 import { SvgFilters } from "@/components/SvgFilters";
@@ -20,6 +22,8 @@ const bodyFont = Inter({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
 });
+
+const GA_ID = "G-13631090908";
 
 export const metadata: Metadata = {
   title: "Pepu González | Transformación física",
@@ -48,6 +52,19 @@ export default async function RootLayout({
           <MobileWhatsAppSticky />
           <Footer content={footer} />
         </div>
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_ID}');
+          `}
+        </Script>
+        <Analytics />
       </body>
     </html>
   );
