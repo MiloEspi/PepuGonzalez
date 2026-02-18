@@ -23,7 +23,7 @@ const bodyFont = Inter({
   weight: ["400", "500", "600", "700"],
 });
 
-const GA_ID = "G-13631090908";
+const GA_ID = "G-NSD5SY6QJR";
 
 export const metadata: Metadata = {
   title: "Pepu González | Transformación física",
