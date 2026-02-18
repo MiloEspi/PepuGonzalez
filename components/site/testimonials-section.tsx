@@ -116,7 +116,7 @@ export function TestimonialsSection({ results }: TestimonialsSectionProps) {
           {testimonialsData.map((item) => (
             <CarouselItem
               key={item.id}
-              className="basis-[74%] max-w-[74vw] pl-2 sm:basis-[68%] md:basis-[18.5rem] md:max-w-[18.5rem]"
+              className="basis-[80%] max-w-[80vw] pl-2 sm:basis-[72%] md:basis-[18.5rem] md:max-w-[18.5rem]"
             >
               <article className="group flex h-full w-full max-w-none flex-col overflow-hidden rounded-[14px] border border-white/14 bg-[linear-gradient(150deg,#17181e_0%,#101116_100%)] shadow-[0_30px_58px_-38px_rgba(0,0,0,0.95)] transition-[transform,box-shadow] duration-[240ms] ease-[var(--ease-premium)] hover:-translate-y-1 hover:shadow-[0_36px_62px_-34px_rgba(122,14,14,0.84)]">
                 <div className="w-full overflow-hidden border-b border-white/10">
@@ -175,8 +175,23 @@ export function TestimonialsSection({ results }: TestimonialsSectionProps) {
           ))}
         </CarouselContent>
 
-        <div className="mt-4 relative flex min-h-10 items-center justify-end gap-3 pb-2 z-[90]">
-          <div className="absolute left-0 top-1/2 z-[100] flex -translate-y-1/2 items-center gap-2">
+        <div className="mt-4 relative flex items-center justify-between gap-3 pb-2 z-[80]">
+          <div className="flex items-center gap-1.5">
+            {Array.from({ length: snapCount }, (_, index) => (
+              <button
+                key={`dot-${index}`}
+                type="button"
+                aria-label={`Ir al resultado ${index + 1}`}
+                onClick={() => goToIndex(index)}
+                className={cn(
+                  "h-2.5 rounded-full transition-all duration-200",
+                  activeIndex === index ? "w-6 bg-primary" : "w-2.5 bg-white/28 hover:bg-white/46"
+                )}
+              />
+            ))}
+          </div>
+
+          <div className="flex items-center gap-2 z-[90] shrink-0">
             <button
               type="button"
               aria-label="Ver testimonio anterior"
@@ -195,21 +210,6 @@ export function TestimonialsSection({ results }: TestimonialsSectionProps) {
             >
               <ChevronRight className="size-4" />
             </button>
-          </div>
-
-          <div className="flex items-center gap-1.5 pl-24">
-            {Array.from({ length: snapCount }, (_, index) => (
-              <button
-                key={`dot-${index}`}
-                type="button"
-                aria-label={`Ir al resultado ${index + 1}`}
-                onClick={() => goToIndex(index)}
-                className={cn(
-                  "h-2.5 rounded-full transition-all duration-200",
-                  activeIndex === index ? "w-6 bg-primary" : "w-2.5 bg-white/28 hover:bg-white/46"
-                )}
-              />
-            ))}
           </div>
         </div>
       </Carousel>
