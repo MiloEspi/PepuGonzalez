@@ -24,6 +24,9 @@ const socialIconByName: Record<string, { iconSrc: string; iconClassName?: string
   kick: { iconSrc: "/social/kick.png", iconClassName: "h-5 w-5" },
 };
 
+const DEVELOPER_LINKEDIN_HREF = "https://www.linkedin.com/in/camilo-espinazo-b46a3832a/";
+const INSTAGRAM_HREF = "https://www.instagram.com/pepugonzalezzz/";
+
 function normalizeSocialName(name: string): string {
   return name.trim().toLowerCase();
 }
@@ -45,7 +48,7 @@ export function Footer({ content }: FooterProps) {
 
       return {
         label: item.name,
-        href: item.href,
+        href: normalizedName === "instagram" ? INSTAGRAM_HREF : item.href,
         iconSrc: iconConfig.iconSrc,
         iconClassName: iconConfig.iconClassName,
       } satisfies SocialLink;
@@ -54,10 +57,7 @@ export function Footer({ content }: FooterProps) {
   const activeSocialLinks = cmsSocialLinks;
   const cmsLegalLinks = content.legalLinks.filter((item) => item?.label && item?.href);
   const activeLegalLinks: LegalLink[] = cmsLegalLinks;
-  const developerLinkedInHref =
-    activeSocialLinks.find((item) => normalizeSocialName(item.label) === "linkedin")?.href ??
-    activeLegalLinks.find((item) => item.href.toLowerCase().includes("linkedin.com/in/"))?.href ??
-    "https://linkedin.com/in/camiloespinazo";
+  const developerLinkedInHref = DEVELOPER_LINKEDIN_HREF;
   const email = content.email;
 
   return (
