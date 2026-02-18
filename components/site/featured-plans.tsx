@@ -119,8 +119,8 @@ const comparisonRows: Array<{
   label: string;
   getter: (offer: (typeof offers)[number]) => string;
 }> = [
-  { label: "Duracion", getter: (offer) => offer.comparison.duration },
-  { label: "Nivel de personalizacion", getter: (offer) => offer.comparison.personalization },
+  { label: "Duración", getter: (offer) => offer.comparison.duration },
+  { label: "Nivel de personalización", getter: (offer) => offer.comparison.personalization },
   { label: "Plan nutricional", getter: (offer) => offer.comparison.nutrition },
   { label: "Seguimiento", getter: (offer) => offer.comparison.followUp },
   { label: "Soporte WhatsApp", getter: (offer) => offer.comparison.whatsappSupport },
@@ -287,7 +287,7 @@ export function FeaturedPlans({ plans }: FeaturedPlansProps) {
           const isTransformacion = offer.slug === "programa-transformacion";
           const isMentoria = offer.slug === "mentoria-1-1";
           const isPremium = isTransformacion || isMentoria;
-          const visibleBenefits = offer.benefits.slice(0, 3);
+          const visibleBenefits = offer.benefits.slice(0, 4);
           const duplicatedBadgeLabel =
             typeof offer.badgeLabel === "string" && offer.badgeLabel.toLowerCase().trim() === offer.shortLabel.toLowerCase().trim();
           const mediaHeightClass = isPremium ? "h-[200px] md:h-[212px]" : "h-[160px] md:h-[180px]";
@@ -349,7 +349,7 @@ export function FeaturedPlans({ plans }: FeaturedPlansProps) {
                         )}
                       >
                         <Flame className="size-3.5 text-[#ff2a2a]" />
-                        Mas elegido
+                        Más elegido
                       </Badge>
                     ) : null}
                     {offer.badgeLabel && !isTransformacion && !duplicatedBadgeLabel ? (
@@ -374,9 +374,7 @@ export function FeaturedPlans({ plans }: FeaturedPlansProps) {
                   {isTransformacion ? (
                     <div className="relative isolate space-y-1.5 before:pointer-events-none before:absolute before:-left-5 before:-top-6 before:h-24 before:w-44 before:rounded-full before:bg-[radial-gradient(circle_at_20%_10%,rgba(255,0,0,0.35),transparent_55%)] before:blur-[24px] before:opacity-90 before:content-['']">
                       <TransformacionHeadline />
-                      <p className="relative z-10 text-[0.95rem] font-semibold leading-tight text-white/92 md:text-[1.02rem]">
-                        90 dias para cambiar tu fisico
-                      </p>
+                      <p className="relative z-10 text-[0.95rem] font-semibold leading-tight text-white/92 md:text-[1.02rem]">{offer.strapline}</p>
                     </div>
                   ) : (
                     <div
@@ -429,12 +427,12 @@ export function FeaturedPlans({ plans }: FeaturedPlansProps) {
                   className={cn("premium-cta mt-4 h-11 w-full justify-between rounded-[10px] px-4 text-[0.69rem] font-bold tracking-[0.1em]", styles.cta)}
                   onClick={() => rememberSelectedPlan(offer.title)}
                 >
-                  <span className="pr-2 text-left leading-[1.2]">{offer.ctaLabel}</span>
+                  <span className="pr-2 text-left leading-[1.2]">Ver detalle</span>
                   <ArrowRight className="premium-arrow size-4 shrink-0" />
                 </AnimatedButton>
 
                 <WhatsAppButton href={getStickyWhatsAppHref(offer.title)} size="sm" className="mt-2 w-full justify-center">
-                  WhatsApp
+                  {offer.ctaLabel}
                 </WhatsAppButton>
               </div>
             </PlanCard>

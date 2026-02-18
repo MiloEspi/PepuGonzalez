@@ -1,4 +1,6 @@
-﻿export const WHATSAPP_NUMBER = "5492213619007";
+import { PROGRAMAS, TABLA_COMPARATIVA, type ProgramaTier } from "@/data/programas";
+
+export const WHATSAPP_NUMBER = "5492213619007";
 
 // Reemplazar por links reales de MercadoPago para fase productiva.
 export const PLAN_INICIO_MERCADOPAGO_URL =
@@ -26,10 +28,16 @@ export interface Offer {
   shortLabel: string;
   strapline: string;
   pitch: string;
+  descriptionLong: string;
   benefits: string[];
+  idealFor: string;
+  resultExpected?: string;
+  limits?: string;
+  conversionFlow?: string;
   durationLabel: string;
   priceArs: string;
   priceUsd: string;
+  pricingNote?: string;
   surveyStatement?: string;
   featuredTagline?: string;
   ctaLabel: string;
@@ -67,144 +75,82 @@ const OFFER_SLUG_BY_DETAIL_SLUG: Record<OfferDetailSlug, OfferSlug> = {
   mentoria: "mentoria-1-1",
 };
 
-export const offers: Offer[] = [
-  {
-    slug: "programa-inicio",
-    title: "PROGRAMA INICIO",
-    shortLabel: "Inicio",
-    strapline: "El punto de partida correcto lo cambia todo.",
-    pitch:
-      "La mayoria empieza mal: entrena sin estructura, copia rutinas y no entiende progresion. El problema no es motivacion. Es la base. Este programa esta diseñado para que empieces bien desde el primer dia.",
-    benefits: [
-      "Rutina adaptativa 3-4 dias",
-      "Explicacion clara de ejercicios",
-      "Guia basica de tecnica",
-      "Progresion estructurada",
-      "PDF profesional descargable",
-      "Recomendaciones nutricionales basicas",
-      "Enfoque en base muscular",
-    ],
-    durationLabel: "6-8 semanas",
-    priceArs: "$29.900 ARS",
-    priceUsd: "29 USD",
-    ctaLabel: "QUIERO EMPEZAR CON BASE SOLIDA",
-    ctaType: "checkout",
-    theme: "inicio",
-    badgeLabel: "Inicio",
-    spotsMicrocopy: "Ideal para salir del caos y entrenar con estructura.",
-    coverImage: "/programa-inicio.jpg",
-    comparison: {
-      duration: "6-8 semanas",
-      personalization: "Adaptado inicial",
-      nutrition: "Recomendaciones basicas",
-      followUp: "No",
-      whatsappSupport: "No",
-      idealFor: "Construir base",
-    },
-  },
-  {
-    slug: "programa-base",
-    title: "Programa Base",
-    shortLabel: "Base",
-    strapline: "Estructura para progresar en serio sin depender de seguimiento constante.",
-    pitch:
-      "Pensado para quienes ya entrenan y necesitan un sistema claro para sostener progreso durante 8 a 12 semanas.",
-    benefits: [
-      "Plan de entrenamiento adaptado a tu objetivo",
-      "Progresion semanal estructurada",
-      "Bloques de fuerza e hipertrofia ordenados",
-      "Indicaciones tecnicas claras",
-      "PDF profesional descargable",
-      "Recomendaciones nutricionales practicas",
-      "Sin seguimiento constante",
-    ],
-    durationLabel: "8-12 semanas",
-    priceArs: "$49.900 ARS",
-    priceUsd: "49 USD",
-    ctaLabel: "QUIERO EMPEZAR CON EL PROGRAMA BASE",
-    ctaType: "checkout",
-    theme: "base",
-    spotsMicrocopy: "Estructura profesional para entrenar por cuenta propia.",
-    coverImage: "/programa-base.jpg",
-    comparison: {
-      duration: "8-12 semanas",
-      personalization: "Personalizado estructurado",
-      nutrition: "Recomendaciones generales",
-      followUp: "No",
-      whatsappSupport: "Limitado",
-      idealFor: "Progresar fuerte",
-    },
-  },
-  {
-    slug: "programa-transformacion",
-    title: "90 DIAS PARA CAMBIAR TU FISICO",
-    shortLabel: "Transformacion",
-    strapline: "Programa Transformacion",
-    pitch:
-      "Plan 100% personalizado a traves de encuesta estrategica inicial para construir un cambio real en 90 dias.",
-    benefits: [
-      "Entrenamiento completamente personalizado",
-      "Encuesta detallada inicial",
-      "Plan nutricional completo",
-      "Ajustes cada 30 dias",
-      "Seguimiento mensual",
-      "Evaluacion de progreso",
-      "Soporte por WhatsApp",
-    ],
-    durationLabel: "90 dias",
-    priceArs: "$119.900 ARS",
-    priceUsd: "119 USD",
-    surveyStatement: "Se envia encuesta detallada para diseñar tu plan completamente adaptado.",
-    featuredTagline: "Plan 100% personalizado a traves de encuesta estrategica inicial.",
-    ctaLabel: "QUIERO MI TRANSFORMACION 100% PERSONALIZADA",
-    ctaType: "lead",
-    theme: "transformacion",
-    badgeLabel: "Mas elegido",
-    spotsMicrocopy: "Cupos limitados por cohorte mensual.",
-    coverImage: "/DSC02489.jpg",
-    featured: true,
-    comparison: {
-      duration: "90 dias",
-      personalization: "100% personalizado",
-      nutrition: "Plan completo",
-      followUp: "Mensual",
-      whatsappSupport: "Si",
-      idealFor: "Cambio en 90 dias",
-    },
-  },
-  {
-    slug: "mentoria-1-1",
-    title: "Mentoria 1 a 1",
-    shortLabel: "Mentoria",
-    strapline: "Maximo nivel de acompañamiento premium.",
-    pitch:
-      "Proceso 1 a 1 con seguimiento semanal, ajustes constantes y contacto directo prioritario para rendimiento alto.",
-    benefits: [
-      "Entrenamiento personalizado",
-      "Nutricion ajustada semanal",
-      "Seguimiento semanal uno a uno",
-      "Ajustes constantes",
-      "Contacto directo prioritario",
-    ],
-    durationLabel: "3 meses",
-    priceArs: "$279.900 ARS",
-    priceUsd: "299 USD",
-    ctaLabel: "QUIERO LA MENTORIA 1 A 1",
-    ctaType: "lead",
-    theme: "mentoria",
-    badgeLabel: "Premium",
-    spotsMicrocopy: "Solo 5 cupos activos",
-    coverImage: "/DSC02498.jpg",
-    comparison: {
-      duration: "3 meses",
-      personalization: "Personalizacion total + ajustes constantes",
-      nutrition: "Nutricion ajustada semanal",
-      followUp: "Semanal",
-      whatsappSupport: "Prioritario",
-      idealFor: "Optimizacion total",
-    },
-  },
-];
+const OFFER_SLUG_BY_TIER: Record<ProgramaTier, OfferSlug> = {
+  inicio: "programa-inicio",
+  base: "programa-base",
+  transformacion: "programa-transformacion",
+  mentoria: "mentoria-1-1",
+};
+
+const OFFER_SHORT_LABEL_BY_TIER: Record<ProgramaTier, string> = {
+  inicio: "Inicio",
+  base: "Base",
+  transformacion: "Transformación",
+  mentoria: "Mentoría",
+};
+
+const OFFER_IMAGE_BY_SLUG: Record<OfferSlug, string> = {
+  "programa-inicio": "/programa-inicio.jpg",
+  "programa-base": "/programa-base.jpg",
+  "programa-transformacion": "/DSC02489.jpg",
+  "mentoria-1-1": "/DSC02498.jpg",
+};
+
+function getComparisonValue(label: string, tier: ProgramaTier): string {
+  const row = TABLA_COMPARATIVA.find((item) => item.label === label);
+  if (!row) return "";
+  return row[tier];
+}
+
+function getComparisonByTier(tier: ProgramaTier): OfferComparison {
+  return {
+    duration: getComparisonValue("Duración", tier),
+    personalization: getComparisonValue("Nivel de personalización", tier),
+    nutrition: getComparisonValue("Plan nutricional", tier),
+    followUp: getComparisonValue("Seguimiento", tier),
+    whatsappSupport: getComparisonValue("Soporte WhatsApp", tier),
+    idealFor: getComparisonValue("Ideal para", tier),
+  };
+}
+
+function getPitchFromDescription(descriptionLong: string): string {
+  const lines = descriptionLong
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
+  return lines.slice(0, 3).join(" ");
+}
+
+export const offers: Offer[] = PROGRAMAS.map((programa) => {
+  const slug = OFFER_SLUG_BY_TIER[programa.tier];
+  return {
+    slug,
+    title: programa.title,
+    shortLabel: OFFER_SHORT_LABEL_BY_TIER[programa.tier],
+    strapline: programa.subtitle ?? "",
+    pitch: getPitchFromDescription(programa.descriptionLong),
+    descriptionLong: programa.descriptionLong,
+    benefits: programa.includes,
+    idealFor: programa.idealFor,
+    resultExpected: programa.resultExpected,
+    limits: programa.limits,
+    conversionFlow: programa.conversionFlow,
+    durationLabel: getComparisonByTier(programa.tier).duration,
+    priceArs: programa.pricing.ars ?? "Consultar",
+    priceUsd: programa.pricing.usd ?? "Consultar",
+    pricingNote: programa.pricing.note,
+    surveyStatement: programa.conversionFlow,
+    featuredTagline: programa.conversionFlow,
+    ctaLabel: programa.ctaLabel,
+    ctaType: programa.tier === "inicio" || programa.tier === "base" ? "checkout" : "lead",
+    theme: programa.tier,
+    comparison: getComparisonByTier(programa.tier),
+    badgeLabel: programa.badges?.[0],
+    spotsMicrocopy: programa.limits,
+    coverImage: OFFER_IMAGE_BY_SLUG[slug],
+    featured: programa.tier === "transformacion",
+  };
+});
 
 export function sortOffersByDisplayOrder<T extends { slug: OfferSlug }>(items: T[]): T[] {
   const orderRank = new Map(OFFER_DISPLAY_ORDER.map((slug, index) => [slug, index]));
@@ -275,8 +221,8 @@ export function getOfferDetailSlug(offerSlug: OfferSlug): OfferDetailSlug {
   return OFFER_DETAIL_SLUG_BY_OFFER_SLUG[offerSlug];
 }
 
-export function getOfferDetailHref(offerSlug: OfferSlug): `/planes/${OfferDetailSlug}` {
-  return `/planes/${getOfferDetailSlug(offerSlug)}`;
+export function getOfferDetailHref(offerSlug: OfferSlug): `/programas/${OfferSlug}` {
+  return `/programas/${offerSlug}`;
 }
 
 export function getOfferByDetailSlug(detailSlug: string): Offer | undefined {
@@ -284,4 +230,3 @@ export function getOfferByDetailSlug(detailSlug: string): Offer | undefined {
   if (!offerSlug) return undefined;
   return offers.find((offer) => offer.slug === offerSlug);
 }
-

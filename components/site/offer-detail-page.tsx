@@ -81,7 +81,13 @@ export function OfferDetailPage({ offer }: OfferDetailPageProps) {
             <div className="space-y-4">
               <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/58">Detalle completo</p>
               <h1 className={cn("text-[1.9rem] font-black leading-[0.95] tracking-[0.03em] sm:text-[2.2rem]", theme.title)}>{offer.title}</h1>
-              <p className="text-sm leading-relaxed text-white/84 sm:text-[0.95rem]">{offer.pitch}</p>
+              {offer.strapline ? <p className="text-sm leading-relaxed text-white/84 sm:text-[0.95rem]">{offer.strapline}</p> : null}
+              {offer.badgeLabel ? (
+                <p className="inline-flex w-fit rounded-[8px] border border-primary/40 bg-primary/16 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-white">
+                  {offer.badgeLabel}
+                </p>
+              ) : null}
+              {offer.limits ? <p className="text-xs uppercase tracking-[0.08em] text-white/74">{offer.limits}</p> : null}
 
               <div className="rounded-[12px] border border-white/14 bg-black/28 px-4 py-3.5">
                 <p className="text-[10px] uppercase tracking-[0.16em] text-white/62">Precio</p>
@@ -91,6 +97,7 @@ export function OfferDetailPage({ offer }: OfferDetailPageProps) {
                   <span className="text-lg font-semibold text-white/84 sm:text-xl">{offer.priceUsd}</span>
                 </p>
                 <p className="mt-2 text-xs font-medium uppercase tracking-[0.08em] text-white/74">Duracion: {offer.durationLabel}</p>
+                {offer.pricingNote ? <p className="mt-1 text-xs text-white/70">{offer.pricingNote}</p> : null}
               </div>
 
               <div className="space-y-2.5">
@@ -130,6 +137,39 @@ export function OfferDetailPage({ offer }: OfferDetailPageProps) {
                 </li>
               ))}
             </ul>
+          </div>
+
+          <div className="border-t border-white/10 px-4 pb-5 pt-4 sm:px-5 md:px-6 md:pb-6">
+            <h2 className="text-lg font-semibold text-white">Descripción persuasiva completa</h2>
+            <div className="mt-3 space-y-2.5 text-sm leading-relaxed text-white/84">
+              {offer.descriptionLong.split("\n").map((line, index) => (
+                <p key={`${offer.slug}-description-${index}`}>{line}</p>
+              ))}
+            </div>
+          </div>
+
+          <div className="border-t border-white/10 px-4 pb-5 pt-4 sm:px-5 md:px-6 md:pb-6">
+            <h2 className="text-lg font-semibold text-white">Ideal para</h2>
+            <p className="mt-3 text-sm leading-relaxed text-white/84">{offer.idealFor}</p>
+          </div>
+
+          {offer.resultExpected ? (
+            <div className="border-t border-white/10 px-4 pb-5 pt-4 sm:px-5 md:px-6 md:pb-6">
+              <h2 className="text-lg font-semibold text-white">Resultado esperado</h2>
+              <p className="mt-3 text-sm leading-relaxed text-white/84">{offer.resultExpected}</p>
+            </div>
+          ) : null}
+
+          {offer.conversionFlow ? (
+            <div className="border-t border-white/10 px-4 pb-5 pt-4 sm:px-5 md:px-6 md:pb-6">
+              <h2 className="text-lg font-semibold text-white">Flujo de conversión</h2>
+              <p className="mt-3 text-sm leading-relaxed text-white/84">{offer.conversionFlow}</p>
+            </div>
+          ) : null}
+
+          <div className="border-t border-white/10 px-4 pb-5 pt-4 sm:px-5 md:px-6 md:pb-6">
+            <h2 className="text-lg font-semibold text-white">CTA final</h2>
+            <p className="mt-3 text-sm leading-relaxed text-white/84">{offer.ctaLabel}</p>
           </div>
         </article>
       </section>

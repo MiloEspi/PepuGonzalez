@@ -45,7 +45,7 @@ function getViewportCoverage(rect: DOMRect, viewportHeight: number, navOffset: n
 
 function resolveHref(pathname: string, id: PrimarySectionId) {
   if (id === "planes") {
-    return pathname === "/" ? "#planes" : "/planes";
+    return pathname === "/" ? "#planes" : "/programas";
   }
 
   return pathname === "/" ? `#${id}` : `/#${id}`;
@@ -61,7 +61,7 @@ export function Navbar({ extraNavItems }: NavbarProps) {
   const [navOffset, setNavOffset] = useState(104);
 
   const selectedValue = useMemo<NavbarSectionId>(() => {
-    if (pathname.startsWith("/planes")) return "planes";
+    if (pathname.startsWith("/programas") || pathname.startsWith("/planes")) return "planes";
     if (pathname !== "/") return "none";
     return navState.context.activeId;
   }, [navState.context.activeId, pathname]);
