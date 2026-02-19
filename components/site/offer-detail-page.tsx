@@ -167,10 +167,6 @@ export function OfferDetailPage({ offer }: OfferDetailPageProps) {
             </div>
           ) : null}
 
-          <div className="border-t border-white/10 px-4 pb-5 pt-4 sm:px-5 md:px-6 md:pb-6">
-            <h2 className="text-lg font-semibold text-white">CTA final</h2>
-            <p className="mt-3 text-sm leading-relaxed text-white/84">{offer.ctaLabel}</p>
-          </div>
         </article>
       </section>
     </main>

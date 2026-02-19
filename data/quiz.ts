@@ -101,7 +101,7 @@ export const quizQuestions: QuizQuestion[] = [
     options: [
       { label: "Ganar masa", value: "ganar-masa" },
       { label: "Perder grasa", value: "perder-grasa" },
-      { label: "Recomposicion", value: "recomposicion" },
+      { label: "Recomposición", value: "recomposicion" },
       { label: "Mejorar rendimiento", value: "mejorar-rendimiento" },
     ],
   },

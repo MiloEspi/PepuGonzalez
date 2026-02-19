@@ -202,7 +202,7 @@ function ComparisonOptionButton({ offer, active, onSelect }: ComparisonOptionBut
       type="button"
       onClick={() => onSelect(offer.slug)}
       className={cn(
-        "min-h-10 rounded-[10px] border px-2.5 py-2 text-center text-[0.68rem] font-semibold uppercase leading-tight tracking-[0.06em] whitespace-normal break-words transition-[border-color,background-color,color,box-shadow,transform] duration-[220ms] sm:px-3 sm:text-xs sm:tracking-[0.08em]",
+        "min-h-10 rounded-[10px] border px-2.5 py-2 text-center text-[0.68rem] font-semibold uppercase leading-tight tracking-[0.06em] whitespace-normal break-words transition-[border-color,background-color,color,box-shadow,transform] duration-[220ms] max-[399px]:px-2 max-[399px]:text-[0.64rem] max-[399px]:tracking-[0.04em] max-[320px]:px-1.5 max-[320px]:text-[0.58rem] max-[320px]:tracking-[0.02em] sm:px-3 sm:text-xs sm:tracking-[0.08em]",
         active
           ? "border-primary/68 bg-[linear-gradient(122deg,#8b0000_0%,#d41414_100%)] text-white shadow-[0_16px_28px_-20px_rgba(212,20,20,0.92)]"
           : "border-white/16 bg-black/28 text-white/76 hover:border-white/30 hover:text-white",
@@ -210,7 +210,7 @@ function ComparisonOptionButton({ offer, active, onSelect }: ComparisonOptionBut
       )}
       aria-pressed={active}
     >
-      <span className="block w-full">{offer.shortLabel}</span>
+      <span className={cn("block w-full", isTransformacion ? "max-[399px]:text-[0.6rem] max-[320px]:text-[0.54rem]" : "")}>{offer.shortLabel}</span>
     </button>
   );
 }
@@ -417,9 +417,8 @@ export function FeaturedPlans({ plans }: FeaturedPlansProps) {
 
       <div className="mt-7 rounded-[16px] border border-white/14 bg-[linear-gradient(145deg,#17181d_0%,#111217_100%)] p-4 md:p-5">
         <div className="space-y-3.5">
-          <div className="flex items-center gap-2">
-            <Badge className="rounded-[8px] border border-primary/45 bg-primary/18 text-primary">Comparativa</Badge>
-            <p className="text-xs uppercase tracking-[0.12em] text-white/62">Sin scroll horizontal</p>
+          <div className="flex justify-center">
+            <Badge className="rounded-[8px] border border-primary/45 bg-primary/18 text-primary">COMPARATIVA</Badge>
           </div>
 
           <div className="grid grid-cols-2 gap-2.5 md:grid-cols-4">
@@ -442,7 +441,7 @@ export function FeaturedPlans({ plans }: FeaturedPlansProps) {
           ))}
         </ul>
 
-        <p className="mt-4 text-[11px] text-white/58">Cambia de plan arriba para comparar en segundos.</p>
+        <p className="mt-4 text-[11px] text-white/58">Cambiá de plan arriba para comparar en segundos.</p>
       </div>
     </SectionShell>
   );

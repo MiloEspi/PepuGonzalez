@@ -130,18 +130,18 @@ export function PlanFinderQuiz() {
 
     return (
       <Card className="overflow-hidden rounded-[16px] border-primary/35 bg-[linear-gradient(150deg,#1f080a_0%,#121217_54%,#0f0f13_100%)] shadow-[0_38px_70px_-44px_rgba(122,14,14,0.95)]">
-        <CardHeader className="space-y-4 border-b border-white/12 pb-5">
+        <CardHeader className="space-y-3 border-b border-white/12 pb-4 sm:space-y-4 sm:pb-5">
           <Badge className="badge-shimmer w-fit border border-primary/55 bg-primary/90 px-3 py-1 text-[11px] uppercase tracking-[0.12em] text-primary-foreground">
             Recomendación final
           </Badge>
 
           <div className="space-y-2">
-            <CardTitle className="text-[1.95rem] leading-[0.95] text-white md:text-[2.4rem]">{recommendation.title}</CardTitle>
-            <p className="max-w-2xl text-sm text-white/84 md:text-base">{recommendation.pitch}</p>
+            <CardTitle className="text-[1.55rem] leading-[0.95] text-white sm:text-[1.95rem] md:text-[2.4rem]">{recommendation.title}</CardTitle>
+            <p className="hidden max-w-2xl text-sm text-white/84 sm:block md:text-base">{recommendation.pitch}</p>
             <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary/85">{recommendation.durationLabel}</p>
           </div>
 
-          <div className="rounded-[12px] border border-primary/35 bg-[linear-gradient(130deg,rgba(212,20,20,0.24)_0%,rgba(122,14,14,0.3)_100%)] px-4 py-3">
+          <div className="rounded-[12px] border border-primary/35 bg-[linear-gradient(130deg,rgba(212,20,20,0.24)_0%,rgba(122,14,14,0.3)_100%)] px-3.5 py-2.5 sm:px-4 sm:py-3">
             <p className="text-xs uppercase tracking-[0.14em] text-white/72">Precio del programa</p>
             <p className="mt-1 text-xl font-semibold text-white">
               {recommendation.priceArs}
@@ -151,7 +151,7 @@ export function PlanFinderQuiz() {
           </div>
 
           {recommendation.surveyStatement ? (
-            <div className="rounded-[12px] border border-primary/48 bg-primary/16 px-3.5 py-3 text-sm text-white/90">
+            <div className="hidden rounded-[12px] border border-primary/48 bg-primary/16 px-3.5 py-3 text-sm text-white/90 sm:block">
               <p className="inline-flex items-start gap-2 font-medium">
                 <Sparkles className="mt-0.5 size-4 shrink-0 text-primary" />
                 {recommendation.surveyStatement}
@@ -159,13 +159,13 @@ export function PlanFinderQuiz() {
             </div>
           ) : null}
 
-          <p className="text-xs uppercase tracking-[0.16em] text-white/58">
+          <p className="hidden text-xs uppercase tracking-[0.16em] text-white/58 sm:block">
             Ajustado por tu perfil {selectedCommitment ? `- ${selectedCommitment}` : ""}
           </p>
         </CardHeader>
 
-        <CardContent className="space-y-5 pt-5">
-          <div className="flex flex-wrap gap-2.5">
+        <CardContent className="space-y-3.5 pt-4 sm:space-y-5 sm:pt-5">
+          <div className="hidden flex-wrap gap-2.5 sm:flex">
             {Object.entries(answers).map(([key, value]) => (
               <Badge key={key} variant="outline" className="rounded-[9px] border-white/20 bg-black/30 text-white/80">
                 {getAnswerLabel(key as keyof QuizAnswers, value as QuizAnswers[keyof QuizAnswers])}
@@ -173,7 +173,7 @@ export function PlanFinderQuiz() {
             ))}
           </div>
 
-          <ul className="space-y-2 text-sm text-white/84">
+          <ul className="hidden space-y-2 text-sm text-white/84 sm:block">
             {recommendation.benefits.slice(0, 4).map((item) => (
               <li key={item} className="rounded-[10px] border border-white/12 bg-black/24 px-3.5 py-2.5">
                 {item}
@@ -181,7 +181,7 @@ export function PlanFinderQuiz() {
             ))}
           </ul>
 
-          <div className="space-y-3 rounded-[12px] border border-white/14 bg-black/24 p-3.5">
+          <div className="space-y-2.5 rounded-[12px] border border-white/14 bg-black/24 p-3 sm:space-y-3 sm:p-3.5">
             <p className="text-xs font-semibold uppercase tracking-[0.12em] text-white/74">Enviar WhatsApp</p>
 
             <div className="grid gap-2 sm:grid-cols-2">
@@ -206,9 +206,13 @@ export function PlanFinderQuiz() {
               </label>
             </div>
 
-            <div className="h-px bg-white/10" />
+            <WhatsAppButton href={whatsappHref} className="h-11 w-full rounded-[10px] text-[0.74rem] font-semibold tracking-[0.05em] sm:hidden">
+              ENVIAR WHATSAPP
+            </WhatsAppButton>
 
-            <div className="grid gap-2 text-xs text-white/70 sm:grid-cols-3">
+            <div className="hidden h-px bg-white/10 sm:block" />
+
+            <div className="hidden gap-2 text-xs text-white/70 sm:grid sm:grid-cols-3">
               <p className="rounded-[8px] border border-white/10 bg-black/28 px-2.5 py-2">
                 <span className="block text-[10px] uppercase tracking-[0.1em] text-white/52">Objetivo</span>
                 {getAnswerLabel("goal", answers.goal)}
@@ -225,7 +229,7 @@ export function PlanFinderQuiz() {
           </div>
         </CardContent>
 
-        <CardFooter className="flex flex-col gap-2.5 pt-0 sm:flex-row sm:flex-wrap">
+        <CardFooter className="hidden flex-col gap-2.5 pt-0 sm:flex sm:flex-row sm:flex-wrap">
           <Button asChild className="premium-cta h-12 w-full rounded-[12px] bg-[linear-gradient(120deg,#8b0000_0%,#d41414_100%)] text-[0.78rem] font-bold tracking-[0.08em] sm:w-auto sm:px-6">
             <SmoothScrollLink href={`/#plan-${recommendation.slug}`} onClick={() => rememberSelectedPlan(recommendation.title)}>
               VER PROGRAMA RECOMENDADO
@@ -319,7 +323,7 @@ export function PlanFinderQuiz() {
             <ArrowLeft className="size-4" />
             Volver
           </Button>
-          <p className="text-[11px] uppercase tracking-[0.11em] text-white/55">3-4 minutos</p>
+          <p className="text-[11px] uppercase tracking-[0.11em] text-white/55">1-2 minutos</p>
         </div>
 
         <Button
