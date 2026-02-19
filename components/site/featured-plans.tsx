@@ -182,12 +182,10 @@ function truncateAtLogicalBoundary(value: string, maxChars: number, minChars = M
 }
 
 function TransformacionHeadline() {
-  // Root cause: in <405px this title used ResizeObserver and oscillated between two sizes
-  // (overflow/no-overflow), triggering continuous relayout and scroll jitter in this section.
-  // Fix: static <405px classes + safe wrapping, without reactive self-measurement.
+  // Keep this in a single line on narrow mobile widths without changing desktop sizing.
   return (
     <h3
-      className="relative z-10 max-w-full text-[1.6rem] font-black leading-[0.94] tracking-[0.04em] text-[#ff3b3b] [overflow-wrap:anywhere] max-[404px]:text-[1.48rem] max-[404px]:tracking-[0.024em] md:text-[1.82rem]"
+      className="relative z-10 max-w-full whitespace-nowrap text-[1.6rem] font-black leading-[0.94] tracking-[0.04em] text-[#ff3b3b] max-[450px]:text-[1.34rem] max-[450px]:leading-[0.96] max-[450px]:tracking-[0.02em] max-[380px]:text-[1.24rem] md:text-[1.82rem]"
     >
       TRANSFORMACIÓN
     </h3>
