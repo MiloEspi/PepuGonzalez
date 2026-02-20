@@ -140,7 +140,7 @@ export function OfferDetailPage({ offer }: OfferDetailPageProps) {
           </div>
 
           <div className="border-t border-white/10 px-4 pb-5 pt-4 sm:px-5 md:px-6 md:pb-6">
-            <h2 className="text-lg font-semibold text-white">Descripción persuasiva completa</h2>
+            <h2 className="text-lg font-semibold text-white">Descripción</h2>
             <div className="mt-3 space-y-2.5 text-sm leading-relaxed text-white/84">
               {offer.descriptionLong.split("\n").map((line, index) => (
                 <p key={`${offer.slug}-description-${index}`}>{line}</p>
