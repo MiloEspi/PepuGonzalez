@@ -182,10 +182,10 @@ function truncateAtLogicalBoundary(value: string, maxChars: number, minChars = M
 }
 
 function TransformacionHeadline() {
-  // Keep this in a single line on narrow mobile widths without changing desktop sizing.
+  // Keep one line on narrow widths and slightly reduce size on desktop breakpoints.
   return (
     <h3
-      className="relative z-10 max-w-full whitespace-nowrap text-[1.6rem] font-black leading-[0.94] tracking-[0.04em] text-[#ff3b3b] max-[450px]:text-[1.34rem] max-[450px]:leading-[0.96] max-[450px]:tracking-[0.02em] max-[380px]:text-[1.24rem] md:text-[1.82rem]"
+      className="relative z-10 max-w-full whitespace-nowrap text-[1.44rem] font-black leading-[0.95] tracking-[0.02em] text-[#ff3b3b] max-[450px]:text-[1.22rem] max-[380px]:text-[1.04rem] max-[320px]:text-[0.96rem] md:text-[1.08rem] md:[font-size:clamp(1rem,8.3cqw,1.18rem)] md:leading-[0.98] md:tracking-[0.008em]"
     >
       TRANSFORMACIÓN
     </h3>
@@ -220,6 +220,7 @@ export function FeaturedPlans({ plans }: FeaturedPlansProps) {
     catalogOffers.find((offer) => offer.featured)?.slug ??
     catalogOffers[0]?.slug;
   const [selectedComparisonSlug, setSelectedComparisonSlug] = useState(initialComparisonSlug ?? "");
+  const [expandedDesktopPitchBySlug, setExpandedDesktopPitchBySlug] = useState<Record<string, boolean>>({});
 
   if (!catalogOffers.length) {
     return (
@@ -244,7 +245,7 @@ export function FeaturedPlans({ plans }: FeaturedPlansProps) {
       title="Elegí tu nivel de transformación"
       description="Cuatro niveles claros. Un solo objetivo: progreso real con estructura."
     >
-      <article className="mb-5 rounded-[12px] border border-primary/35 bg-[linear-gradient(126deg,rgba(122,14,14,0.3)_0%,rgba(40,12,15,0.72)_100%)] px-4 py-3 text-sm text-white/86">
+      <article className="mb-5 rounded-[12px] border border-primary/35 bg-[linear-gradient(126deg,rgba(122,14,14,0.3)_0%,rgba(40,12,15,0.72)_100%)] px-4 py-3 text-sm text-white/86 lg:mx-auto lg:max-w-4xl lg:px-6 lg:text-center">
         Cada nivel suma personalización y soporte. Transformación y Mentoría concentran la experiencia premium completa.
       </article>
 
@@ -252,9 +253,9 @@ export function FeaturedPlans({ plans }: FeaturedPlansProps) {
         {catalogOffers.map((offer) => {
           const styles = themeClasses[offer.theme];
           const Icon = styles.icon;
+          const isTransformacion = offer.slug === "programa-transformacion";
           const imageSrc = offer.coverImage;
           if (!imageSrc) return null;
-          const isTransformacion = offer.slug === "programa-transformacion";
           const isMentoria = offer.slug === "mentoria-1-1";
           const isPremium = isTransformacion || isMentoria;
           const visibleBenefits = offer.benefits.slice(0, 4);
@@ -264,13 +265,17 @@ export function FeaturedPlans({ plans }: FeaturedPlansProps) {
           const mediaObjectPositionClass = mediaObjectPositionBySlug[offer.slug] ?? "object-[center_20%]";
           const mediaZoomClass = mediaZoomBySlug[offer.slug] ?? "scale-[1.01] group-hover:scale-[1.04]";
           const mediaImageClass = cn(
-            "object-cover brightness-[0.97] saturate-[1.02] transition-transform duration-[260ms] ease-[var(--ease-premium)]",
+            isTransformacion
+              ? "object-cover transition-transform duration-[260ms] ease-[var(--ease-premium)]"
+              : "object-cover brightness-[0.97] saturate-[1.02] transition-transform duration-[260ms] ease-[var(--ease-premium)]",
             mediaObjectPositionClass,
             mediaZoomClass
           );
           const straplinePreview = truncateAtLogicalBoundary(offer.strapline, 82);
           const pitchPreview = truncateAtLogicalBoundary(offer.pitch, 124);
           const surveyStatementPreview = offer.surveyStatement ? truncateAtLogicalBoundary(offer.surveyStatement, 96) : undefined;
+          const isDesktopPitchExpanded = Boolean(expandedDesktopPitchBySlug[offer.slug]);
+          const desktopPitchId = `desktop-pitch-${offer.slug}`;
 
           return (
             <PlanCard
@@ -297,6 +302,7 @@ export function FeaturedPlans({ plans }: FeaturedPlansProps) {
                     src={imageSrc}
                     alt={offer.title}
                     fill
+                    quality={isTransformacion ? 95 : 85}
                     sizes="(max-width: 768px) 100vw, (max-width: 1400px) 50vw, 25vw"
                     className={mediaImageClass}
                   />
@@ -343,9 +349,9 @@ export function FeaturedPlans({ plans }: FeaturedPlansProps) {
                   </span>
                 </div>
 
-                <div data-plan-copy className="space-y-3.5">
+                <div data-plan-copy className="space-y-3.5 lg:mx-auto lg:w-full lg:max-w-[19rem] lg:px-2">
                   {isTransformacion ? (
-                    <div className="relative isolate space-y-1.5 before:pointer-events-none before:absolute before:-left-5 before:-top-6 before:h-24 before:w-44 before:rounded-full before:bg-[radial-gradient(circle_at_20%_10%,rgba(255,0,0,0.35),transparent_55%)] before:blur-[24px] before:opacity-90 before:content-['']">
+                    <div className="relative isolate space-y-1.5 before:pointer-events-none before:absolute before:-left-5 before:-top-6 before:h-24 before:w-44 before:rounded-full before:bg-[radial-gradient(circle_at_20%_10%,rgba(255,0,0,0.35),transparent_55%)] before:blur-[24px] before:opacity-90 before:content-[''] lg:text-center md:[container-type:inline-size]">
                       <TransformacionHeadline />
                       <p className="relative z-10 text-[0.95rem] font-semibold leading-tight text-white/92 md:text-[1.02rem]">{offer.strapline}</p>
                     </div>
@@ -358,11 +364,39 @@ export function FeaturedPlans({ plans }: FeaturedPlansProps) {
                           : ""
                       )}
                     >
-                      <h3 className={cn("relative z-10 text-[1.52rem] leading-[0.96] md:text-[1.72rem]", styles.title)}>{offer.title}</h3>
-                      <p className={cn("text-[0.92rem] font-medium leading-snug", styles.text)}>{straplinePreview || offer.strapline}</p>
+                      <h3 className={cn("relative z-10 text-[1.52rem] leading-[0.96] md:text-[1.72rem] lg:text-center", styles.title)}>{offer.title}</h3>
+                      <p className={cn("text-[0.92rem] font-medium leading-snug lg:text-center", styles.text)}>{straplinePreview || offer.strapline}</p>
                     </div>
                   )}
-                  <p className={cn("text-sm leading-relaxed", styles.text)}>{pitchPreview || offer.pitch}</p>
+                  {isTransformacion ? (
+                    <>
+                      <p className={cn("text-sm leading-relaxed lg:hidden", styles.text)}>{pitchPreview || offer.pitch}</p>
+                      <div className="hidden lg:block">
+                        <p
+                          id={desktopPitchId}
+                          className={cn("text-sm leading-relaxed lg:text-center", styles.text, !isDesktopPitchExpanded ? "line-clamp-3" : "")}
+                        >
+                          {offer.pitch}
+                        </p>
+                        <button
+                          type="button"
+                          aria-expanded={isDesktopPitchExpanded}
+                          aria-controls={desktopPitchId}
+                          onClick={() =>
+                            setExpandedDesktopPitchBySlug((current) => ({
+                              ...current,
+                              [offer.slug]: !current[offer.slug],
+                            }))
+                          }
+                          className="mt-2 inline-flex rounded-[8px] border border-white/20 px-2.5 py-1 text-[11px] font-semibold tracking-[0.04em] text-white/84 transition-colors duration-200 hover:border-white/34 hover:text-white"
+                        >
+                          {isDesktopPitchExpanded ? "Ver menos" : "Ver más"}
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <p className={cn("text-sm leading-relaxed lg:text-center", styles.text)}>{pitchPreview || offer.pitch}</p>
+                  )}
 
                   {surveyStatementPreview ? (
                     <p className="rounded-[10px] border border-primary/42 bg-primary/14 px-3 py-2 text-xs font-semibold tracking-[0.04em] text-white">

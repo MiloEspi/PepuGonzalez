@@ -48,6 +48,8 @@ export function OfferDetailPage({ offer }: OfferDetailPageProps) {
   const primaryHref = getOfferPrimaryHref(offer);
   const whatsappHref = getStickyWhatsAppHref(offer.title);
   const isCheckoutPlan = offer.ctaType === "checkout";
+  const isTransformacionPlan = offer.slug === "programa-transformacion";
+  const detailCoverImage = offer.coverImage ?? "/programa-base.jpg";
 
   return (
     <main className="pb-16 pt-4 md:pt-6">
@@ -65,9 +67,10 @@ export function OfferDetailPage({ offer }: OfferDetailPageProps) {
             <div className="relative overflow-hidden rounded-[14px] border border-white/14 bg-black/26">
               <div className="relative aspect-[5/6] w-full sm:aspect-[16/11] lg:aspect-[5/6]">
                 <Image
-                  src={offer.coverImage ?? "/programa-base.jpg"}
+                  src={detailCoverImage}
                   alt={offer.title}
                   fill
+                  quality={isTransformacionPlan ? 95 : 85}
                   sizes="(max-width: 1024px) 100vw, 56vw"
                   className="object-cover object-[center_20%]"
                 />
@@ -116,7 +119,7 @@ export function OfferDetailPage({ offer }: OfferDetailPageProps) {
                 <p className="text-[11px] text-white/58">
                   {isCheckoutPlan
                     ? "Pago directo disponible para este plan. Si tenés dudas, escribí por WhatsApp."
-                    : "Este plan se activa por WhatsApp con mensaje predefinido para iniciar tu evaluación."}
+                    : "Este plan se activa por WhatsApp con mensaje para iniciar tu evaluación."}
                 </p>
               </div>
             </div>

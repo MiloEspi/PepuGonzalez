@@ -16,7 +16,7 @@ export function FinalCTA() {
       id="aplicar-ahora"
       className="pb-2 pt-1"
       cardClassName="border-primary/36 bg-[linear-gradient(145deg,#7a0e0e_0%,#3f0f14_44%,#101116_100%)] shadow-[0_40px_78px_-42px_rgba(122,14,14,0.94)]"
-      contentClassName="pt-1.5"
+      contentClassName="pt-2.5"
     >
       <h2 className="text-[1.95rem] font-semibold leading-[0.95] text-white md:text-[2.5rem]">Tu transformación arranca hoy.</h2>
       <p className="max-w-3xl text-sm text-white/86 md:text-base">Elegí tu plan y empezá con una estrategia real, clara y sostenible.</p>

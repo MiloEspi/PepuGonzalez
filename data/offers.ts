@@ -90,7 +90,7 @@ const OFFER_SHORT_LABEL_BY_TIER: Record<ProgramaTier, string> = {
 const OFFER_IMAGE_BY_SLUG: Record<OfferSlug, string> = {
   "programa-inicio": "/programa-inicio.jpg",
   "programa-base": "/programa-base.jpg",
-  "programa-transformacion": "/DSC02489.jpg",
+  "programa-transformacion": "/foto transformacion 2.0.JPEG",
   "mentoria-1-1": "/DSC02498.jpg",
 };
 

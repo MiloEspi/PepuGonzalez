@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -28,6 +28,81 @@ type TestimonialCard = {
 
 interface TestimonialsSectionProps {
   results: ResultDoc[];
+}
+
+interface TestimonialQuoteProps {
+  cardId: string;
+  quote: string;
+}
+
+function TestimonialQuote({ cardId, quote }: TestimonialQuoteProps) {
+  const quoteRef = useRef<HTMLParagraphElement | null>(null);
+  const [isDesktop, setIsDesktop] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [hasDesktopOverflow, setHasDesktopOverflow] = useState(false);
+  const quoteElementId = `testimonial-quote-${cardId}`;
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const mediaQuery = window.matchMedia("(min-width: 1024px)");
+    const syncDesktopState = () => {
+      const desktop = mediaQuery.matches;
+      setIsDesktop(desktop);
+      if (!desktop) {
+        setIsExpanded(false);
+        setHasDesktopOverflow(false);
+      }
+    };
+
+    syncDesktopState();
+
+    if (typeof mediaQuery.addEventListener === "function") {
+      mediaQuery.addEventListener("change", syncDesktopState);
+      return () => mediaQuery.removeEventListener("change", syncDesktopState);
+    }
+
+    mediaQuery.addListener(syncDesktopState);
+    return () => mediaQuery.removeListener(syncDesktopState);
+  }, []);
+
+  useEffect(() => {
+    if (!isDesktop || isExpanded) return;
+
+    const measureOverflow = () => {
+      const element = quoteRef.current;
+      if (!element) return;
+      setHasDesktopOverflow(element.scrollHeight - element.clientHeight > 1);
+    };
+
+    measureOverflow();
+    window.addEventListener("resize", measureOverflow);
+    return () => window.removeEventListener("resize", measureOverflow);
+  }, [isDesktop, isExpanded, quote]);
+
+  return (
+    <div className="space-y-2">
+      <p
+        ref={quoteRef}
+        id={quoteElementId}
+        className={cn("line-clamp-3 text-sm leading-relaxed text-white/84", isDesktop && isExpanded ? "lg:line-clamp-none" : "")}
+      >
+        {quote}
+      </p>
+
+      {isDesktop && hasDesktopOverflow ? (
+        <button
+          type="button"
+          aria-expanded={isExpanded}
+          aria-controls={quoteElementId}
+          onClick={() => setIsExpanded((current) => !current)}
+          className="inline-flex rounded-[8px] border border-white/20 px-2.5 py-1 text-[11px] font-semibold tracking-[0.04em] text-white/84 transition-colors duration-200 hover:border-white/34 hover:text-white"
+        >
+          {isExpanded ? "Ver menos" : "Ver más"}
+        </button>
+      ) : null}
+    </div>
+  );
 }
 
 export function TestimonialsSection({ results }: TestimonialsSectionProps) {
@@ -158,7 +233,7 @@ export function TestimonialsSection({ results }: TestimonialsSectionProps) {
                 </div>
 
                 <div className="flex flex-1 flex-col gap-3 p-4">
-                  <p className="line-clamp-3 text-sm leading-relaxed text-white/84">{item.quote}</p>
+                  <TestimonialQuote cardId={item.id} quote={item.quote} />
                   <div className="mt-auto flex items-center justify-between gap-2">
                     <p className="text-sm font-semibold text-white">{item.name}</p>
                     {item.duration ? (
