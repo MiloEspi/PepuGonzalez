@@ -2,13 +2,14 @@ import { PROGRAMAS, TABLA_COMPARATIVA, type ProgramaTier } from "@/data/programa
 
 export const WHATSAPP_NUMBER = "5492213619007";
 
-export const PLAN_INICIO_MERCADOPAGO_URL = "https://mpago.la/2zWr5ch";
-export const PLAN_BASE_MERCADOPAGO_URL = "https://mpago.la/1zUeoxB";
+export const PLAN_BASE_MERCADOPAGO_URL = "";
+export const PLAN_TRANSFORMACION_MERCADOPAGO_URL = "";
+export const PLAN_MENTORIA_MERCADOPAGO_URL = "";
 
-export type OfferSlug = "programa-inicio" | "programa-base" | "programa-transformacion" | "mentoria-1-1";
-export type OfferDetailSlug = "inicio" | "base" | "transformacion" | "mentoria";
+export type OfferSlug = "programa-base" | "programa-transformacion" | "mentoria-1-1";
+export type OfferDetailSlug = "base" | "transformacion" | "mentoria";
 export type OfferCtaType = "checkout" | "lead";
-export type OfferTheme = "inicio" | "base" | "transformacion" | "mentoria";
+export type OfferTheme = "base" | "transformacion" | "mentoria";
 
 export interface OfferComparison {
   duration: string;
@@ -57,38 +58,33 @@ export interface WhatsAppLeadPayload {
   experience?: string;
 }
 
-export const OFFER_DISPLAY_ORDER: OfferSlug[] = ["programa-inicio", "programa-base", "programa-transformacion", "mentoria-1-1"];
+export const OFFER_DISPLAY_ORDER: OfferSlug[] = ["programa-base", "programa-transformacion", "mentoria-1-1"];
 
 const OFFER_DETAIL_SLUG_BY_OFFER_SLUG: Record<OfferSlug, OfferDetailSlug> = {
-  "programa-inicio": "inicio",
   "programa-base": "base",
   "programa-transformacion": "transformacion",
   "mentoria-1-1": "mentoria",
 };
 
 const OFFER_SLUG_BY_DETAIL_SLUG: Record<OfferDetailSlug, OfferSlug> = {
-  inicio: "programa-inicio",
   base: "programa-base",
   transformacion: "programa-transformacion",
   mentoria: "mentoria-1-1",
 };
 
 const OFFER_SLUG_BY_TIER: Record<ProgramaTier, OfferSlug> = {
-  inicio: "programa-inicio",
   base: "programa-base",
   transformacion: "programa-transformacion",
   mentoria: "mentoria-1-1",
 };
 
 const OFFER_SHORT_LABEL_BY_TIER: Record<ProgramaTier, string> = {
-  inicio: "Inicio",
   base: "Base",
   transformacion: "Transformación",
   mentoria: "Mentoría",
 };
 
 const OFFER_IMAGE_BY_SLUG: Record<OfferSlug, string> = {
-  "programa-inicio": "/programa-inicio.jpg",
   "programa-base": "/programa-base.jpg",
   "programa-transformacion": "/foto transformacion 2.0.JPEG",
   "mentoria-1-1": "/DSC02498.jpg",
@@ -120,8 +116,9 @@ function getPitchFromDescription(descriptionLong: string): string {
 }
 
 function getCheckoutUrlByTier(tier: ProgramaTier): string | undefined {
-  if (tier === "inicio") return PLAN_INICIO_MERCADOPAGO_URL;
-  if (tier === "base") return PLAN_BASE_MERCADOPAGO_URL;
+  if (tier === "base") return PLAN_BASE_MERCADOPAGO_URL || undefined;
+  if (tier === "transformacion") return PLAN_TRANSFORMACION_MERCADOPAGO_URL || undefined;
+  if (tier === "mentoria") return PLAN_MENTORIA_MERCADOPAGO_URL || undefined;
   return undefined;
 }
 
@@ -141,12 +138,12 @@ export const offers: Offer[] = PROGRAMAS.map((programa) => {
     conversionFlow: programa.conversionFlow,
     durationLabel: getComparisonByTier(programa.tier).duration,
     priceArs: programa.pricing.ars ?? "Consultar",
-    priceUsd: programa.pricing.usd ?? "Consultar",
+    priceUsd: "",
     pricingNote: programa.pricing.note,
     surveyStatement: programa.conversionFlow,
     featuredTagline: programa.conversionFlow,
     ctaLabel: programa.ctaLabel,
-    ctaType: programa.tier === "inicio" || programa.tier === "base" ? "checkout" : "lead",
+    ctaType: programa.tier === "base" ? "checkout" : "lead",
     checkoutUrl: getCheckoutUrlByTier(programa.tier),
     theme: programa.tier,
     comparison: getComparisonByTier(programa.tier),
@@ -210,12 +207,7 @@ export function getWhatsAppUrl(message: string): string {
 }
 
 export function getOfferPrimaryHref(offer: Offer): string {
-  if (offer.ctaType === "checkout") {
-    if (offer.checkoutUrl) return offer.checkoutUrl;
-    if (offer.slug === "programa-inicio") return PLAN_INICIO_MERCADOPAGO_URL;
-    if (offer.slug === "programa-base") return PLAN_BASE_MERCADOPAGO_URL;
-  }
-
+  if (offer.checkoutUrl) return offer.checkoutUrl;
   return getWhatsAppUrl(buildLeadMessage({ planTitle: offer.title }));
 }
 

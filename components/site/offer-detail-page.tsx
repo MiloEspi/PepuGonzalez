@@ -5,17 +5,10 @@ import { ArrowLeft, ArrowUpRight, Check } from "lucide-react";
 import { AnimatedButton } from "@/components/AnimatedButton";
 import { WhatsAppButton } from "@/components/site/whatsapp-button";
 import { Badge } from "@/components/ui/badge";
-import { getOfferPrimaryHref, getStickyWhatsAppHref, type Offer } from "@/data/offers";
+import { getStickyWhatsAppHref, type Offer } from "@/data/offers";
 import { cn } from "@/lib/utils";
 
 const detailThemeByOffer: Record<Offer["theme"], { title: string; shell: string; chip: string; button: string }> = {
-  inicio: {
-    title: "text-white",
-    shell:
-      "border-white/12 bg-[linear-gradient(140deg,rgba(21,23,30,0.94)_0%,rgba(12,13,18,0.98)_100%)]",
-    chip: "border-white/18 bg-black/42 text-white/88",
-    button: "bg-[linear-gradient(120deg,#222832_0%,#3a414f_100%)] text-white hover:brightness-110",
-  },
   base: {
     title: "text-white",
     shell:
@@ -45,9 +38,8 @@ interface OfferDetailPageProps {
 
 export function OfferDetailPage({ offer }: OfferDetailPageProps) {
   const theme = detailThemeByOffer[offer.theme];
-  const primaryHref = getOfferPrimaryHref(offer);
   const whatsappHref = getStickyWhatsAppHref(offer.title);
-  const isCheckoutPlan = offer.ctaType === "checkout";
+  const hasCheckout = Boolean(offer.checkoutUrl);
   const isTransformacionPlan = offer.slug === "programa-transformacion";
   const detailCoverImage = offer.coverImage ?? "/programa-base.jpg";
 
@@ -96,31 +88,56 @@ export function OfferDetailPage({ offer }: OfferDetailPageProps) {
                 <p className="text-[10px] uppercase tracking-[0.16em] text-white/62">Precio</p>
                 <p className="mt-1.5 text-2xl font-bold leading-none text-white sm:text-[2rem]">
                   {offer.priceArs}
-                  <span className="px-2 text-white/36">|</span>
-                  <span className="text-lg font-semibold text-white/84 sm:text-xl">{offer.priceUsd}</span>
                 </p>
                 <p className="mt-2 text-xs font-medium uppercase tracking-[0.08em] text-white/74">Duración: {offer.durationLabel}</p>
                 {offer.pricingNote ? <p className="mt-1 text-xs text-white/70">{offer.pricingNote}</p> : null}
+                <p className="mt-1.5 text-[11px] text-white/52">
+                  <a
+                    href={getStickyWhatsAppHref("consulta precio USD – " + offer.title)}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="underline underline-offset-2 hover:text-white/72 transition-colors"
+                  >
+                    ¿Pagás en dólares? Escribile a Pepu
+                  </a>
+                </p>
               </div>
 
               <div className="space-y-2.5">
-                <AnimatedButton
-                  href={primaryHref}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={cn("h-12 w-full justify-between rounded-[11px] px-4 text-[0.74rem] font-bold tracking-[0.1em]", theme.button)}
-                >
-                  <span>{offer.ctaLabel}</span>
-                  <ArrowUpRight className="size-4 shrink-0" />
-                </AnimatedButton>
-                <WhatsAppButton href={whatsappHref} className="h-12 w-full justify-center rounded-[11px] text-[0.74rem] font-semibold tracking-[0.08em]">
-                  Hablar por WhatsApp
-                </WhatsAppButton>
-                <p className="text-[11px] text-white/58">
-                  {isCheckoutPlan
-                    ? "Pago directo disponible para este plan. Si tenés dudas, escribí por WhatsApp."
-                    : "Este plan se activa por WhatsApp con mensaje para iniciar tu evaluación."}
-                </p>
+                {hasCheckout ? (
+                  <>
+                    <AnimatedButton
+                      href={offer.checkoutUrl!}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={cn("h-12 w-full justify-between rounded-[11px] px-4 text-[0.74rem] font-bold tracking-[0.1em]", theme.button)}
+                    >
+                      <span>{offer.ctaLabel}</span>
+                      <ArrowUpRight className="size-4 shrink-0" />
+                    </AnimatedButton>
+                    <WhatsAppButton href={whatsappHref} className="h-12 w-full justify-center rounded-[11px] text-[0.74rem] font-semibold tracking-[0.08em]">
+                      Hablar con Pepu
+                    </WhatsAppButton>
+                    <p className="text-[11px] text-white/58">
+                      Pago directo disponible para este plan. Si tenés dudas, escribí por WhatsApp.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <AnimatedButton
+                      href={whatsappHref}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={cn("h-12 w-full justify-between rounded-[11px] px-4 text-[0.74rem] font-bold tracking-[0.1em]", theme.button)}
+                    >
+                      <span>{offer.ctaLabel}</span>
+                      <ArrowUpRight className="size-4 shrink-0" />
+                    </AnimatedButton>
+                    <p className="text-[11px] text-white/58">
+                      Este plan se activa por WhatsApp con mensaje para iniciar tu evaluación.
+                    </p>
+                  </>
+                )}
               </div>
             </div>
           </div>

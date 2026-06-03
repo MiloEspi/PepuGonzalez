@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
-import { ArrowRight, Check, Crown, Flame, Rocket, ShieldCheck, type LucideIcon } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { ArrowRight, Check, Crown, Flame, ShieldCheck, type LucideIcon } from "lucide-react";
 
 import { AnimatedButton } from "@/components/AnimatedButton";
 import { PlanCard } from "@/components/PlanCard";
@@ -37,25 +37,6 @@ interface ThemeConfig {
 }
 
 const themeClasses: Record<OfferTheme, ThemeConfig> = {
-  inicio: {
-    icon: Rocket,
-    shell:
-      "border-[rgba(255,255,255,0.06)] bg-[linear-gradient(135deg,rgba(28,30,36,0.9)_0%,rgba(12,13,16,0.96)_100%)] shadow-[0_24px_46px_-36px_rgba(0,0,0,0.94)]",
-    surface: "bg-[linear-gradient(146deg,#15171d_0%,#0f1013_100%)]",
-    media: "border-[rgba(255,255,255,0.08)] bg-[linear-gradient(160deg,#282c34_0%,#181b22_100%)]",
-    overlay: "bg-[linear-gradient(180deg,rgba(0,0,0,0.08)_0%,rgba(0,0,0,0.34)_100%)]",
-    title: "text-white",
-    text: "text-white/78",
-    badge: "border-[rgba(255,255,255,0.18)] bg-black/48 text-white/84",
-    accentBadge: "border-[rgba(255,255,255,0.12)] bg-black/36 text-white/74",
-    benefitIcon: "border-white/25 bg-white/8 text-white/90",
-    iconWrap: "border-[rgba(255,255,255,0.15)] bg-black/40",
-    iconColor: "text-white/84",
-    cta: "bg-[linear-gradient(120deg,#222832_0%,#3a414f_100%)] text-white hover:brightness-110",
-    price: "border-white/14 bg-black/28 text-white",
-    tableHead: "bg-[linear-gradient(160deg,#242933_0%,#181b23_100%)] text-white",
-    tableCell: "bg-[linear-gradient(160deg,rgba(27,30,38,0.84)_0%,rgba(17,19,25,0.92)_100%)] text-white/84",
-  },
   base: {
     icon: ShieldCheck,
     shell:
@@ -128,14 +109,12 @@ const comparisonRows: Array<{
 ];
 
 const mediaObjectPositionBySlug: Partial<Record<(typeof offers)[number]["slug"], string>> = {
-  "programa-inicio": "object-[center_29%]",
   "programa-base": "object-[center_23%]",
   "programa-transformacion": "object-[center_18%]",
   "mentoria-1-1": "object-[center_16%]",
 };
 
 const mediaZoomBySlug: Partial<Record<(typeof offers)[number]["slug"], string>> = {
-  "programa-inicio": "scale-[1.01] group-hover:scale-[1.03]",
   "programa-base": "scale-[1.01] group-hover:scale-[1.03]",
   "programa-transformacion": "scale-[1.03] group-hover:scale-[1.05]",
   "mentoria-1-1": "scale-[1.03] group-hover:scale-[1.05]",
@@ -143,12 +122,6 @@ const mediaZoomBySlug: Partial<Record<(typeof offers)[number]["slug"], string>> 
 
 interface FeaturedPlansProps {
   plans: PlanDoc[];
-}
-
-interface ComparisonOptionButtonProps {
-  offer: (typeof offers)[number];
-  active: boolean;
-  onSelect: (slug: (typeof offers)[number]["slug"]) => void;
 }
 
 function normalizePreviewText(value: string): string {
@@ -182,7 +155,6 @@ function truncateAtLogicalBoundary(value: string, maxChars: number, minChars = M
 }
 
 function TransformacionHeadline() {
-  // Keep one line on narrow widths and slightly reduce size on desktop breakpoints.
   return (
     <h3
       className="relative z-10 max-w-full whitespace-nowrap text-[1.44rem] font-black leading-[0.95] tracking-[0.02em] text-[#ff3b3b] max-[450px]:text-[1.22rem] max-[380px]:text-[1.04rem] max-[320px]:text-[0.96rem] md:text-[1.08rem] md:[font-size:clamp(1rem,8.3cqw,1.18rem)] md:leading-[0.98] md:tracking-[0.008em]"
@@ -192,35 +164,27 @@ function TransformacionHeadline() {
   );
 }
 
-function ComparisonOptionButton({ offer, active, onSelect }: ComparisonOptionButtonProps) {
-  const isTransformacion = offer.slug === "programa-transformacion";
-
-  return (
-    <button
-      type="button"
-      onClick={() => onSelect(offer.slug)}
-      className={cn(
-        "min-h-10 rounded-[10px] border px-2.5 py-2 text-center text-[0.68rem] font-semibold uppercase leading-tight tracking-[0.06em] whitespace-normal break-words transition-[border-color,background-color,color,box-shadow,transform] duration-[220ms] max-[399px]:px-2 max-[399px]:text-[0.64rem] max-[399px]:tracking-[0.04em] max-[320px]:px-1.5 max-[320px]:text-[0.58rem] max-[320px]:tracking-[0.02em] sm:px-3 sm:text-xs sm:tracking-[0.08em]",
-        active
-          ? "border-primary/68 bg-[linear-gradient(122deg,#8b0000_0%,#d41414_100%)] text-white shadow-[0_16px_28px_-20px_rgba(212,20,20,0.92)]"
-          : "border-white/16 bg-black/28 text-white/76 hover:border-white/30 hover:text-white",
-        isTransformacion && !active ? "border-primary/35 text-white/86" : ""
-      )}
-      aria-pressed={active}
-    >
-      <span className={cn("block w-full", isTransformacion ? "max-[399px]:text-[0.6rem] max-[320px]:text-[0.54rem]" : "")}>{offer.shortLabel}</span>
-    </button>
-  );
-}
-
 export function FeaturedPlans({ plans }: FeaturedPlansProps) {
   const catalogOffers = sortOffersByDisplayOrder(mapSanityPlansToOffers(plans));
-  const initialComparisonSlug =
-    catalogOffers.find((offer) => offer.slug === "programa-transformacion")?.slug ??
-    catalogOffers.find((offer) => offer.featured)?.slug ??
-    catalogOffers[0]?.slug;
-  const [selectedComparisonSlug, setSelectedComparisonSlug] = useState(initialComparisonSlug ?? "");
   const [expandedDesktopPitchBySlug, setExpandedDesktopPitchBySlug] = useState<Record<string, boolean>>({});
+  const tableScrollRef = useRef<HTMLDivElement>(null);
+  const tableGradientRef = useRef<HTMLDivElement>(null);
+
+  const updateTableGradient = useCallback(() => {
+    const el = tableScrollRef.current;
+    const grad = tableGradientRef.current;
+    if (!el || !grad) return;
+    grad.style.opacity = el.scrollLeft + el.clientWidth >= el.scrollWidth - 2 ? "0" : "1";
+  }, []);
+
+  useEffect(() => {
+    updateTableGradient();
+    const el = tableScrollRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(updateTableGradient);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [updateTableGradient]);
 
   if (!catalogOffers.length) {
     return (
@@ -236,20 +200,19 @@ export function FeaturedPlans({ plans }: FeaturedPlansProps) {
       </SectionShell>
     );
   }
-  const selectedComparisonOffer = catalogOffers.find((offer) => offer.slug === selectedComparisonSlug) ?? catalogOffers[0];
 
   return (
     <SectionShell
       id="planes"
       eyebrow="PLANES"
       title="Elegí tu nivel de transformación"
-      description="Cuatro niveles claros. Un solo objetivo: progreso real con estructura."
+      description="Tres niveles claros. Un solo objetivo: progreso real con estructura."
     >
       <article className="mb-5 rounded-[12px] border border-primary/35 bg-[linear-gradient(126deg,rgba(122,14,14,0.3)_0%,rgba(40,12,15,0.72)_100%)] px-4 py-3 text-sm text-white/86 lg:mx-auto lg:max-w-4xl lg:px-6 lg:text-center">
         Cada nivel suma personalización y soporte. Transformación y Mentoría concentran la experiencia premium completa.
       </article>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
         {catalogOffers.map((offer) => {
           const styles = themeClasses[offer.theme];
           const Icon = styles.icon;
@@ -272,7 +235,6 @@ export function FeaturedPlans({ plans }: FeaturedPlansProps) {
             mediaZoomClass
           );
           const straplinePreview = truncateAtLogicalBoundary(offer.strapline, 82);
-          const pitchPreview = truncateAtLogicalBoundary(offer.pitch, 124);
           const surveyStatementPreview = offer.surveyStatement ? truncateAtLogicalBoundary(offer.surveyStatement, 96) : undefined;
           const isDesktopPitchExpanded = Boolean(expandedDesktopPitchBySlug[offer.slug]);
           const desktopPitchId = `desktop-pitch-${offer.slug}`;
@@ -289,7 +251,7 @@ export function FeaturedPlans({ plans }: FeaturedPlansProps) {
                 isMentoria ? "md:shadow-[0_42px_74px_-40px_rgba(210,170,86,0.58)]" : ""
               )}
             >
-              <div className={cn("relative flex h-full flex-col rounded-[15px] p-5 md:p-5", styles.surface)}>
+              <div className={cn("relative flex h-full flex-col rounded-[15px] p-4 md:p-5", styles.surface)}>
                 <div
                   className={cn(
                     "relative z-10 mb-4 overflow-hidden rounded-[11px] border",
@@ -303,7 +265,7 @@ export function FeaturedPlans({ plans }: FeaturedPlansProps) {
                     alt={offer.title}
                     fill
                     quality={isTransformacion ? 95 : 85}
-                    sizes="(max-width: 768px) 100vw, (max-width: 1400px) 50vw, 25vw"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1400px) 50vw, 33vw"
                     className={mediaImageClass}
                   />
 
@@ -370,7 +332,7 @@ export function FeaturedPlans({ plans }: FeaturedPlansProps) {
                   )}
                   {isTransformacion ? (
                     <>
-                      <p className={cn("text-sm leading-relaxed lg:hidden", styles.text)}>{pitchPreview || offer.pitch}</p>
+                      <p className={cn("text-sm leading-relaxed lg:hidden", styles.text)}>{offer.pitch}</p>
                       <div className="hidden lg:block">
                         <p
                           id={desktopPitchId}
@@ -395,7 +357,7 @@ export function FeaturedPlans({ plans }: FeaturedPlansProps) {
                       </div>
                     </>
                   ) : (
-                    <p className={cn("text-sm leading-relaxed lg:text-center", styles.text)}>{pitchPreview || offer.pitch}</p>
+                    <p className={cn("text-sm leading-relaxed lg:text-center", styles.text)}>{offer.pitch}</p>
                   )}
 
                   {surveyStatementPreview ? (
@@ -410,21 +372,14 @@ export function FeaturedPlans({ plans }: FeaturedPlansProps) {
                         <span className={cn("mt-0.5 inline-flex size-5 shrink-0 items-center justify-center rounded-[8px] border", styles.benefitIcon)}>
                           <Check className="size-3.5" />
                         </span>
-                        <span className="line-clamp-1">{benefit}</span>
+                        <span className="leading-snug">{benefit}</span>
                       </li>
                     ))}
                   </ul>
-                  {offer.benefits.length > visibleBenefits.length ? (
-                    <p className="text-xs text-white/64">+{offer.benefits.length - visibleBenefits.length} puntos extra según tu diagnóstico.</p>
-                  ) : null}
 
                   <div className={cn("rounded-[11px] border px-3.5 py-3", styles.price)}>
                     <p className="text-[10px] uppercase tracking-[0.16em] text-white/68">Precio</p>
-                    <p className="mt-1 text-lg font-semibold">
-                      {offer.priceArs}
-                      <span className="px-2 text-white/40">|</span>
-                      <span className="text-base font-medium text-white/86">{offer.priceUsd}</span>
-                    </p>
+                    <p className="mt-1 text-lg font-semibold">{offer.priceArs}</p>
                     <p className="mt-1 text-xs text-white/72">Duración: {offer.durationLabel}</p>
                   </div>
                 </div>
@@ -447,33 +402,72 @@ export function FeaturedPlans({ plans }: FeaturedPlansProps) {
         })}
       </div>
 
-      <div className="mt-7 rounded-[16px] border border-white/14 bg-[linear-gradient(145deg,#17181d_0%,#111217_100%)] p-4 md:p-5">
-        <div className="space-y-3.5">
-          <div className="flex justify-center">
-            <Badge className="rounded-[8px] border border-primary/45 bg-primary/18 text-primary">COMPARATIVA</Badge>
-          </div>
-
-          <div className="grid grid-cols-2 gap-2.5 md:grid-cols-4">
-            {catalogOffers.map((offer) => {
-              const active = offer.slug === selectedComparisonOffer.slug;
-              return <ComparisonOptionButton key={`compact-comparison-${offer.slug}`} offer={offer} active={active} onSelect={setSelectedComparisonSlug} />;
-            })}
-          </div>
+      {/* Comparativa lado a lado — 3 columnas en desktop, scroll horizontal con label sticky en mobile */}
+      <div className="mt-7 overflow-hidden rounded-[16px] border border-white/14 bg-[linear-gradient(145deg,#17181d_0%,#111217_100%)]">
+        <div className="flex justify-center px-4 pb-3 pt-4 md:px-5">
+          <Badge className="rounded-[8px] border border-primary/45 bg-primary/18 text-primary">COMPARATIVA</Badge>
         </div>
 
-        <ul className="mt-4 space-y-2.5">
-          {comparisonRows.map((row) => (
-            <li
-              key={`compact-row-${row.label}`}
-              className="rounded-[11px] border border-white/12 bg-[linear-gradient(140deg,rgba(20,21,28,0.92)_0%,rgba(13,14,18,0.98)_100%)] px-4 py-3.5"
-            >
-              <p className="text-[11px] font-semibold uppercase tracking-[0.11em] text-white/56">{row.label}</p>
-              <p className="mt-1.5 text-sm font-medium text-white/90">{row.getter(selectedComparisonOffer)}</p>
-            </li>
-          ))}
-        </ul>
-
-        <p className="mt-4 text-[11px] text-white/58">Cambiá de plan arriba para comparar en segundos.</p>
+        <div className="relative">
+          <div
+            ref={tableScrollRef}
+            className="overflow-x-auto"
+            onScroll={updateTableGradient}
+          >
+          <table className="w-full min-w-[440px] border-separate border-spacing-0">
+            <thead>
+              <tr>
+                <th className="sticky left-0 z-10 w-[96px] min-w-[96px] bg-[#111217] px-3 pb-2 pt-0 sm:w-[112px] sm:min-w-[112px]" />
+                {catalogOffers.map((offer) => {
+                  const styles = themeClasses[offer.theme];
+                  return (
+                    <th key={`th-${offer.slug}`} className="px-2 pb-2 pt-0 first:pl-3 last:pr-3">
+                      <div className={cn("rounded-[10px] border px-2 py-2 text-center text-[10px] font-bold uppercase tracking-[0.08em] sm:px-3 sm:text-xs", styles.tableHead)}>
+                        {offer.shortLabel}
+                      </div>
+                    </th>
+                  );
+                })}
+              </tr>
+            </thead>
+            <tbody>
+              {comparisonRows.map((row, rowIndex) => {
+                const isLast = rowIndex === comparisonRows.length - 1;
+                return (
+                  <tr key={`row-${row.label}`}>
+                    <td
+                      className={cn(
+                        "sticky left-0 z-10 bg-[#111217] pl-3 pr-2 align-middle text-[10px] font-semibold uppercase tracking-[0.09em] text-white/54 sm:text-[11px]",
+                        isLast ? "py-2 pb-4" : "py-2"
+                      )}
+                    >
+                      {row.label}
+                    </td>
+                    {catalogOffers.map((offer) => {
+                      const styles = themeClasses[offer.theme];
+                      return (
+                        <td
+                          key={`cell-${offer.slug}-${row.label}`}
+                          className={cn("px-2 align-middle first:pl-3 last:pr-3", isLast ? "py-2 pb-4" : "py-2")}
+                        >
+                          <div className={cn("rounded-[10px] border px-2 py-2 text-center text-xs leading-snug", styles.tableCell)}>
+                            {row.getter(offer)}
+                          </div>
+                        </td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+          </div>
+          <div
+            ref={tableGradientRef}
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-y-0 right-0 w-14 bg-gradient-to-r from-transparent to-[#111217] transition-opacity duration-200"
+          />
+        </div>
       </div>
     </SectionShell>
   );
