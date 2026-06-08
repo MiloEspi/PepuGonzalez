@@ -143,7 +143,7 @@ export const offers: Offer[] = PROGRAMAS.map((programa) => {
     surveyStatement: programa.conversionFlow,
     featuredTagline: programa.conversionFlow,
     ctaLabel: programa.ctaLabel,
-    ctaType: programa.tier === "base" ? "checkout" : "lead",
+    ctaType: programa.tier === "mentoria" ? "lead" : "checkout",
     checkoutUrl: getCheckoutUrlByTier(programa.tier),
     theme: programa.tier,
     comparison: getComparisonByTier(programa.tier),

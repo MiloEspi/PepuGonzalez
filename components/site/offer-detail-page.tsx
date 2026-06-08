@@ -39,7 +39,8 @@ interface OfferDetailPageProps {
 export function OfferDetailPage({ offer }: OfferDetailPageProps) {
   const theme = detailThemeByOffer[offer.theme];
   const whatsappHref = getStickyWhatsAppHref(offer.title);
-  const hasCheckout = Boolean(offer.checkoutUrl);
+  const isCheckout = offer.ctaType === "checkout";
+  const primaryHref = offer.checkoutUrl ?? whatsappHref;
   const isTransformacionPlan = offer.slug === "programa-transformacion";
   const detailCoverImage = offer.coverImage ?? "/programa-base.jpg";
 
@@ -104,10 +105,10 @@ export function OfferDetailPage({ offer }: OfferDetailPageProps) {
               </div>
 
               <div className="space-y-2.5">
-                {hasCheckout ? (
+                {isCheckout ? (
                   <>
                     <AnimatedButton
-                      href={offer.checkoutUrl!}
+                      href={primaryHref}
                       target="_blank"
                       rel="noreferrer"
                       className={cn("h-12 w-full justify-between rounded-[11px] px-4 text-[0.74rem] font-bold tracking-[0.1em]", theme.button)}
