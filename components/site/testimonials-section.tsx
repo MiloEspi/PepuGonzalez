@@ -53,6 +53,9 @@ function TestimonialSlider({
 }) {
   const [position, setPosition] = useState(50);
   const isDragging = useRef(false);
+  const isHorizontal = useRef(false);
+  const startX = useRef(0);
+  const startY = useRef(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Native listeners on the target element fire in the target/bubble phase
@@ -61,6 +64,9 @@ function TestimonialSlider({
   // React synthetic handlers (onPointerDown etc.) on this element fire
   // via delegation at the React root — which is *after* Embla in the bubble
   // chain — so React's e.stopPropagation() alone cannot stop Embla.
+  //
+  // Direction detection: we only capture + preventDefault once we know the
+  // gesture is horizontal. Vertical swipes fall through to native scroll.
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -73,22 +79,41 @@ function TestimonialSlider({
     const onDown = (e: PointerEvent) => {
       e.stopPropagation();
       isDragging.current = true;
-      el.setPointerCapture(e.pointerId);
+      isHorizontal.current = false;
+      startX.current = e.clientX;
+      startY.current = e.clientY;
+      // Don't capture yet — wait until direction is confirmed horizontal.
       update(e.clientX);
     };
     const onMove = (e: PointerEvent) => {
       if (!isDragging.current) return;
       e.stopPropagation();
+
+      if (!isHorizontal.current) {
+        const dx = Math.abs(e.clientX - startX.current);
+        const dy = Math.abs(e.clientY - startY.current);
+        if (dx < 4 && dy < 4) return;
+        if (dy > dx) {
+          // Vertical swipe — release drag so native scroll takes over.
+          isDragging.current = false;
+          return;
+        }
+        isHorizontal.current = true;
+        el.setPointerCapture(e.pointerId);
+      }
+
       e.preventDefault();
       update(e.clientX);
     };
     const onUp = (e: PointerEvent) => {
       e.stopPropagation();
       isDragging.current = false;
+      isHorizontal.current = false;
     };
     const onCancel = (e: PointerEvent) => {
       e.stopPropagation();
       isDragging.current = false;
+      isHorizontal.current = false;
     };
 
     el.addEventListener("pointerdown", onDown);
@@ -107,7 +132,7 @@ function TestimonialSlider({
   return (
     <div
       ref={containerRef}
-      className="relative aspect-[3/4] w-full select-none overflow-hidden rounded-[11px] cursor-ew-resize touch-none"
+      className="relative aspect-[3/4] w-full select-none overflow-hidden rounded-[11px] cursor-ew-resize [touch-action:pan-y]"
       role="slider"
       tabIndex={0}
       aria-valuenow={Math.round(position)}

@@ -78,7 +78,7 @@ const themeClasses: Record<OfferTheme, ThemeConfig> = {
   mentoria: {
     icon: Crown,
     shell:
-      "border-[rgba(255,200,80,0.28)] bg-[linear-gradient(135deg,rgba(255,200,80,0.18)_0%,rgba(0,0,0,0.92)_60%)] shadow-[0_34px_66px_-38px_rgba(190,146,64,0.62)] before:pointer-events-none before:absolute before:-top-10 before:-right-8 before:size-40 before:content-[''] before:bg-[radial-gradient(circle_at_80%_0%,rgba(255,200,80,0.3),transparent_55%)] before:blur-[24px] before:opacity-80",
+      "border-[rgba(255,200,80,0.28)] bg-[linear-gradient(135deg,rgba(255,200,80,0.18)_0%,rgba(0,0,0,0.92)_60%)] shadow-[0_34px_66px_-38px_rgba(190,146,64,0.62)] before:pointer-events-none before:absolute before:-top-10 before:-right-8 before:size-40 before:content-[''] before:bg-[radial-gradient(circle_at_80%_0%,rgba(255,200,80,0.3),transparent_55%)] md:before:blur-[24px] before:opacity-80",
     surface: "bg-[linear-gradient(146deg,#14110d_0%,#111216_52%,#0c0c0f_100%)]",
     media: "border-[rgba(255,200,80,0.4)] bg-[linear-gradient(165deg,#31291d_0%,#19140e_100%)]",
     overlay: "bg-[linear-gradient(180deg,rgba(0,0,0,0.1)_0%,rgba(145,104,40,0.24)_100%)]",
@@ -313,7 +313,7 @@ export function FeaturedPlans({ plans }: FeaturedPlansProps) {
 
                 <div data-plan-copy className="space-y-3.5 lg:mx-auto lg:w-full lg:max-w-[19rem] lg:px-2">
                   {isTransformacion ? (
-                    <div className="relative isolate space-y-1.5 before:pointer-events-none before:absolute before:-left-5 before:-top-6 before:h-24 before:w-44 before:rounded-full before:bg-[radial-gradient(circle_at_20%_10%,rgba(255,0,0,0.35),transparent_55%)] before:blur-[24px] before:opacity-90 before:content-[''] lg:text-center md:[container-type:inline-size]">
+                    <div className="relative isolate space-y-1.5 before:pointer-events-none before:absolute before:-left-5 before:-top-6 before:h-24 before:w-44 before:rounded-full before:bg-[radial-gradient(circle_at_20%_10%,rgba(255,0,0,0.35),transparent_55%)] md:before:blur-[24px] before:opacity-90 before:content-[''] lg:text-center md:[container-type:inline-size]">
                       <TransformacionHeadline />
                       <p className="relative z-10 text-[0.95rem] font-semibold leading-tight text-white/92 md:text-[1.02rem]">{offer.strapline}</p>
                     </div>
@@ -322,7 +322,7 @@ export function FeaturedPlans({ plans }: FeaturedPlansProps) {
                       className={cn(
                         "space-y-1.5",
                         isMentoria
-                          ? "relative isolate before:pointer-events-none before:absolute before:-right-4 before:-top-5 before:h-20 before:w-36 before:rounded-full before:bg-[radial-gradient(circle_at_80%_0%,rgba(255,200,80,0.3),transparent_55%)] before:blur-[24px] before:opacity-90 before:content-['']"
+                          ? "relative isolate before:pointer-events-none before:absolute before:-right-4 before:-top-5 before:h-20 before:w-36 before:rounded-full before:bg-[radial-gradient(circle_at_80%_0%,rgba(255,200,80,0.3),transparent_55%)] md:before:blur-[24px] before:opacity-90 before:content-['']"
                           : ""
                       )}
                     >
