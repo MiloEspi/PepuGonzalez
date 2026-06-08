@@ -112,7 +112,7 @@ export function OfferDetailPage({ offer }: OfferDetailPageProps) {
                       rel="noreferrer"
                       className={cn("h-12 w-full justify-between rounded-[11px] px-4 text-[0.74rem] font-bold tracking-[0.1em]", theme.button)}
                     >
-                      <span>{offer.ctaLabel}</span>
+                      <span>AVANZAR CON ESTE PROGRAMA</span>
                       <ArrowUpRight className="size-4 shrink-0" />
                     </AnimatedButton>
                     <WhatsAppButton href={whatsappHref} className="h-12 w-full justify-center rounded-[11px] text-[0.74rem] font-semibold tracking-[0.08em]">

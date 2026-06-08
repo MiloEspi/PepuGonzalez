@@ -59,7 +59,7 @@ export const PROGRAMAS: Programa[] = assertUniqueSlugs([
       "Posibilidad de actualización mensual",
     ],
     idealFor: "Personas que quieren entrenar con método profesional sin necesidad de seguimiento constante.",
-    ctaLabel: "COMPRAR AHORA",
+    ctaLabel: "AVANZAR CON ESTE PROGRAMA",
     pricing: {
       ars: "$34.900 ARS",
     },
