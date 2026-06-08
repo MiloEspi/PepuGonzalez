@@ -129,7 +129,7 @@ export const quizQuestions: QuizQuestion[] = [
   },
   {
     id: "routineStructure",
-    title: "Sabés estructurar rutina",
+    title: "¿Sabés estructurar rutina?",
     subtitle: "Detectamos cuánto soporte técnico necesitas.",
     options: [
       { label: "No", value: "no" },
@@ -139,7 +139,7 @@ export const quizQuestions: QuizQuestion[] = [
   },
   {
     id: "wantsNutritionPlan",
-    title: "Querés plan nutricional completo",
+    title: "¿Querés plan nutricional completo?",
     subtitle: "Sumamos nutrición completa solo si realmente la necesitas.",
     options: [
       { label: "Sí", value: "si" },
@@ -148,7 +148,7 @@ export const quizQuestions: QuizQuestion[] = [
   },
   {
     id: "followUp",
-    title: "Querés seguimiento",
+    title: "¿Querés seguimiento?",
     subtitle: "Definí la intensidad de acompañamiento que buscas.",
     options: [
       { label: "No, solo el plan", value: "solo-plan" },
@@ -198,15 +198,6 @@ function resolveOfferSlug(answers: QuizAnswers): OfferSlug {
     return "programa-transformacion";
   }
 
-  const isInicioExact =
-    (answers.trainingExperience === "nunca" || answers.trainingExperience === "menos-6-meses") &&
-    answers.routineStructure === "no" &&
-    answers.commitmentLevel === "empezar-aprender" &&
-    answers.followUp === "solo-plan";
-  if (isInicioExact) {
-    return "programa-inicio";
-  }
-
   const isBaseExact =
     answers.trainingExperience === "seis-meses-dos-años" &&
     answers.routineStructure === "si" &&
@@ -227,15 +218,6 @@ function resolveOfferSlug(answers: QuizAnswers): OfferSlug {
     answers.commitmentLevel === "cambio-fuerte-90"
   ) {
     return "programa-transformacion";
-  }
-
-  if (
-    answers.trainingExperience === "nunca" ||
-    answers.trainingExperience === "menos-6-meses" ||
-    answers.routineStructure !== "si" ||
-    answers.commitmentLevel === "empezar-aprender"
-  ) {
-    return "programa-inicio";
   }
 
   return "programa-base";

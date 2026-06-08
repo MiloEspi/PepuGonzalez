@@ -389,7 +389,7 @@ export function FeaturedPlans({ plans }: FeaturedPlansProps) {
                   className={cn("premium-cta mt-4 h-11 w-full justify-between rounded-[10px] px-4 text-[0.69rem] font-bold tracking-[0.1em]", styles.cta)}
                   onClick={() => rememberSelectedPlan(offer.title)}
                 >
-                  <span className="pr-2 text-left leading-[1.2]">Ver detalle</span>
+                  <span className="pr-2 text-left leading-[1.2]">Elegir este programa</span>
                   <ArrowRight className="premium-arrow size-4 shrink-0" />
                 </AnimatedButton>
 

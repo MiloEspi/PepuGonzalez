@@ -1,8 +1,8 @@
 import { offers, sortOffersByDisplayOrder, type Offer, type OfferCtaType, type OfferSlug } from "@/data/offers";
 import type { PlanDoc } from "@/lib/sanity";
 
-const OFFER_SLUG_BY_TIER: Record<PlanDoc["tier"], OfferSlug> = {
-  inicio: "programa-inicio",
+// "inicio" tier is excluded from the site; map only the three active tiers.
+const OFFER_SLUG_BY_TIER: Partial<Record<PlanDoc["tier"], OfferSlug>> = {
   base: "programa-base",
   transformacion: "programa-transformacion",
   mentoria: "mentoria-1-1",
@@ -11,10 +11,6 @@ const OFFER_SLUG_BY_TIER: Record<PlanDoc["tier"], OfferSlug> = {
 function formatArs(price: number): string {
   const formatter = new Intl.NumberFormat("es-AR");
   return `$${formatter.format(price)} ARS`;
-}
-
-function formatUsd(price: number): string {
-  return `${price} USD`;
 }
 
 function normalizeCtaType(value?: PlanDoc["ctaType"]): OfferCtaType | undefined {
@@ -29,7 +25,8 @@ export function mapSanityPlansToOffers(plans: PlanDoc[]): Offer[] {
 
   const planBySlug = new Map<OfferSlug, PlanDoc>();
   for (const plan of plans) {
-    planBySlug.set(OFFER_SLUG_BY_TIER[plan.tier], plan);
+    const offerSlug = OFFER_SLUG_BY_TIER[plan.tier];
+    if (offerSlug) planBySlug.set(offerSlug, plan);
   }
 
   const mapped = offers.map((fallbackOffer) => {
@@ -52,7 +49,6 @@ export function mapSanityPlansToOffers(plans: PlanDoc[]): Offer[] {
       conversionFlow: plan.conversionFlow ?? fallbackOffer.conversionFlow,
       durationLabel: plan.durationLabel || fallbackOffer.durationLabel,
       priceArs: Number.isFinite(plan.priceARS) ? formatArs(plan.priceARS) : fallbackOffer.priceArs,
-      priceUsd: typeof plan.priceUSD === "number" ? formatUsd(plan.priceUSD) : fallbackOffer.priceUsd,
       ctaLabel: plan.ctaLabel ?? fallbackOffer.ctaLabel,
       ctaType,
       checkoutUrl: ctaType === "checkout" ? plan.checkoutUrl ?? fallbackOffer.checkoutUrl : undefined,

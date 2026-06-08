@@ -6,7 +6,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { Navbar } from "@/components/Navbar";
 import { SvgFilters } from "@/components/SvgFilters";
 import { FooterRouteVisibility } from "@/components/site/footer-route-visibility";
-import { MobileWhatsAppSticky } from "@/components/site/mobile-whatsapp-sticky";
+
 import { OverflowDebug } from "@/components/dev/overflow-debug";
 import { FOOTER_QUERY, SETTINGS_QUERY, sanityFetch, type FooterDoc, type SiteSettingsDoc } from "@/lib/sanity";
 import "./globals.css";
@@ -49,7 +49,6 @@ export default async function RootLayout({
           <SvgFilters />
           <Navbar extraNavItems={settings.navItems} />
           {children}
-          <MobileWhatsAppSticky />
           <FooterRouteVisibility content={footer} />
         </div>
         <Script

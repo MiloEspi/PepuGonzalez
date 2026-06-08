@@ -97,7 +97,7 @@ export const ABOUT_QUERY = `*[_type=="about"][0]{
   "aboutImageUrl": aboutImage.asset->url
 }`;
 
-export const PLANS_QUERY = `*[_type=="plan"]|order(tier asc){
+export const PLANS_QUERY = `*[_type=="plan" && tier != "inicio"]|order(tier asc){
   _id,
   tier,
   title,

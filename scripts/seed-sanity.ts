@@ -9,7 +9,7 @@ import { getOfferPrimaryHref, getStickyWhatsAppHref, offers } from "../data/offe
 
 type SeedDocument = Record<string, unknown> & { _id: string; _type: string };
 
-type PlanTier = "inicio" | "base" | "transformacion" | "mentoria";
+type PlanTier = "base" | "transformacion" | "mentoria";
 
 type ImageValue = {
   _type: "image";
@@ -43,14 +43,12 @@ const client = createClient({
 const PUBLIC_DIR = path.join(process.cwd(), "public");
 
 const PLAN_ID_BY_TIER: Record<PlanTier, string> = {
-  inicio: "plan-inicio",
   base: "plan-base",
   transformacion: "plan-transformacion",
   mentoria: "plan-mentoria",
 };
 
 const TIER_BY_OFFER_SLUG: Record<(typeof offers)[number]["slug"], PlanTier> = {
-  "programa-inicio": "inicio",
   "programa-base": "base",
   "programa-transformacion": "transformacion",
   "mentoria-1-1": "mentoria",
@@ -274,7 +272,6 @@ async function buildSeedDocuments(): Promise<SeedDocument[]> {
         subtitle: offer.strapline,
         descriptionLong: offer.descriptionLong,
         priceARS: parseCurrencyValue(offer.priceArs),
-        priceUSD: parseCurrencyValue(offer.priceUsd),
         durationLabel: offer.durationLabel,
         shortDesc: offer.pitch,
         idealFor: offer.idealFor,
