@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { type MouseEvent, useEffect, useRef, useState } from "react";
-import { ArrowDownRight } from "lucide-react";
+import { Play } from "lucide-react";
 import { animate, stagger } from "animejs";
 
 import { AnimatedButton } from "@/components/AnimatedButton";
@@ -10,18 +10,14 @@ import { PageContainer } from "@/components/site/section-primitives";
 import type { SiteSettingsDoc } from "@/lib/sanity";
 import { EASE_OUT_EXPO, PREMIUM_EASE, prefersReducedMotion } from "@/utils/animations";
 
-type HeroContent = Pick<
-  SiteSettingsDoc,
-  "heroTitle" | "heroSubtitle" | "heroImageUrl" | "primaryCtaText" | "primaryCtaHref" | "whatsappCtaText" | "whatsappCtaHref"
->;
+type HeroContent = Pick<SiteSettingsDoc, "heroImageUrl" | "whatsappCtaHref">;
 
 interface HeroSectionProps {
   content: HeroContent;
 }
 
 export function HeroSection({ content }: HeroSectionProps) {
-  const heroContent = content;
-  const heroImages = [heroContent.heroImageUrl].filter((value): value is string => Boolean(value));
+  const heroImages = [content.heroImageUrl].filter((v): v is string => Boolean(v));
   const hasHeroImage = heroImages.length > 0;
   const [imageIndex, setImageIndex] = useState(0);
   const [showGradientFallback, setShowGradientFallback] = useState(false);
@@ -43,49 +39,24 @@ export function HeroSection({ content }: HeroSectionProps) {
         title.style.opacity = "1";
         title.style.transform = "translateY(0px)";
       }
-      ctaButtons.forEach((button) => {
-        button.style.opacity = "1";
-        button.style.transform = "translateY(0px)";
+      ctaButtons.forEach((btn) => {
+        btn.style.opacity = "1";
+        btn.style.transform = "translateY(0px)";
       });
       return;
     }
 
     if (navbarShell) {
-      animate(navbarShell, {
-        opacity: [0.7, 1],
-        translateY: [-8, 0],
-        duration: 190,
-        ease: EASE_OUT_EXPO,
-      });
+      animate(navbarShell, { opacity: [0.7, 1], translateY: [-8, 0], duration: 190, ease: EASE_OUT_EXPO });
     }
-
     if (title) {
-      animate(title, {
-        opacity: [0, 1],
-        translateY: [20, 0],
-        duration: 290,
-        delay: 110,
-        ease: EASE_OUT_EXPO,
-      });
+      animate(title, { opacity: [0, 1], translateY: [20, 0], duration: 290, delay: 110, ease: EASE_OUT_EXPO });
     }
-
     if (ctaButtons.length) {
-      animate(ctaButtons, {
-        opacity: [0, 1],
-        translateY: [14, 0],
-        duration: 250,
-        delay: stagger(70, { start: 220 }),
-        ease: EASE_OUT_EXPO,
-      });
+      animate(ctaButtons, { opacity: [0, 1], translateY: [14, 0], duration: 250, delay: stagger(70, { start: 220 }), ease: EASE_OUT_EXPO });
     }
-
     if (mediaMotionRef.current) {
-      animate(mediaMotionRef.current, {
-        scale: [1.015, 1],
-        translateY: [6, 0],
-        duration: 720,
-        ease: PREMIUM_EASE,
-      });
+      animate(mediaMotionRef.current, { scale: [1.015, 1], translateY: [6, 0], duration: 720, ease: PREMIUM_EASE });
     }
   }, []);
 
@@ -111,36 +82,32 @@ export function HeroSection({ content }: HeroSectionProps) {
     };
   }, []);
 
-  function handlePrimaryCtaClick(event: MouseEvent<HTMLAnchorElement>) {
-    const href = heroContent.primaryCtaHref;
-    const hashTargetFromRelative = href.startsWith("#") ? href.slice(1) : href.startsWith("/#") ? href.slice(2) : "";
-    const hashTargetFromAbsolute = hashTargetFromRelative || new URL(href, window.location.origin).hash.replace("#", "");
-    const hashTarget = hashTargetFromAbsolute;
-    if (!hashTarget) return;
-
+  function handleScrollToResults(event: MouseEvent<HTMLAnchorElement>) {
     event.preventDefault();
-    const section = document.getElementById(hashTarget);
+    const section = document.getElementById("resultados");
     if (!section) return;
     section.scrollIntoView({ behavior: "smooth", block: "start" });
-    window.history.replaceState(null, "", `/#${hashTarget}`);
+    window.history.replaceState(null, "", "/#resultados");
   }
 
   function handleImageError() {
     if (!hasHeroImage) return;
-
     if (imageIndex < heroImages.length - 1) {
       setImageIndex((prev) => prev + 1);
       return;
     }
-
     setShowGradientFallback(true);
   }
 
   return (
     <section id="inicio" className="scroll-mt-[calc(var(--navbar-height)+0.7rem)] py-2 md:py-3">
       <PageContainer>
-        <div ref={heroRef} className="relative isolate overflow-hidden rounded-[18px] shadow-[0_36px_74px_-56px_rgba(0,0,0,0.96)]">
-          <div className="relative h-[74svh] min-h-[500px] w-full max-h-[860px]">
+        <div
+          ref={heroRef}
+          className="relative isolate overflow-hidden rounded-[18px] shadow-[0_36px_74px_-56px_rgba(0,0,0,0.96)]"
+        >
+          {/* Background image — sets card height */}
+          <div className="relative min-h-[780px] w-full sm:min-h-[860px] md:min-h-[900px]">
             <div ref={mediaMotionRef} className="absolute inset-0 will-change-transform">
               {!showGradientFallback && hasHeroImage ? (
                 <Image
@@ -159,43 +126,60 @@ export function HeroSection({ content }: HeroSectionProps) {
             </div>
           </div>
 
-          <div className="pointer-events-none absolute inset-x-0 inset-y-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.08)_0%,rgba(0,0,0,0.28)_44%,rgba(0,0,0,0.66)_100%)]" />
+          {/* Gradient overlay — image visible at top, dark at bottom for readability */}
+          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.06)_0%,rgba(0,0,0,0.14)_18%,rgba(0,0,0,0.54)_42%,rgba(0,0,0,0.80)_60%,rgba(0,0,0,0.92)_78%,rgba(0,0,0,0.96)_100%)]" />
 
-          <div className="absolute inset-0 flex items-end justify-center p-4 pb-6 sm:p-6 md:p-8">
-            <div data-hero-reveal className="mx-auto flex max-w-[34rem] flex-col items-center text-center">
+          {/* Content — anchored to bottom of card */}
+          <div className="absolute inset-0 flex items-end justify-center p-4 pb-7 sm:p-6 sm:pb-9 md:p-8 md:pb-11">
+            <div data-hero-reveal className="mx-auto flex w-full max-w-[34rem] flex-col items-center text-center gap-4">
+
               <h1
                 ref={titleRef}
-                data-hero-title
-                className="whitespace-pre-line text-[2.05rem] font-extrabold leading-[0.92] tracking-[-0.03em] text-white sm:text-[2.8rem] md:text-[3.2rem]"
+                className="text-[2.05rem] font-extrabold leading-[1.04] tracking-[-0.03em] text-white sm:text-[2.7rem] md:text-[3.1rem]"
               >
-                {heroContent.heroTitle}
+                Construí el físico de tus sueños y sacate tus inseguridades guardadas.
               </h1>
 
-              {heroContent.heroSubtitle ? (
-                <p className="mt-3 max-w-[30rem] text-sm leading-relaxed text-white/84 sm:text-base">{heroContent.heroSubtitle}</p>
-              ) : null}
+              <p className="max-w-[30rem] text-sm leading-relaxed text-white/82 sm:text-base">
+                Fui el gordito que se odiaba y el flaco que no crecía. Diseñé el sistema exacto que me hubiera servido a mí — y hoy es para vos.
+              </p>
 
-              <div className="mt-6 w-full max-w-[19rem] space-y-2">
-                <AnimatedButton
-                  href={heroContent.primaryCtaHref}
-                  data-hero-primary
-                  data-hero-cta
-                  onClick={handlePrimaryCtaClick}
-                  className="premium-cta h-12 w-full justify-center rounded-[10px] bg-[linear-gradient(120deg,#8b0000_0%,#d41414_100%)] px-4 text-[0.72rem] font-bold tracking-[0.08em] text-white shadow-[0_20px_34px_-20px_rgba(212,20,20,0.92)]"
-                >
-                  {heroContent.primaryCtaText}
-                  <ArrowDownRight className="premium-arrow size-4" />
-                </AnimatedButton>
+              {/* Video placeholder — listo para reemplazar con un embed cuando el video esté editado */}
+              <div
+                data-hero-cta
+                className="flex w-full aspect-video flex-col items-center justify-center gap-2.5 rounded-[12px] border border-white/18 bg-black/52 backdrop-blur-[6px]"
+              >
+                <div className="flex size-12 items-center justify-center rounded-full border border-white/28 bg-white/10">
+                  <Play className="size-5 translate-x-0.5 text-white/76" />
+                </div>
+                <p className="text-xs font-medium tracking-wide text-white/46">Video próximamente</p>
+              </div>
 
+              <div className="w-full max-w-[20rem] space-y-2.5">
                 <AnimatedButton
-                  href={heroContent.whatsappCtaHref}
+                  href={content.whatsappCtaHref}
                   target="_blank"
                   rel="noreferrer"
                   data-hero-cta
-                  className="h-11 w-full justify-center rounded-[10px] border border-white/22 bg-black/36 px-4 text-[0.7rem] font-semibold tracking-[0.06em] text-white/92 hover:bg-black/48"
+                  className="h-12 w-full justify-center rounded-[10px] border-transparent bg-[#1DAA61] px-4 text-[0.78rem] font-bold tracking-[0.05em] text-white shadow-[0_16px_30px_-18px_rgba(29,170,97,0.85)] hover:bg-[#17a05a]"
                 >
-                  {heroContent.whatsappCtaText}
+                  Escribime y arrancamos
                 </AnimatedButton>
+
+                <AnimatedButton
+                  href="#resultados"
+                  data-hero-cta
+                  onClick={handleScrollToResults}
+                  className="h-10 w-full justify-center rounded-[10px] border-white/22 bg-black/30 px-4 text-[0.72rem] font-semibold tracking-[0.05em] text-white/80 hover:bg-black/48 hover:text-white"
+                >
+                  Mirá las transformaciones reales
+                </AnimatedButton>
+              </div>
+
+              <div data-hero-cta className="flex items-center gap-3 text-[0.72rem] text-white/52">
+                <span className="h-px w-8 rounded bg-white/24" />
+                <span>+15 alumnos transformados</span>
+                <span className="h-px w-8 rounded bg-white/24" />
               </div>
             </div>
           </div>

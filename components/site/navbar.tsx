@@ -29,7 +29,6 @@ interface NavbarProps {
 }
 
 const PRIMARY_NAV_ITEMS: PrimaryNavItem[] = [
-  { id: "cuestionario", label: "Cuestionario" },
   { id: "sobre-mi", label: "Sobre mí" },
   { id: "planes", label: "Planes" },
 ];
