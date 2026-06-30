@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { Linkedin, Mail } from "lucide-react";
 
 import type { FooterDoc } from "@/lib/sanity";
 import { cn } from "@/lib/utils";
@@ -23,8 +22,6 @@ const socialIconByName: Record<string, { iconSrc: string; iconClassName?: string
   youtube: { iconSrc: "/social/youtube.png", iconClassName: "h-5 w-5" },
   kick: { iconSrc: "/social/kick.png", iconClassName: "h-5 w-5" },
 };
-const CONTACT_EMAIL = "pepugonzalez1@gmail.com";
-
 function normalizeSocialName(name: string): string {
   return name.trim().toLowerCase();
 }
@@ -55,12 +52,6 @@ export function Footer({ content }: FooterProps) {
   const activeSocialLinks = cmsSocialLinks;
   const cmsLegalLinks = content.legalLinks.filter((item) => item?.label && item?.href);
   const activeLegalLinks: LegalLink[] = cmsLegalLinks;
-  const developerLinkedInHref =
-    activeSocialLinks.find((item) => normalizeSocialName(item.label) === "linkedin")?.href ??
-    activeLegalLinks.find((item) => item.href.toLowerCase().includes("linkedin.com/in/"))?.href ??
-    "https://www.linkedin.com/in/camilo-espinazo-b46a3832a/";
-  const email = CONTACT_EMAIL;
-
   return (
     <footer
       id="contacto"
@@ -81,16 +72,6 @@ export function Footer({ content }: FooterProps) {
 
             <p className="max-w-xl text-sm text-muted-foreground md:text-base">Contacto directo para resolver dudas y elegir tu plan.</p>
 
-            <a
-              href={`mailto:${email}`}
-              className="group inline-flex w-fit items-center gap-2 text-sm text-muted-foreground transition-colors duration-200 hover:text-foreground"
-            >
-              <Mail className="size-4" />
-              <span className="relative">
-                {email}
-                <span className="pointer-events-none absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 bg-primary transition-transform duration-300 ease-[var(--ease-premium)] group-hover:scale-x-100" />
-              </span>
-            </a>
           </div>
 
           <div className="mt-6">
@@ -136,23 +117,6 @@ export function Footer({ content }: FooterProps) {
                 </a>
               ))}
             </div>
-
-            <a
-              href={developerLinkedInHref}
-              target="_blank"
-              rel="noreferrer"
-              className="group inline-flex w-fit cursor-pointer items-center gap-1.5 text-[11px] tracking-[0.06em] text-foreground/88 transition-[color,transform,opacity] duration-200 hover:-translate-y-[1px] hover:text-primary hover:opacity-100"
-              aria-label="Developed by en LinkedIn"
-            >
-              <span className="font-mono text-[10px] tracking-[0.12em] text-muted-foreground transition-colors duration-200 group-hover:text-primary/85">
-                Developed by:
-              </span>
-              <Linkedin className="size-3.5" />
-              <span className="relative font-medium tracking-[0.08em] text-foreground/92 transition-colors duration-200 group-hover:text-primary">
-                Camilo Espinazo
-                <span className="pointer-events-none absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 bg-primary transition-transform duration-300 ease-[var(--ease-premium)] group-hover:scale-x-100" />
-              </span>
-            </a>
 
             <p className="text-xs text-muted-foreground/90">(c) 2026 Pepu González. Todos los derechos reservados.</p>
           </div>

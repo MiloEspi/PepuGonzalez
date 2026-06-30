@@ -1,14 +1,10 @@
 "use client";
 
-import { ArrowRight } from "lucide-react";
-
-import { SmoothScrollLink } from "@/components/site/smooth-scroll-link";
 import { SectionShell } from "@/components/site/section-shell";
 import { WhatsAppButton } from "@/components/site/whatsapp-button";
-import { Button } from "@/components/ui/button";
 import { getStickyWhatsAppHref } from "@/data/offers";
 
-const APPLY_LINK = getStickyWhatsAppHref("Programa Transformación");
+const APPLY_LINK = getStickyWhatsAppHref("Sistema Pepu");
 
 export function FinalCTA() {
   return (
@@ -19,26 +15,13 @@ export function FinalCTA() {
       contentClassName="pt-2.5"
     >
       <h2 className="text-[1.95rem] font-semibold leading-[0.95] text-white md:text-[2.5rem]">Tu transformación arranca hoy.</h2>
-      <p className="max-w-3xl text-sm text-white/86 md:text-base">Elegí tu plan y empezá con una estrategia real, clara y sostenible.</p>
+      <p className="max-w-3xl text-sm text-white/86 md:text-base">Si llegaste hasta acá, ya sabés que lo querés. El único paso que falta es escribirme.</p>
 
-      <div className="grid gap-2.5 sm:grid-cols-2">
-        <Button
-          asChild
-          size="lg"
-          className="premium-cta h-11 w-full rounded-[12px] border border-primary/45 bg-[linear-gradient(120deg,#8b0000_0%,#d41414_74%,#ef2d2d_100%)] px-5 text-[0.73rem] font-bold tracking-[0.1em] text-white shadow-[0_24px_36px_-20px_rgba(212,20,20,0.95)] hover:shadow-[0_30px_42px_-16px_rgba(212,20,20,0.98)]"
-        >
-          <SmoothScrollLink href="/#planes">
-            Elegir mi programa
-            <ArrowRight className="premium-arrow size-4" />
-          </SmoothScrollLink>
-        </Button>
+      <WhatsAppButton href={APPLY_LINK} size="lg" className="premium-cta h-11 w-full rounded-[12px] px-5 text-[0.73rem] font-semibold tracking-[0.05em]">
+        Quiero mi lugar
+      </WhatsAppButton>
 
-        <WhatsAppButton href={APPLY_LINK} size="lg" className="premium-cta h-11 w-full rounded-[12px] px-5 text-[0.73rem] font-semibold tracking-[0.05em]">
-          Aplicar por WhatsApp
-        </WhatsAppButton>
-      </div>
-
-      <p className="text-xs text-white/72">Evaluación rápida. Cupos limitados por programa.</p>
+      <p className="text-xs text-white/72">Cupos limitados por mes.</p>
     </SectionShell>
   );
 }
