@@ -30,9 +30,9 @@ export default async function HomePage() {
   return (
     <main className="space-y-2 pb-10 md:space-y-3">
       <HeroSection content={settings} />
+      <TestimonialsSection results={results} />
       <AboutSection content={about} />
       <FeaturedPlans plans={plans} />
-      <TestimonialsSection results={results} />
       <FAQSection items={faqs} />
       <FinalCTA />
     </main>
