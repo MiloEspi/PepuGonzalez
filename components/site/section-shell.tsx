@@ -16,7 +16,7 @@ interface SectionShellProps {
 
 export function SectionShell({ id, eyebrow, title, description, className, cardClassName, contentClassName, children }: SectionShellProps) {
   return (
-    <SectionWrapper id={id} className={cn("scroll-mt-[calc(var(--navbar-height)+0.7rem)] py-2.5 md:py-3", className)}>
+    <SectionWrapper id={id} className={cn("scroll-mt-[calc(var(--navbar-height)+0.7rem)] py-3 md:py-4", className)}>
       <PageContainer>
         <SectionCard className={cardClassName}>
           <SectionHeader eyebrow={eyebrow} title={title} description={description} />

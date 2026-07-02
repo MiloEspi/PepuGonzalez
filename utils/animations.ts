@@ -77,8 +77,8 @@ export function animateSectionIntro(section: HTMLElement) {
     setWillChange(title, "transform, opacity");
     animate(title, {
       opacity: [0, 1],
-      translateY: [20, 0],
-      duration: 430,
+      translateY: [36, 0],
+      duration: 480,
       ease: EASE_OUT_EXPO,
       complete: () => resetWillChange(title),
     });
@@ -89,8 +89,8 @@ export function animateSectionIntro(section: HTMLElement) {
     animate(line, {
       opacity: [0.22, 1],
       scaleX: [0, 1],
-      duration: 420,
-      delay: 60,
+      duration: 440,
+      delay: 70,
       ease: PREMIUM_EASE,
       complete: () => resetWillChange(line),
     });
@@ -100,9 +100,9 @@ export function animateSectionIntro(section: HTMLElement) {
     setWillChange(cards, "transform, opacity");
     animate(cards, {
       opacity: [0, 1],
-      translateY: [16, 0],
-      duration: 380,
-      delay: stagger(60, { start: 80 }),
+      translateY: [28, 0],
+      duration: 420,
+      delay: stagger(70, { start: 100 }),
       ease: PREMIUM_EASE,
       complete: () => resetWillChange(cards),
     });

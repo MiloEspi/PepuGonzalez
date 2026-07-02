@@ -250,14 +250,14 @@ export function Navbar({ extraNavItems }: NavbarProps) {
             "group relative inline-flex items-center rounded-[9px] border transition-all duration-[240ms] ease-[var(--ease-premium)]",
             compact ? "px-2.5 py-1.5 text-xs font-semibold" : "px-3.5 py-2 text-sm font-semibold",
             active
-              ? "border-primary/58 bg-[linear-gradient(120deg,rgba(139,0,0,0.82)_0%,rgba(212,20,20,0.98)_100%)] text-white shadow-[0_14px_24px_-18px_rgba(212,20,20,0.9)]"
-              : "border-white/12 text-white/78 hover:border-primary/34 hover:bg-white/[0.06] hover:text-white hover:shadow-[0_0_22px_-14px_rgba(212,20,20,0.78)]"
+              ? "border-primary/58 bg-[linear-gradient(120deg,rgba(74,10,10,0.88)_0%,rgba(111,21,21,0.98)_100%)] text-white shadow-[0_14px_24px_-18px_rgba(111,21,21,0.9)]"
+              : "border-white/12 text-white/78 hover:border-primary/34 hover:bg-white/[0.06] hover:text-white hover:shadow-[0_0_22px_-14px_rgba(111,21,21,0.78)]"
           )}
         >
           <span
             data-nav-glow
             aria-hidden
-            className="pointer-events-none absolute inset-0 rounded-[8px] bg-[radial-gradient(circle_at_50%_0%,rgba(255,26,26,0.32),transparent_72%)] opacity-14"
+            className="pointer-events-none absolute inset-0 rounded-[8px] bg-[radial-gradient(circle_at_50%_0%,rgba(150,30,30,0.28),transparent_72%)] opacity-14"
           />
           <span className="relative z-10">{item.label}</span>
           <span
@@ -317,7 +317,7 @@ export function Navbar({ extraNavItems }: NavbarProps) {
                     type="button"
                     aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú"}
                     aria-expanded={isMenuOpen}
-                    className="inline-flex size-9 items-center justify-center rounded-[9px] border border-white/14 bg-white/[0.06] text-white/88 transition-all duration-[220ms] ease-[var(--ease-premium)] hover:border-primary/36 hover:bg-white/[0.12] hover:text-white hover:shadow-[0_0_24px_-15px_rgba(212,20,20,0.92)]"
+                    className="inline-flex size-9 items-center justify-center rounded-[9px] border border-white/14 bg-white/[0.06] text-white/88 transition-all duration-[220ms] ease-[var(--ease-premium)] hover:border-primary/36 hover:bg-white/[0.12] hover:text-white hover:shadow-[0_0_24px_-15px_rgba(111,21,21,0.92)]"
                   >
                     {isMenuOpen ? <X className="size-4.5" /> : <Menu className="size-4.5" />}
                   </button>

@@ -50,7 +50,7 @@ export function HeroSection({ content }: HeroSectionProps) {
       animate(navbarShell, { opacity: [0.7, 1], translateY: [-8, 0], duration: 190, ease: EASE_OUT_EXPO });
     }
     if (title) {
-      animate(title, { opacity: [0, 1], translateY: [20, 0], duration: 290, delay: 110, ease: EASE_OUT_EXPO });
+      animate(title, { opacity: [0, 1], translateY: [38, 0], duration: 520, delay: 80, ease: EASE_OUT_EXPO });
     }
     if (ctaButtons.length) {
       animate(ctaButtons, { opacity: [0, 1], translateY: [14, 0], duration: 250, delay: stagger(70, { start: 220 }), ease: EASE_OUT_EXPO });
@@ -127,7 +127,7 @@ export function HeroSection({ content }: HeroSectionProps) {
           </div>
 
           {/* Gradient overlay — image visible at top, dark at bottom for readability */}
-          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.06)_0%,rgba(0,0,0,0.14)_18%,rgba(0,0,0,0.54)_42%,rgba(0,0,0,0.80)_60%,rgba(0,0,0,0.92)_78%,rgba(0,0,0,0.96)_100%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.0)_0%,rgba(0,0,0,0.12)_16%,rgba(0,0,0,0.65)_38%,rgba(0,0,0,0.88)_56%,rgba(0,0,0,0.96)_74%,rgba(0,0,0,0.98)_100%)]" />
 
           {/* Content — anchored to bottom of card */}
           <div className="absolute inset-0 flex items-end justify-center p-4 pb-7 sm:p-6 sm:pb-9 md:p-8 md:pb-11">
@@ -135,12 +135,12 @@ export function HeroSection({ content }: HeroSectionProps) {
 
               <h1
                 ref={titleRef}
-                className="text-[2.05rem] font-extrabold leading-[1.04] tracking-[-0.03em] text-white sm:text-[2.7rem] md:text-[3.1rem]"
+                className="text-[1.8rem] font-extrabold leading-[1.1] text-white [text-shadow:0_4px_32px_rgba(0,0,0,0.88)] sm:text-[2.7rem] md:text-[3.1rem]"
               >
                 Construí el físico de tus sueños y sacate tus inseguridades guardadas.
               </h1>
 
-              <p className="max-w-[30rem] text-sm leading-relaxed text-white/82 sm:text-base">
+              <p className="max-w-[30rem] text-sm leading-relaxed text-white/82 [text-shadow:0_1px_10px_rgba(0,0,0,0.9)] sm:text-base">
                 Fui el gordito que se odiaba y el flaco que no crecía. Diseñé el sistema exacto que me hubiera servido a mí — y hoy es para vos.
               </p>
 

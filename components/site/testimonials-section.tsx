@@ -22,7 +22,7 @@ interface TestimonialsSectionProps {
 
 function TestimonialCardItem({ item }: { item: TestimonialCard }) {
   return (
-    <article className="w-[215px] shrink-0 overflow-hidden rounded-[14px] border border-white/14 bg-[linear-gradient(150deg,#17181e_0%,#101116_100%)] shadow-[0_24px_48px_-28px_rgba(0,0,0,0.9)] md:w-[250px]">
+    <article className="w-[215px] shrink-0 overflow-hidden rounded-[14px] border border-white/14 bg-[linear-gradient(150deg,#17181e_0%,#101116_100%)] shadow-[0_24px_48px_-28px_rgba(0,0,0,0.9)] transition-[transform,box-shadow] duration-300 ease-[var(--ease-premium)] motion-safe:hover:-translate-y-1 motion-safe:hover:scale-[1.025] motion-safe:hover:shadow-[0_32px_56px_-28px_rgba(0,0,0,0.95)] md:w-[250px]">
       <div className="flex aspect-[6/5] w-full overflow-hidden border-b border-white/10">
         {/* ANTES */}
         <div className="relative h-full w-1/2">
@@ -49,7 +49,7 @@ function TestimonialCardItem({ item }: { item: TestimonialCard }) {
             sizes="120px"
             className="object-cover object-top brightness-[0.94] contrast-[1.04]"
           />
-          <Badge className="pointer-events-none absolute right-1.5 top-1.5 rounded-[6px] border border-primary/35 bg-[rgba(122,14,14,0.5)] px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-[0.1em] text-white backdrop-blur-[4px]">
+          <Badge className="pointer-events-none absolute right-1.5 top-1.5 rounded-[6px] border border-primary/35 bg-[rgba(74,10,10,0.5)] px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-[0.1em] text-white backdrop-blur-[4px]">
             DESPUÉS
           </Badge>
         </div>
@@ -61,7 +61,7 @@ function TestimonialCardItem({ item }: { item: TestimonialCard }) {
           {item.resultMetric}
         </p>
         {item.quote ? (
-          <p className="mt-2 line-clamp-2 text-[11px] leading-relaxed text-white/62">"{item.quote}"</p>
+          <p className="mt-1.5 line-clamp-1 text-[10px] leading-snug text-white/36">"{item.quote}"</p>
         ) : null}
       </div>
     </article>

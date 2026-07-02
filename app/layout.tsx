@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Montserrat } from "next/font/google";
+import { Anton, Inter } from "next/font/google";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 
@@ -11,10 +11,11 @@ import { OverflowDebug } from "@/components/dev/overflow-debug";
 import { FOOTER_QUERY, SETTINGS_QUERY, sanityFetch, type FooterDoc, type SiteSettingsDoc } from "@/lib/sanity";
 import "./globals.css";
 
-const headingFont = Montserrat({
-  variable: "--font-montserrat",
+const headingFont = Anton({
+  variable: "--font-anton",
   subsets: ["latin"],
-  weight: ["600", "700", "800", "900"],
+  weight: "400",
+  display: "swap",
 });
 
 const bodyFont = Inter({

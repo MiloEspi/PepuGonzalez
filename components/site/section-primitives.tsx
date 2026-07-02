@@ -36,18 +36,18 @@ export function SectionHeader({ eyebrow, title, description, className, ...props
     <header className={cn("section-header", className)} {...props}>
       {eyebrow ? (
         <div className="flex items-center gap-2.5">
-          <p className="text-[11px] font-semibold tracking-[0.2em] text-muted-foreground">{eyebrow}</p>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">{eyebrow}</p>
           <span className="section-shell-eyebrow-line" />
         </div>
       ) : null}
 
       {title ? (
-        <h2 data-section-title className="section-shell-title text-[1.65rem] font-semibold leading-[1.02] text-foreground sm:text-[2rem] md:text-[2.3rem]">
+        <h2 data-section-title className="section-shell-title text-[2rem] font-bold leading-[1.15] text-foreground sm:text-[2.5rem] md:text-[2.9rem]">
           {title}
         </h2>
       ) : null}
 
-      {description ? <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground md:text-base">{description}</p> : null}
+      {description ? <p className="max-w-3xl text-sm leading-[1.75] text-muted-foreground md:text-base">{description}</p> : null}
       <span data-section-line aria-hidden className="section-shell-active-bar" />
     </header>
   );
@@ -55,7 +55,7 @@ export function SectionHeader({ eyebrow, title, description, className, ...props
 
 export function MobileStack({ className, children, ...props }: DivProps & { children: ReactNode }) {
   return (
-    <div className={cn("mobile-stack", className)} {...props}>
+    <div data-reveal className={cn("mobile-stack", className)} {...props}>
       {children}
     </div>
   );
