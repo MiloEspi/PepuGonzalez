@@ -10,6 +10,10 @@ import { PageContainer } from "@/components/site/section-primitives";
 import type { SiteSettingsDoc } from "@/lib/sanity";
 import { EASE_OUT_EXPO, PREMIUM_EASE, prefersReducedMotion } from "@/utils/animations";
 
+const VIDEO_ID = "MFnGNcqwu4g";
+const VIDEO_THUMBNAIL = "/video-portada.jpg";
+const VIDEO_THUMBNAIL_FALLBACK = `https://img.youtube.com/vi/${VIDEO_ID}/maxresdefault.jpg`;
+
 type HeroContent = Pick<SiteSettingsDoc, "heroImageUrl" | "whatsappCtaHref">;
 
 interface HeroSectionProps {
@@ -21,6 +25,8 @@ export function HeroSection({ content }: HeroSectionProps) {
   const hasHeroImage = heroImages.length > 0;
   const [imageIndex, setImageIndex] = useState(0);
   const [showGradientFallback, setShowGradientFallback] = useState(false);
+  const [videoActive, setVideoActive] = useState(false);
+  const [thumbnailSrc, setThumbnailSrc] = useState(VIDEO_THUMBNAIL);
   const heroRef = useRef<HTMLDivElement>(null);
   const mediaMotionRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -145,15 +151,39 @@ export function HeroSection({ content }: HeroSectionProps) {
               </p>
 
               {/* Video placeholder — listo para reemplazar con un embed cuando el video esté editado */}
-              <div
-                data-hero-cta
-                className="flex w-full aspect-video flex-col items-center justify-center gap-2.5 rounded-[12px] border border-white/18 bg-black/52 backdrop-blur-[6px]"
-              >
-                <div className="flex size-12 items-center justify-center rounded-full border border-white/28 bg-white/10">
-                  <Play className="size-5 translate-x-0.5 text-white/76" />
+              {videoActive ? (
+                <div data-hero-cta className="w-full aspect-video overflow-hidden rounded-[12px]">
+                  <iframe
+                    src={`https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
+                    className="h-full w-full border-0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    title="Pepu González — Video de presentación"
+                  />
                 </div>
-                <p className="text-xs font-medium tracking-wide text-white/46">Video próximamente</p>
-              </div>
+              ) : (
+                <button
+                  data-hero-cta
+                  type="button"
+                  onClick={() => setVideoActive(true)}
+                  className="group relative flex w-full aspect-video overflow-hidden rounded-[12px] border border-white/18"
+                  aria-label="Reproducir video"
+                >
+                  <Image
+                    src={thumbnailSrc}
+                    alt="Portada del video de Pepu González"
+                    fill
+                    className="object-cover transition-transform duration-500 ease-[var(--ease-premium)] group-hover:scale-[1.03]"
+                    onError={() => setThumbnailSrc(VIDEO_THUMBNAIL_FALLBACK)}
+                  />
+                  <div className="absolute inset-0 bg-black/38 transition-opacity duration-300 group-hover:bg-black/26" />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="flex size-16 items-center justify-center rounded-full border border-white/30 bg-white/14 backdrop-blur-sm transition-[transform,background-color] duration-300 ease-[var(--ease-premium)] group-hover:scale-110 group-hover:bg-white/24">
+                      <Play className="size-7 translate-x-0.5 text-white" />
+                    </div>
+                  </div>
+                </button>
+              )}
 
               <div className="w-full max-w-[20rem] space-y-2.5">
                 <AnimatedButton
