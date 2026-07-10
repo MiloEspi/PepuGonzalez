@@ -36,7 +36,7 @@ export function WhatsAppButton({ href, children, className, size = "default" }: 
       rel="noreferrer"
       aria-label="Hablar por WhatsApp"
       className={cn(
-        "rounded-[10px] border border-[#25D366] bg-[#25D366] text-[#07371f] shadow-[0_8px_20px_-12px_rgba(37,211,102,0.9)] hover:bg-[#1fbd5b] hover:text-[#062c18] motion-safe:hover:-translate-y-px motion-safe:hover:shadow-[0_16px_24px_-16px_rgba(37,211,102,0.95)] motion-safe:active:scale-[0.98] [&_[data-button-label]]:max-w-full [&_[data-button-label]]:flex-wrap [&_[data-button-label]]:justify-center [&_[data-button-label]]:text-center [&_[data-button-label]]:leading-tight [&_[data-button-label]]:whitespace-normal",
+        "whatsapp-shimmer rounded-[10px] border border-[#25D366] bg-[#25D366] text-[#07371f] shadow-[0_8px_20px_-12px_rgba(37,211,102,0.9)] hover:bg-[#1fbd5b] hover:text-[#062c18] motion-safe:hover:-translate-y-px motion-safe:hover:shadow-[0_16px_24px_-16px_rgba(37,211,102,0.95)] motion-safe:active:scale-[0.98] [&_[data-button-label]]:max-w-full [&_[data-button-label]]:flex-wrap [&_[data-button-label]]:justify-center [&_[data-button-label]]:text-center [&_[data-button-label]]:leading-tight [&_[data-button-label]]:whitespace-normal",
         sizeClass,
         className
       )}

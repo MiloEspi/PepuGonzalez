@@ -40,7 +40,7 @@ const themeClasses: Record<OfferTheme, ThemeConfig> = {
   base: {
     icon: ShieldCheck,
     shell:
-      "border-[rgba(255,255,255,0.09)] bg-[linear-gradient(135deg,rgba(255,255,255,0.06)_0%,rgba(0,0,0,0.9)_100%)] shadow-[0_24px_46px_-36px_rgba(0,0,0,0.94)] before:pointer-events-none before:absolute before:left-7 before:right-7 before:top-0 before:h-px before:content-[''] before:bg-[linear-gradient(90deg,transparent,rgba(255,0,0,0.42),transparent)]",
+      "border-[rgba(255,255,255,0.09)] bg-[linear-gradient(135deg,rgba(255,255,255,0.06)_0%,rgba(0,0,0,0.9)_100%)] shadow-[0_24px_46px_-36px_rgba(0,0,0,0.94)] before:pointer-events-none before:absolute before:left-7 before:right-7 before:top-0 before:h-px before:content-[''] before:bg-[linear-gradient(90deg,transparent,rgba(201,169,97,0.38),transparent)]",
     surface: "bg-[linear-gradient(145deg,#17181f_0%,#101217_56%,#0f1014_100%)]",
     media: "border-[rgba(255,255,255,0.1)] bg-[linear-gradient(160deg,#2c3038_0%,#191c22_100%)]",
     overlay: "bg-[linear-gradient(180deg,rgba(0,0,0,0.1)_0%,rgba(122,14,14,0.2)_100%)]",
@@ -208,7 +208,7 @@ export function FeaturedPlans({ plans }: FeaturedPlansProps) {
       title="Elegí tu nivel de transformación"
       description="Tres niveles claros. Un solo objetivo: progreso real con estructura."
     >
-      <article className="mb-5 rounded-[12px] border border-primary/35 bg-[linear-gradient(126deg,rgba(122,14,14,0.3)_0%,rgba(40,12,15,0.72)_100%)] px-4 py-3 text-sm text-white/86 lg:mx-auto lg:max-w-4xl lg:px-6 lg:text-center">
+      <article className="mb-5 rounded-[12px] border border-primary/30 bg-[linear-gradient(126deg,rgba(30,24,8,0.22)_0%,rgba(14,11,5,0.64)_100%)] px-4 py-3 text-sm text-white/86 lg:mx-auto lg:max-w-4xl lg:px-6 lg:text-center">
         Cada nivel suma personalización y soporte. Transformación y Mentoría concentran la experiencia premium completa.
       </article>
 

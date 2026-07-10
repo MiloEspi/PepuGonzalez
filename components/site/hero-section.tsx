@@ -133,7 +133,7 @@ export function HeroSection({ content }: HeroSectionProps) {
           </div>
 
           {/* Gradient overlay — image visible at top, dark at bottom for readability */}
-          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.0)_0%,rgba(0,0,0,0.12)_16%,rgba(0,0,0,0.65)_38%,rgba(0,0,0,0.88)_56%,rgba(0,0,0,0.96)_74%,rgba(0,0,0,0.98)_100%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.0)_0%,rgba(0,0,0,0.08)_14%,rgba(0,0,0,0.72)_36%,rgba(0,0,0,0.95)_54%,rgba(0,0,0,0.99)_70%,rgba(0,0,0,1.0)_100%)]" />
 
           {/* Content — anchored to bottom of card */}
           <div className="absolute inset-0 flex items-end justify-center p-4 pb-7 sm:p-6 sm:pb-9 md:p-8 md:pb-11">
@@ -141,13 +141,15 @@ export function HeroSection({ content }: HeroSectionProps) {
 
               <h1
                 ref={titleRef}
-                className="text-[1.8rem] font-extrabold leading-[1.1] text-white [text-shadow:0_4px_32px_rgba(0,0,0,0.88)] sm:text-[2.7rem] md:text-[3.1rem]"
+                className="text-[1.8rem] font-extrabold leading-[1.1] text-white sm:text-[2.7rem] md:text-[3.1rem]"
               >
-                Construí el físico de tus sueños y sacate tus inseguridades guardadas.
+                Construí el físico de tus{" "}
+                <span className="bg-[linear-gradient(90deg,#c9a961,#e2c584)] bg-clip-text text-transparent">sueños</span>
+                {" "}y sacate tus inseguridades guardadas.
               </h1>
 
-              <p className="max-w-[30rem] text-sm leading-relaxed text-white/82 [text-shadow:0_1px_10px_rgba(0,0,0,0.9)] sm:text-base">
-                Fui el gordito que se odiaba y el flaco que no crecía. Diseñé el sistema exacto que me hubiera servido a mí — y hoy es para vos.
+              <p className="max-w-[28rem] text-[0.8rem] leading-relaxed text-white/68 [text-shadow:0_1px_10px_rgba(0,0,0,0.9)] sm:text-[0.88rem]">
+                Fui el gordito que se odiaba y el flaco que no crecía. Diseñé el sistema exacto que me hubiera servido a mí.
               </p>
 
               {/* Video placeholder — listo para reemplazar con un embed cuando el video esté editado */}
@@ -191,7 +193,7 @@ export function HeroSection({ content }: HeroSectionProps) {
                   target="_blank"
                   rel="noreferrer"
                   data-hero-cta
-                  className="h-12 w-full justify-center rounded-[10px] border-transparent bg-[#1DAA61] px-4 text-[0.78rem] font-bold tracking-[0.05em] text-white shadow-[0_16px_30px_-18px_rgba(29,170,97,0.85)] hover:bg-[#17a05a]"
+                  className="whatsapp-shimmer h-12 w-full justify-center rounded-[10px] border-transparent bg-[#1DAA61] px-4 text-[0.78rem] font-bold tracking-[0.05em] text-white shadow-[0_16px_30px_-18px_rgba(29,170,97,0.85)] hover:bg-[#17a05a]"
                 >
                   Escribime y arrancamos
                 </AnimatedButton>
@@ -206,10 +208,25 @@ export function HeroSection({ content }: HeroSectionProps) {
                 </AnimatedButton>
               </div>
 
-              <div data-hero-cta className="flex items-center gap-3 text-[0.72rem] text-white/52">
-                <span className="h-px w-8 rounded bg-white/24" />
-                <span>+15 alumnos transformados</span>
-                <span className="h-px w-8 rounded bg-white/24" />
+              <div data-hero-cta className="w-full max-w-[20rem]">
+                <div className="h-px w-full bg-[linear-gradient(90deg,transparent,rgba(201,169,97,0.28),transparent)]" />
+                <div className="flex items-center justify-around py-3.5">
+                  <div className="flex flex-col items-center gap-1">
+                    <span className="text-[1.35rem] font-bold leading-none tracking-[0.025em] text-[#c9a961]">+15</span>
+                    <span className="text-[8.5px] font-bold uppercase tracking-[0.18em] text-white/42">Transformados</span>
+                  </div>
+                  <div className="h-7 w-px bg-white/12" />
+                  <div className="flex flex-col items-center gap-1">
+                    <span className="text-[1.35rem] font-bold leading-none tracking-[0.025em] text-[#c9a961]">90</span>
+                    <span className="text-[8.5px] font-bold uppercase tracking-[0.18em] text-white/42">Días</span>
+                  </div>
+                  <div className="h-7 w-px bg-white/12" />
+                  <div className="flex flex-col items-center gap-1">
+                    <span className="text-[1.35rem] font-bold leading-none tracking-[0.025em] text-[#c9a961]">4</span>
+                    <span className="text-[8.5px] font-bold uppercase tracking-[0.18em] text-white/42">Años entrenando</span>
+                  </div>
+                </div>
+                <div className="h-px w-full bg-[linear-gradient(90deg,transparent,rgba(201,169,97,0.28),transparent)]" />
               </div>
             </div>
           </div>

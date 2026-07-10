@@ -32,8 +32,8 @@ export function SistemaPepuOffer() {
           </p>
         </div>
 
-        {/* ── Tarjeta principal con glow bordeaux ── */}
-        <div className="rounded-[18px] border border-primary/30 bg-[linear-gradient(150deg,#181015_0%,#100b0f_55%,#0a0a0c_100%)] shadow-[0_24px_64px_-20px_rgba(111,21,21,0.52),inset_0_1px_0_rgba(255,255,255,0.04)]">
+        {/* ── Tarjeta principal con glow dorado ── */}
+        <div className="rounded-[18px] border border-primary/30 bg-[linear-gradient(150deg,#141209_0%,#0e0d08_55%,#0a0a0c_100%)] shadow-[0_24px_64px_-20px_rgba(185,147,74,0.38),inset_0_1px_0_rgba(255,255,255,0.04)]">
 
           {/* Subtítulo + separador */}
           <div className="px-5 pb-4 pt-5 text-center md:px-7 md:pt-7">
@@ -41,7 +41,7 @@ export function SistemaPepuOffer() {
               Un plan hecho para tu cuerpo para construir el físico que querés y la
               seguridad que buscás, sin vivir en el gimnasio ni muerto de hambre.
             </p>
-            <div className="mt-4 h-px bg-white/8" />
+            <div className="mt-4 h-px bg-[linear-gradient(90deg,transparent,rgba(201,169,97,0.22),transparent)]" />
           </div>
 
           {/* Lista de lo que incluye */}
@@ -61,7 +61,7 @@ export function SistemaPepuOffer() {
             </ul>
           </div>
 
-          <div className="mx-5 h-px bg-white/8 md:mx-7" />
+          <div className="mx-5 h-px bg-[linear-gradient(90deg,transparent,rgba(201,169,97,0.22),transparent)] md:mx-7" />
 
           {/* Garantía */}
           <div className="px-5 py-5 md:px-7">
@@ -80,7 +80,7 @@ export function SistemaPepuOffer() {
           </div>
 
           {/* CTA */}
-          <div className="border-t border-white/8 px-5 py-5 md:px-7">
+          <div className="border-t border-[rgba(201,169,97,0.16)] px-5 py-5 md:px-7">
             <WhatsAppButton
               href={getStickyWhatsAppHref("Sistema Pepu")}
               size="lg"

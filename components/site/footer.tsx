@@ -55,12 +55,12 @@ export function Footer({ content }: FooterProps) {
   return (
     <footer
       id="contacto"
-      className="scroll-mt-[calc(var(--navbar-height)+0.7rem)] border-t border-white/8 bg-[radial-gradient(circle_at_14%_0%,rgba(111,21,21,0.14),transparent_38%),linear-gradient(180deg,#111217_0%,#0b0c10_100%)]"
+      className="scroll-mt-[calc(var(--navbar-height)+0.7rem)] border-t border-[rgba(201,169,97,0.1)] bg-[radial-gradient(circle_at_14%_0%,rgba(185,147,74,0.07),transparent_38%),linear-gradient(180deg,#080809_0%,#060607_100%)]"
     >
       <div className="layout-shell py-7 md:py-8">
-        <div className="rounded-[16px] border border-white/14 bg-[linear-gradient(145deg,#14151a_0%,#101116_100%)] p-5 shadow-[0_30px_58px_-44px_rgba(0,0,0,0.95)] md:p-7">
+        <div className="rounded-[16px] border border-white/10 bg-[linear-gradient(145deg,#0d0e12_0%,#09090c_100%)] p-5 shadow-[0_30px_58px_-44px_rgba(0,0,0,0.95)] md:p-7">
           <div className="space-y-4">
-            <div className="inline-flex items-center gap-3 rounded-[11px] border border-white/16 bg-[linear-gradient(120deg,rgba(74,10,10,0.32)_0%,rgba(74,10,10,0.14)_100%)] px-3 py-2">
+            <div className="inline-flex items-center gap-3 rounded-[11px] border border-white/14 bg-[linear-gradient(120deg,rgba(30,24,8,0.28)_0%,rgba(20,16,5,0.14)_100%)] px-3 py-2">
               <div className="grid size-9 place-items-center rounded-[9px] border border-primary/35 bg-primary/20 text-primary">
                 <span className="font-heading text-sm font-bold">PG</span>
               </div>
@@ -84,7 +84,7 @@ export function Footer({ content }: FooterProps) {
                   rel="noreferrer"
                   aria-label={`Ir a ${item.label}`}
                   title={item.label}
-                  className="group inline-flex size-11 shrink-0 items-center justify-center rounded-full border border-[rgba(111,21,21,0.36)] bg-[rgba(9,10,13,0.82)] transition-[transform,border-color,box-shadow,background-color] duration-[220ms] ease-[var(--ease-premium)] hover:scale-105 hover:border-[rgba(111,21,21,0.66)] hover:bg-[rgba(12,8,8,0.92)] hover:shadow-[0_0_0_1px_rgba(111,21,21,0.28),0_18px_28px_-18px_rgba(111,21,21,0.65)] active:scale-[0.97] active:shadow-[0_0_0_1px_rgba(111,21,21,0.28),0_10px_20px_-16px_rgba(111,21,21,0.52)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/45"
+                  className="group inline-flex size-11 shrink-0 items-center justify-center rounded-full border border-[rgba(185,147,74,0.22)] bg-[rgba(8,8,10,0.82)] transition-[transform,border-color,box-shadow,background-color] duration-[220ms] ease-[var(--ease-premium)] hover:scale-105 hover:border-[rgba(185,147,74,0.48)] hover:bg-[rgba(10,9,5,0.92)] hover:shadow-[0_0_0_1px_rgba(185,147,74,0.18),0_18px_28px_-18px_rgba(185,147,74,0.5)] active:scale-[0.97] active:shadow-[0_0_0_1px_rgba(185,147,74,0.18),0_10px_20px_-16px_rgba(185,147,74,0.38)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/45"
                 >
                   <Image
                     src={item.iconSrc}
@@ -100,7 +100,7 @@ export function Footer({ content }: FooterProps) {
             </div>
           </div>
 
-          <div className="my-5 h-px w-full bg-white/10" />
+          <div className="my-5 h-px w-full bg-[linear-gradient(90deg,transparent,rgba(201,169,97,0.22),transparent)]" />
 
           <div className="space-y-2">
             <div className="flex flex-wrap items-center gap-4 text-sm">

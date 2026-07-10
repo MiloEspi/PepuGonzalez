@@ -42,7 +42,7 @@ export function SectionHeader({ eyebrow, title, description, className, ...props
       ) : null}
 
       {title ? (
-        <h2 data-section-title className="section-shell-title text-[2rem] font-bold leading-[1.15] text-foreground sm:text-[2.5rem] md:text-[2.9rem]">
+        <h2 data-section-title className="section-shell-title text-[2.2rem] font-bold leading-[1.12] text-foreground sm:text-[2.8rem] md:text-[3.2rem]">
           {title}
         </h2>
       ) : null}

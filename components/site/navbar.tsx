@@ -250,14 +250,14 @@ export function Navbar({ extraNavItems }: NavbarProps) {
             "group relative inline-flex items-center rounded-[9px] border transition-all duration-[240ms] ease-[var(--ease-premium)]",
             compact ? "px-2.5 py-1.5 text-xs font-semibold" : "px-3.5 py-2 text-sm font-semibold",
             active
-              ? "border-primary/58 bg-[linear-gradient(120deg,rgba(74,10,10,0.88)_0%,rgba(111,21,21,0.98)_100%)] text-white shadow-[0_14px_24px_-18px_rgba(111,21,21,0.9)]"
-              : "border-white/12 text-white/78 hover:border-primary/34 hover:bg-white/[0.06] hover:text-white hover:shadow-[0_0_22px_-14px_rgba(111,21,21,0.78)]"
+              ? "border-primary/58 bg-[linear-gradient(120deg,rgba(28,21,6,0.92)_0%,rgba(184,147,74,0.28)_100%)] text-white shadow-[0_14px_24px_-18px_rgba(185,147,74,0.6)]"
+              : "border-white/12 text-white/78 hover:border-primary/34 hover:bg-white/[0.06] hover:text-white hover:shadow-[0_0_22px_-14px_rgba(185,147,74,0.55)]"
           )}
         >
           <span
             data-nav-glow
             aria-hidden
-            className="pointer-events-none absolute inset-0 rounded-[8px] bg-[radial-gradient(circle_at_50%_0%,rgba(150,30,30,0.28),transparent_72%)] opacity-14"
+            className="pointer-events-none absolute inset-0 rounded-[8px] bg-[radial-gradient(circle_at_50%_0%,rgba(201,169,97,0.22),transparent_72%)] opacity-14"
           />
           <span className="relative z-10">{item.label}</span>
           <span
@@ -292,7 +292,7 @@ export function Navbar({ extraNavItems }: NavbarProps) {
             <Link
               href="/"
               onClick={handleBrandClick}
-              className="min-w-0 truncate font-heading text-[1.12rem] font-extrabold tracking-[-0.02em] text-white/90 transition-colors duration-200 hover:text-white sm:text-[1.34rem]"
+              className="min-w-0 truncate font-heading text-[1.18rem] font-extrabold tracking-[-0.01em] text-white transition-colors duration-200 hover:text-white/90 sm:text-[1.42rem]"
             >
               Pepu González
             </Link>
@@ -317,7 +317,7 @@ export function Navbar({ extraNavItems }: NavbarProps) {
                     type="button"
                     aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú"}
                     aria-expanded={isMenuOpen}
-                    className="inline-flex size-9 items-center justify-center rounded-[9px] border border-white/14 bg-white/[0.06] text-white/88 transition-all duration-[220ms] ease-[var(--ease-premium)] hover:border-primary/36 hover:bg-white/[0.12] hover:text-white hover:shadow-[0_0_24px_-15px_rgba(111,21,21,0.92)]"
+                    className="inline-flex size-9 items-center justify-center rounded-[9px] border border-white/14 bg-white/[0.06] text-white/88 transition-all duration-[220ms] ease-[var(--ease-premium)] hover:border-primary/36 hover:bg-white/[0.12] hover:text-white hover:shadow-[0_0_24px_-15px_rgba(185,147,74,0.72)]"
                   >
                     {isMenuOpen ? <X className="size-4.5" /> : <Menu className="size-4.5" />}
                   </button>
@@ -355,7 +355,7 @@ export function Navbar({ extraNavItems }: NavbarProps) {
                           <a
                             href={resolveHref(pathname, item.id)}
                             onClick={(event) => handlePrimaryClick(event, item.id)}
-                            className="inline-flex w-full items-center rounded-[10px] border border-white/14 bg-white/[0.05] px-3 py-2.5 text-sm font-medium text-foreground transition-colors duration-[220ms] ease-[var(--ease-premium)] hover:border-primary/34 hover:bg-primary/12"
+                            className="inline-flex w-full items-center rounded-[10px] border border-white/14 bg-white/[0.05] px-3 py-2.5 text-sm font-medium text-foreground transition-colors duration-[220ms] ease-[var(--ease-premium)] hover:border-primary/34 hover:bg-primary/10"
                           >
                             {item.label}
                           </a>

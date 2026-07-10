@@ -49,7 +49,7 @@ function TestimonialCardItem({ item }: { item: TestimonialCard }) {
             sizes="120px"
             className="object-cover object-top brightness-[0.94] contrast-[1.04]"
           />
-          <Badge className="pointer-events-none absolute right-1.5 top-1.5 rounded-[6px] border border-primary/35 bg-[rgba(74,10,10,0.5)] px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-[0.1em] text-white backdrop-blur-[4px]">
+          <Badge className="pointer-events-none absolute right-1.5 top-1.5 rounded-[6px] border border-primary/40 bg-[rgba(40,30,8,0.58)] px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-[0.1em] text-[#e2c584] backdrop-blur-[4px]">
             DESPUÉS
           </Badge>
         </div>
@@ -57,7 +57,7 @@ function TestimonialCardItem({ item }: { item: TestimonialCard }) {
 
       <div className="p-3">
         <p className="text-sm font-semibold text-white">{item.name}</p>
-        <p className="mt-1 inline-flex rounded-[6px] border border-primary/35 bg-primary/14 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.1em] text-white/90">
+        <p className="mt-1 inline-flex rounded-[6px] border border-primary/35 bg-primary/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.1em] text-[#c9a961]">
           {item.resultMetric}
         </p>
         {item.quote ? (
@@ -106,12 +106,18 @@ export function TestimonialsSection({ results }: TestimonialsSectionProps) {
       description="Antes y después reales de mis alumnos."
     >
       <div
-        className="overflow-hidden"
+        className="relative overflow-hidden"
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
         onTouchStart={() => setPaused(true)}
         onTouchEnd={() => setPaused(false)}
       >
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-0 flex select-none items-center justify-center font-heading text-[18vw] font-bold leading-none tracking-[0.025em] text-white opacity-[0.03]"
+        >
+          PEPU
+        </span>
         <div
           className="marquee-track flex w-max will-change-transform"
           style={{

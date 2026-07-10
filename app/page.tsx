@@ -31,6 +31,14 @@ export default async function HomePage() {
       <AboutSection content={about} />
       <SistemaPepuOffer />
       <FAQSection items={faqs} />
+
+      {/* Separador de marca PG */}
+      <div aria-hidden className="flex items-center gap-4 px-6 py-1">
+        <div className="h-px flex-1 bg-[linear-gradient(90deg,transparent,rgba(201,169,97,0.32))]" />
+        <span className="font-heading text-[0.78rem] tracking-[0.28em] text-[#c9a961]/55 select-none">PG</span>
+        <div className="h-px flex-1 bg-[linear-gradient(270deg,transparent,rgba(201,169,97,0.32))]" />
+      </div>
+
       <FinalCTA />
     </main>
   );

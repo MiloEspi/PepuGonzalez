@@ -210,7 +210,7 @@ export function PlanFinderQuiz() {
               ENVIAR WHATSAPP
             </WhatsAppButton>
 
-            <div className="hidden h-px bg-white/10 sm:block" />
+            <div className="hidden h-px bg-[linear-gradient(90deg,transparent,rgba(201,169,97,0.22),transparent)] sm:block" />
 
             <div className="hidden gap-2 text-xs text-white/70 sm:grid sm:grid-cols-3">
               <p className="rounded-[8px] border border-white/10 bg-black/28 px-2.5 py-2">
@@ -308,7 +308,7 @@ export function PlanFinderQuiz() {
         </div>
       </CardContent>
 
-      <div className="mx-5 h-px bg-white/10" />
+      <div className="mx-5 h-px bg-[linear-gradient(90deg,transparent,rgba(201,169,97,0.22),transparent)]" />
 
       <CardFooter className="sticky bottom-0 z-10 flex flex-col gap-2.5 bg-[linear-gradient(180deg,rgba(16,17,22,0.82)_0%,rgba(16,17,22,0.96)_100%)] px-5 pb-4 pt-3 backdrop-blur-[2px]">
         <div className="flex w-full items-center justify-between">
