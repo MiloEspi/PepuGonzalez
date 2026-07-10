@@ -7,6 +7,7 @@ import { animate, stagger } from "animejs";
 
 import { AnimatedButton } from "@/components/AnimatedButton";
 import { PageContainer } from "@/components/site/section-primitives";
+import { getStickyWhatsAppHref } from "@/data/offers";
 import type { SiteSettingsDoc } from "@/lib/sanity";
 import { EASE_OUT_EXPO, PREMIUM_EASE, prefersReducedMotion } from "@/utils/animations";
 
@@ -189,7 +190,7 @@ export function HeroSection({ content }: HeroSectionProps) {
 
               <div className="w-full max-w-[20rem] space-y-2.5">
                 <AnimatedButton
-                  href={content.whatsappCtaHref}
+                  href={getStickyWhatsAppHref()}
                   target="_blank"
                   rel="noreferrer"
                   data-hero-cta

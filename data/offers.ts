@@ -211,8 +211,11 @@ export function getOfferPrimaryHref(offer: Offer): string {
   return getWhatsAppUrl(buildLeadMessage({ planTitle: offer.title }));
 }
 
-export function getStickyWhatsAppHref(selectedPlan?: string): string {
-  return getWhatsAppUrl(buildLeadMessage({ planTitle: selectedPlan }));
+const STICKY_MESSAGE =
+  "Hola Pepu! Quiero mejorar mi físico y sentirme más seguro, pero estoy medio perdido y no sé por dónde arrancar. ¿Me ayudás?";
+
+export function getStickyWhatsAppHref(_selectedPlan?: string): string {
+  return getWhatsAppUrl(STICKY_MESSAGE);
 }
 
 export function getOfferDetailSlug(offerSlug: OfferSlug): OfferDetailSlug {
