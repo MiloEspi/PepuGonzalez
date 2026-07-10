@@ -114,7 +114,7 @@ export function HeroSection({ content }: HeroSectionProps) {
           className="relative isolate overflow-hidden rounded-[18px] shadow-[0_36px_74px_-56px_rgba(0,0,0,0.96)]"
         >
           {/* Background image — sets card height */}
-          <div className="relative min-h-[780px] w-full sm:min-h-[860px] md:min-h-[900px]">
+          <div className="relative min-h-[600px] w-full sm:min-h-[860px] md:min-h-[900px]">
             <div ref={mediaMotionRef} className="absolute inset-0 will-change-transform">
               {!showGradientFallback && hasHeroImage ? (
                 <Image
@@ -124,7 +124,7 @@ export function HeroSection({ content }: HeroSectionProps) {
                   fill
                   priority
                   sizes="100vw"
-                  className="object-cover object-[center_32%] scale-[1.06] sm:scale-[1.04]"
+                  className="object-cover object-[center_62%] scale-[1.09] sm:object-[center_38%] sm:scale-[1.04]"
                   onError={handleImageError}
                 />
               ) : (
@@ -137,7 +137,7 @@ export function HeroSection({ content }: HeroSectionProps) {
           <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.0)_0%,rgba(0,0,0,0.08)_14%,rgba(0,0,0,0.72)_36%,rgba(0,0,0,0.95)_54%,rgba(0,0,0,0.99)_70%,rgba(0,0,0,1.0)_100%)]" />
 
           {/* Content — anchored to bottom of card */}
-          <div className="absolute inset-0 flex items-end justify-center p-4 pb-7 sm:p-6 sm:pb-9 md:p-8 md:pb-11">
+          <div className="absolute inset-0 flex items-end justify-center p-4 pb-4 sm:p-6 sm:pb-9 md:p-8 md:pb-11">
             <div data-hero-reveal className="mx-auto flex w-full max-w-[34rem] flex-col items-center text-center gap-4">
 
               <h1
