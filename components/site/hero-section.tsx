@@ -114,7 +114,7 @@ export function HeroSection({ content }: HeroSectionProps) {
           className="relative isolate overflow-hidden rounded-[18px] shadow-[0_36px_74px_-56px_rgba(0,0,0,0.96)]"
         >
           {/* Background image — sets card height */}
-          <div className="relative min-h-[600px] w-full sm:min-h-[860px] md:min-h-[900px]">
+          <div className="relative min-h-[680px] w-full sm:min-h-[860px] md:min-h-[900px]">
             <div ref={mediaMotionRef} className="absolute inset-0 will-change-transform">
               {!showGradientFallback && hasHeroImage ? (
                 <Image
