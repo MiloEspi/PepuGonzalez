@@ -6,7 +6,7 @@ import { SectionTitle } from "@/components/site/section-heading";
 import { publicAssetSlot } from "@/lib/public-asset";
 
 const ANTES = publicAssetSlot("preview/antes.jpg");
-const HOY = { src: "/DSC02489.jpg", filename: "DSC02489.jpg", exists: true };
+const HOY = publicAssetSlot("preview/hoy.jpg");
 
 const STORY_PARAGRAPHS = [
   "A los 16 pesaba casi 90 kilos y medía 1,75.",

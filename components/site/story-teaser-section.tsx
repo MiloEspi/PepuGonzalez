@@ -6,7 +6,7 @@ import { SectionEyebrow, SectionTitle } from "@/components/site/section-heading"
 import { publicAssetSlot } from "@/lib/public-asset";
 
 const ANTES = publicAssetSlot("preview/antes.jpg");
-const HOY = { src: "/DSC02489.jpg", filename: "DSC02489.jpg", exists: true };
+const HOY = publicAssetSlot("preview/hoy.jpg");
 
 function Photo({ slot, label }: { slot: { src: string; filename: string; exists: boolean }; label: string }) {
   return (
