@@ -18,7 +18,7 @@ export function PreviewGallery({ slots, productTitle }: PreviewGalleryProps) {
     <>
       <div className="mt-10 grid gap-3 sm:grid-cols-3">
         {slots.map((slot, index) => (
-          <div key={slot.filename} className="relative aspect-[3/4] w-full overflow-hidden rounded-[14px] bg-[var(--negro)]">
+          <div key={slot.filename} className="relative aspect-[16/10] w-full overflow-hidden rounded-[14px] bg-[var(--negro)]">
             {slot.exists ? (
               <button
                 type="button"
@@ -32,7 +32,7 @@ export function PreviewGallery({ slots, productTitle }: PreviewGalleryProps) {
                   fill
                   loading="lazy"
                   sizes="(max-width: 767px) 33vw, 240px"
-                  className="object-cover"
+                  className="object-contain"
                 />
               </button>
             ) : (

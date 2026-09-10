@@ -77,19 +77,36 @@ export function DigitalProductPage({ product, previewSlots, showPackLine = true 
         </SectionTitle>
 
         <div className="mt-10 grid gap-10 md:grid-cols-2 md:gap-0">
-          <div className="flex flex-col gap-4 md:pr-12">
-            {product.audienceYes.map((item) => (
-              <div key={item} className="flex items-start gap-3">
-                <Check className="mt-1 size-4 shrink-0 text-[var(--dorado)]" strokeWidth={2.5} />
-                <p className="copy max-w-none text-[var(--texto)]">{item}</p>
-              </div>
-            ))}
+          <div className="flex flex-col md:pr-12">
+            <div className="flex flex-col gap-4">
+              {product.audienceYes.map((item) => (
+                <div key={item} className="flex items-start gap-3">
+                  <Check className="mt-1 size-4 shrink-0 text-[var(--dorado)]" strokeWidth={2.5} />
+                  <p className="copy max-w-none text-[var(--texto)]">{item}</p>
+                </div>
+              ))}
+            </div>
+            {product.audienceYesNote ? (
+              <p className="copy mt-6 max-w-none text-[var(--texto-gris)]">{product.audienceYesNote}</p>
+            ) : null}
           </div>
           <div className="flex flex-col gap-4 border-t border-[var(--dorado-suave)]/40 pt-10 md:border-l md:border-t-0 md:pl-12 md:pt-0">
-            {product.audienceNo.map((item) => (
-              <div key={item} className="flex items-start gap-3">
+            {product.audienceNo.map((item, index) => (
+              <div key={index} className="flex items-start gap-3">
                 <X className="mt-1 size-4 shrink-0 text-[var(--dorado-suave)]" strokeWidth={2.5} />
-                <p className="copy max-w-none text-[var(--texto-gris)]">{item}</p>
+                <p className="copy max-w-none text-[var(--texto-gris)]">
+                  {typeof item === "string" ? (
+                    item
+                  ) : (
+                    <>
+                      {item.before}
+                      <Link href={item.linkHref} className="text-[var(--dorado)] underline underline-offset-4">
+                        {item.linkText}
+                      </Link>
+                      {item.after}
+                    </>
+                  )}
+                </p>
               </div>
             ))}
           </div>

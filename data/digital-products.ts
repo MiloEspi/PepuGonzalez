@@ -5,6 +5,16 @@ export interface DigitalProductFaq {
   answer: string;
 }
 
+// Un ítem de audienceNo puede llevar un link adentro del texto (ej. "la asesoría uno a uno" → home).
+export interface DigitalProductLinkedText {
+  before: string;
+  linkText: string;
+  linkHref: string;
+  after: string;
+}
+
+export type DigitalProductListItem = string | DigitalProductLinkedText;
+
 export interface DigitalProduct {
   slug: DigitalProductSlug;
   navLabel: string;
@@ -15,7 +25,8 @@ export interface DigitalProduct {
   whatsappMessage: string;
   whatsInside: string[];
   audienceYes: string[];
-  audienceNo: string[];
+  audienceYesNote?: string;
+  audienceNo: DigitalProductListItem[];
   faqs: DigitalProductFaq[];
 }
 
@@ -71,13 +82,20 @@ export const DIGITAL_PRODUCTS: Record<DigitalProductSlug, DigitalProduct> = {
       "Pensadas para gimnasio con mancuernas, barras y máquinas básicas.",
     ],
     audienceYes: [
-      "Ya entrenaste antes y sabés ejecutar los movimientos básicos.",
-      "Tenés la comida más o menos ordenada y te falta la parte del gimnasio.",
-      "Sabés cuántos días por semana podés entrenar de verdad.",
+      "Para el que entrena hace seis meses o más y hace rato que levanta el mismo peso.",
+      "Para el que va al gimnasio y no sabe si está haciendo las series que necesita o de más.",
+      "Para el que se cansó de improvisar la rutina en el momento.",
     ],
+    audienceYesNote:
+      "No es una lista de ejercicios. Es un plan de doce semanas donde cada semana sabés qué peso te toca, cuántas repeticiones y cuándo subir. Los volúmenes por músculo y la cercanía al fallo salen de dos revisiones científicas que están linkeadas adentro del archivo, para que las leas vos si querés.",
     audienceNo: [
-      "Nunca entrenaste y no sabés ni agarrar una barra — ahí hace falta corrección en vivo, no un PDF.",
-      "Necesitás que alguien te ajuste el plan según cómo vas respondiendo.",
+      "Si buscás una rutina distinta cada semana para no aburrirte. Acá se repite y se mide, que es lo que la hace funcionar.",
+      {
+        before: "Si necesitás que alguien te mire, te corrija la técnica y te ajuste el plan según cómo vas respondiendo. Eso es ",
+        linkText: "la asesoría uno a uno",
+        linkHref: "/",
+        after: ".",
+      },
     ],
     faqs: [
       {
