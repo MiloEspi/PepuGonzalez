@@ -1,44 +1,32 @@
-import { AboutSection } from "@/components/site/about-section";
-import { FAQSection } from "@/components/site/faq-section";
-import { FinalCTA } from "@/components/site/final-cta";
+import { GuaranteeSection } from "@/components/site/guarantee-section";
 import { HeroSection } from "@/components/site/hero-section";
-import { SistemaPepuOffer } from "@/components/site/sistema-pepu-offer";
+import { InlineCta } from "@/components/site/inline-cta";
+import { FinalCTA } from "@/components/site/final-cta";
+import { MethodSection } from "@/components/site/method-section";
+import { NotIncludedSection } from "@/components/site/not-included-section";
+import { ProblemSection } from "@/components/site/problem-section";
+import { ProductsTeaserSection } from "@/components/site/products-teaser-section";
+import { StoryTeaserSection } from "@/components/site/story-teaser-section";
 import { TestimonialsSection } from "@/components/site/testimonials-section";
-import {
-  ABOUT_QUERY,
-  FAQ_QUERY,
-  RESULTS_QUERY,
-  SETTINGS_QUERY,
-  sanityFetch,
-  type AboutDoc,
-  type FaqDoc,
-  type ResultDoc,
-  type SiteSettingsDoc,
-} from "@/lib/sanity";
+import { RESULTS_QUERY, sanityFetch, type ResultDoc } from "@/lib/sanity";
+import { publicAssetSlot } from "@/lib/public-asset";
 
 export default async function HomePage() {
-  const [settings, about, results, faqs] = await Promise.all([
-    sanityFetch<SiteSettingsDoc>(SETTINGS_QUERY),
-    sanityFetch<AboutDoc>(ABOUT_QUERY),
-    sanityFetch<ResultDoc[]>(RESULTS_QUERY),
-    sanityFetch<FaqDoc[]>(FAQ_QUERY),
-  ]);
+  const results = await sanityFetch<ResultDoc[]>(RESULTS_QUERY);
+  const heroVideo = publicAssetSlot("hero.mp4");
+  const heroPoster = publicAssetSlot("hero-poster.jpg");
 
   return (
-    <main className="space-y-3 pb-16 md:space-y-4">
-      <HeroSection content={settings} />
+    <main>
+      <HeroSection video={heroVideo} poster={heroPoster} />
+      <StoryTeaserSection />
       <TestimonialsSection results={results} />
-      <AboutSection content={about} />
-      <SistemaPepuOffer />
-      <FAQSection items={faqs} />
-
-      {/* Separador de marca PG */}
-      <div aria-hidden className="flex items-center gap-4 px-6 py-1">
-        <div className="h-px flex-1 bg-[linear-gradient(90deg,transparent,rgba(201,169,97,0.32))]" />
-        <span className="font-heading text-[0.78rem] tracking-[0.28em] text-[#c9a961]/55 select-none">PG</span>
-        <div className="h-px flex-1 bg-[linear-gradient(270deg,transparent,rgba(201,169,97,0.32))]" />
-      </div>
-
+      <InlineCta />
+      <MethodSection />
+      <ProblemSection />
+      <NotIncludedSection />
+      <GuaranteeSection />
+      <ProductsTeaserSection />
       <FinalCTA />
     </main>
   );

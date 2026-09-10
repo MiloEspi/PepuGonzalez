@@ -2,6 +2,9 @@ import { PROGRAMAS, TABLA_COMPARATIVA, type ProgramaTier } from "@/data/programa
 
 export const WHATSAPP_NUMBER = "5492213619007";
 
+// Cambiá este número para actualizar cuántos cupos por mes se muestran en toda la web.
+export const SPOTS_PER_MONTH = 5;
+
 export const PLAN_BASE_MERCADOPAGO_URL = "";
 export const PLAN_TRANSFORMACION_MERCADOPAGO_URL = "";
 export const PLAN_MENTORIA_MERCADOPAGO_URL = "";
@@ -212,7 +215,7 @@ export function getOfferPrimaryHref(offer: Offer): string {
 }
 
 const STICKY_MESSAGE =
-  "Hola Pepu! Quiero mejorar mi físico y sentirme más seguro, pero estoy medio perdido y no sé por dónde arrancar. ¿Me ayudás?";
+  "Hola Pepu! Quiero bajar de peso en serio, ya probé de todo y no lo sostengo. ¿Me contás cómo funciona?";
 
 export function getStickyWhatsAppHref(_selectedPlan?: string): string {
   return getWhatsAppUrl(STICKY_MESSAGE);

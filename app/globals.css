@@ -30,6 +30,7 @@
   --radius-2xl: calc(var(--radius) + 8px);
   --font-sans: var(--font-inter);
   --font-heading: var(--font-anton);
+  --font-accent: var(--font-instrument-serif);
 }
 
 :root {
@@ -70,6 +71,14 @@
   --mentor-gold: #c9a961;
   --nav-active: #b8934a;
   --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Rediseño 2026 — sistema nuevo (dorado único sobre negro). Se va migrando sección por sección. */
+  --negro: #0a0a0a;
+  --negro-2: #121212;
+  --dorado: #e3b341;
+  --dorado-suave: #8a6b22;
+  --texto: #edeae3;
+  --texto-gris: #8b8880;
 }
 
 @media (min-width: 768px) {
@@ -90,15 +99,14 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans;
-    background-image:
-      radial-gradient(circle at 6% -10%, hsl(41 49% 30% / 0.12), transparent 46%),
-      radial-gradient(circle at 97% 8%, hsl(41 49% 25% / 0.09), transparent 48%),
-      linear-gradient(180deg, #080809 0%, #070708 47%, #08080b 100%);
-    background-attachment: fixed;
+    @apply text-foreground font-sans;
+    background: var(--negro);
     min-height: 100%;
     position: relative;
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 
   h1,
@@ -109,31 +117,24 @@
     letter-spacing: 0.025em;
   }
 
-  body::before {
-    content: "";
-    pointer-events: none;
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    opacity: 0.16;
-    background-image:
-      radial-gradient(520px 220px at 10% 20%, rgba(185, 147, 74, 0.08), transparent 72%),
-      radial-gradient(520px 260px at 82% 72%, rgba(185, 147, 74, 0.07), transparent 76%),
-      repeating-linear-gradient(125deg, rgba(255, 255, 255, 0.022) 0 1px, transparent 1px 4px);
+  /*
+   * Windows/Chrome ignora -webkit-font-smoothing (solo aplica en WebKit/macOS).
+   * Ahí lo único que saca el halo cromático de ClearType en texto claro sobre
+   * negro es forzar al elemento a su propia capa de composición. Se lo damos
+   * solo a títulos y texto en negrita — NO a párrafos largos ni al body, para
+   * no promover de más en celular.
+   */
+  h1,
+  h2,
+  h3,
+  h4,
+  strong,
+  .font-heading,
+  .font-bold,
+  .font-semibold {
+    transform: translateZ(0);
   }
 
-  body::after {
-    content: "";
-    pointer-events: none;
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    opacity: 0.11;
-    background-image:
-      radial-gradient(circle at 30% -10%, rgba(255, 255, 255, 0.22), transparent 36%),
-      radial-gradient(circle at 85% 120%, rgba(0, 0, 0, 0.42), transparent 50%);
-    mix-blend-mode: screen;
-  }
 }
 
 @layer base {
@@ -161,6 +162,12 @@
 
   .radius-small {
     border-radius: var(--radius-small);
+  }
+
+  .copy {
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    max-width: 620px;
   }
 
   .page-container {
@@ -419,6 +426,85 @@
     opacity: 0.22;
   }
 
+  /* Resplandor dorado detrás del Hero y el Cierre — nada más. Se nota, pero no distrae. */
+  .ambient-glow {
+    position: absolute;
+    inset: -25%;
+    z-index: 0;
+    pointer-events: none;
+    background: radial-gradient(120vw 90vw at 50% 32%, rgba(227, 179, 65, 0.15), transparent 72%);
+    animation: ambient-glow-breathe 14s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  /* Punto del botón Aplicar — uno solo en toda la página. Negro sobre dorado. */
+  .apply-dot {
+    position: relative;
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    flex-shrink: 0;
+    border-radius: 9999px;
+    background: var(--negro);
+  }
+
+  .apply-dot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    background: var(--negro);
+    opacity: 0.3;
+    animation: apply-dot-ring 2.4s ease-out infinite;
+  }
+
+  /* Capa fija global: grano + barrido de luz, por encima de todo el contenido. Solo CSS. */
+  .ambient-background {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+  }
+
+  .ambient-background__grain {
+    position: absolute;
+    inset: 0;
+    opacity: 0.035;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 140px 140px;
+  }
+
+  .ambient-background__sweep {
+    position: absolute;
+    inset: 0;
+    opacity: 0.07;
+    background: repeating-linear-gradient(
+      100deg,
+      transparent 0%,
+      transparent 46%,
+      rgba(227, 179, 65, 0.7) 50%,
+      transparent 54%,
+      transparent 100%
+    );
+    background-size: 320% 320%;
+    animation: ambient-sweep 18s linear infinite;
+  }
+
+  /* Destello diagonal, uno solo, cada 20s — cruza en 3s y desaparece 17s. */
+  .ambient-background__flash {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    opacity: 0;
+    background: linear-gradient(100deg, transparent 42%, rgba(227, 179, 65, 1) 50%, transparent 58%);
+    animation: ambient-flash 20s ease-in-out infinite;
+    will-change: transform, opacity;
+  }
+
   /* Shimmer periódico sobre botón WhatsApp */
   .whatsapp-shimmer {
     position: relative;
@@ -471,6 +557,54 @@
   50% {
     transform: translateY(-8px) scale(1.04);
     opacity: 0.72;
+  }
+}
+
+@keyframes ambient-glow-breathe {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(60px, 60px) scale(1.2);
+  }
+}
+
+@keyframes apply-dot-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+@keyframes ambient-sweep {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+@keyframes ambient-flash {
+  0%,
+  84% {
+    opacity: 0;
+    transform: translateX(-25%);
+  }
+  86% {
+    opacity: 0.06;
+  }
+  99% {
+    opacity: 0.06;
+    transform: translateX(25%);
+  }
+  100% {
+    opacity: 0;
   }
 }
 
@@ -531,8 +665,18 @@
   }
 
   .badge-shimmer::after,
-  .whatsapp-shimmer::after {
+  .whatsapp-shimmer::after,
+  .ambient-glow,
+  .ambient-background__sweep {
     animation: none;
+  }
+
+  .apply-dot::after {
+    display: none;
+  }
+
+  .ambient-background__flash {
+    display: none;
   }
 
   .plan-spotlight-red::before,

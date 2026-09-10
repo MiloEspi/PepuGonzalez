@@ -1,27 +1,22 @@
-import Image from "next/image";
+import { Instagram, Mail, MessageCircle, Youtube } from "lucide-react";
 
+import { getStickyWhatsAppHref } from "@/data/offers";
 import type { FooterDoc } from "@/lib/sanity";
 import { cn } from "@/lib/utils";
-
-type SocialLink = {
-  label: string;
-  href: string;
-  iconSrc: string;
-  iconClassName?: string;
-};
 
 type LegalLink = {
   label: string;
   href: string;
 };
 
-const socialIconByName: Record<string, { iconSrc: string; iconClassName?: string }> = {
-  instagram: { iconSrc: "/social/instagram.png", iconClassName: "h-5 w-5" },
-  tiktok: { iconSrc: "/social/tiktok.png", iconClassName: "h-5 w-5" },
-  whatsapp: { iconSrc: "/social/whatsapp.png", iconClassName: "h-5 w-5" },
-  youtube: { iconSrc: "/social/youtube.png", iconClassName: "h-5 w-5" },
-  kick: { iconSrc: "/social/kick.png", iconClassName: "h-5 w-5" },
-};
+function TikTokGlyph({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="none" stroke="currentColor" strokeWidth={1.5}>
+      <path d="M16.6 5.82c-.63-.7-.98-1.6-.98-2.55h-2.96v13.3a2.9 2.9 0 1 1-2.05-2.77V10.6a5.86 5.86 0 1 0 5.01 5.8V9.4a7.4 7.4 0 0 0 4.36 1.4V7.84a4.7 4.7 0 0 1-3.38-2.02Z" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 function normalizeSocialName(name: string): string {
   return name.trim().toLowerCase();
 }
@@ -30,96 +25,93 @@ function isExternalLink(href: string): boolean {
   return href.startsWith("http://") || href.startsWith("https://");
 }
 
+const SOCIAL_ICONS: Record<string, (props: { className?: string }) => React.JSX.Element> = {
+  instagram: (props) => <Instagram {...props} strokeWidth={1.5} />,
+  youtube: (props) => <Youtube {...props} strokeWidth={1.5} />,
+  tiktok: TikTokGlyph,
+};
+
 interface FooterProps {
   content: FooterDoc;
 }
 
 export function Footer({ content }: FooterProps) {
-  const cmsSocialLinks = content.socialLinks
+  const socialLinks = content.socialLinks
     .filter((item) => item?.name && item?.href)
-    .map((item) => {
-      const normalizedName = normalizeSocialName(item.name);
-      const iconConfig = socialIconByName[normalizedName] ?? { iconSrc: "/globe.svg" };
+    .map((item) => ({ label: item.name, href: item.href, key: normalizeSocialName(item.name) }))
+    .filter((item) => item.key !== "whatsapp" && SOCIAL_ICONS[item.key]);
 
-      return {
-        label: item.name,
-        href: item.href,
-        iconSrc: iconConfig.iconSrc,
-        iconClassName: iconConfig.iconClassName,
-      } satisfies SocialLink;
-    });
+  const legalLinks: LegalLink[] = content.legalLinks.filter((item) => item?.label && item?.href);
 
-  const activeSocialLinks = cmsSocialLinks;
-  const cmsLegalLinks = content.legalLinks.filter((item) => item?.label && item?.href);
-  const activeLegalLinks: LegalLink[] = cmsLegalLinks;
   return (
-    <footer
-      id="contacto"
-      className="scroll-mt-[calc(var(--navbar-height)+0.7rem)] border-t border-[rgba(201,169,97,0.1)] bg-[radial-gradient(circle_at_14%_0%,rgba(185,147,74,0.07),transparent_38%),linear-gradient(180deg,#080809_0%,#060607_100%)]"
-    >
-      <div className="layout-shell py-7 md:py-8">
-        <div className="rounded-[16px] border border-white/10 bg-[linear-gradient(145deg,#0d0e12_0%,#09090c_100%)] p-5 shadow-[0_30px_58px_-44px_rgba(0,0,0,0.95)] md:p-7">
-          <div className="space-y-4">
-            <div className="inline-flex items-center gap-3 rounded-[11px] border border-white/14 bg-[linear-gradient(120deg,rgba(30,24,8,0.28)_0%,rgba(20,16,5,0.14)_100%)] px-3 py-2">
-              <div className="grid size-9 place-items-center rounded-[9px] border border-primary/35 bg-primary/20 text-primary">
-                <span className="font-heading text-sm font-bold">PG</span>
-              </div>
-              <div>
-                <p className="font-heading text-[1.1rem] font-semibold tracking-[0.05em] text-foreground">Pepu González</p>
-                <p className="text-[11px] tracking-[0.2em] text-muted-foreground">COACHING</p>
-              </div>
-            </div>
+    <footer id="contacto" className="border-t border-white/10 bg-[var(--negro-2)] pt-[60px] md:pt-[90px]">
+      <div className="layout-shell pb-14 md:pb-16">
+        <p className="font-heading text-sm uppercase tracking-[0.06em] text-[var(--texto)]">Pepu González</p>
 
-            <p className="max-w-xl text-sm text-muted-foreground md:text-base">Contacto directo para resolver dudas y elegir tu plan.</p>
+        <div className="mt-4 flex flex-col gap-1.5 text-sm">
+          <a href={`mailto:${content.email}`} className="w-fit text-[var(--texto-gris)] transition-colors duration-200 hover:text-[var(--dorado)]">
+            {content.email}
+          </a>
+          <a
+            href={getStickyWhatsAppHref()}
+            target="_blank"
+            rel="noreferrer"
+            className="w-fit text-[var(--texto-gris)] transition-colors duration-200 hover:text-[var(--dorado)]"
+          >
+            Escribime por WhatsApp
+          </a>
+        </div>
 
+        <div className="mt-7 flex flex-wrap items-center gap-5">
+          <a
+            href={getStickyWhatsAppHref()}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="WhatsApp"
+            title="WhatsApp"
+            className="text-[var(--texto-gris)] transition-colors duration-200 hover:text-[var(--dorado)]"
+          >
+            <MessageCircle className="size-5" strokeWidth={1.5} />
+          </a>
+          <a href={`mailto:${content.email}`} aria-label="Mail" title="Mail" className="text-[var(--texto-gris)] transition-colors duration-200 hover:text-[var(--dorado)]">
+            <Mail className="size-5" strokeWidth={1.5} />
+          </a>
+          {socialLinks.map((item) => {
+            const Icon = SOCIAL_ICONS[item.key];
+            return (
+              <a
+                key={item.label}
+                href={item.href}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={item.label}
+                title={item.label}
+                className="text-[var(--texto-gris)] transition-colors duration-200 hover:text-[var(--dorado)]"
+              >
+                <Icon className="size-5" />
+              </a>
+            );
+          })}
+        </div>
+
+        <div className="my-8 h-px w-full bg-white/10" />
+
+        <div className="space-y-3">
+          <div className="flex flex-wrap items-center gap-5 text-sm">
+            {legalLinks.map((link) => (
+              <a
+                key={`${link.label}-${link.href}`}
+                href={link.href}
+                target={isExternalLink(link.href) ? "_blank" : undefined}
+                rel={isExternalLink(link.href) ? "noreferrer" : undefined}
+                className={cn("font-medium text-[var(--texto-gris)] transition-colors duration-200 hover:text-[var(--dorado)]")}
+              >
+                {link.label}
+              </a>
+            ))}
           </div>
 
-          <div className="mt-6">
-            <div className="flex flex-wrap items-center gap-3">
-              {activeSocialLinks.map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={`Ir a ${item.label}`}
-                  title={item.label}
-                  className="group inline-flex size-11 shrink-0 items-center justify-center rounded-full border border-[rgba(185,147,74,0.22)] bg-[rgba(8,8,10,0.82)] transition-[transform,border-color,box-shadow,background-color] duration-[220ms] ease-[var(--ease-premium)] hover:scale-105 hover:border-[rgba(185,147,74,0.48)] hover:bg-[rgba(10,9,5,0.92)] hover:shadow-[0_0_0_1px_rgba(185,147,74,0.18),0_18px_28px_-18px_rgba(185,147,74,0.5)] active:scale-[0.97] active:shadow-[0_0_0_1px_rgba(185,147,74,0.18),0_10px_20px_-16px_rgba(185,147,74,0.38)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/45"
-                >
-                  <Image
-                    src={item.iconSrc}
-                    alt=""
-                    width={20}
-                    height={20}
-                    unoptimized
-                    className={cn("object-contain object-center transition-transform duration-200 group-hover:scale-[1.03]", item.iconClassName)}
-                  />
-                  <span className="sr-only">{item.label}</span>
-                </a>
-              ))}
-            </div>
-          </div>
-
-          <div className="my-5 h-px w-full bg-[linear-gradient(90deg,transparent,rgba(201,169,97,0.22),transparent)]" />
-
-          <div className="space-y-2">
-            <div className="flex flex-wrap items-center gap-4 text-sm">
-              {activeLegalLinks.map((link) => (
-                <a
-                  key={`${link.label}-${link.href}`}
-                  href={link.href}
-                  target={isExternalLink(link.href) ? "_blank" : undefined}
-                  rel={isExternalLink(link.href) ? "noreferrer" : undefined}
-                  className="group relative font-medium text-foreground/94 transition-colors duration-200 hover:text-primary"
-                >
-                  {link.label}
-                  <span className="pointer-events-none absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 bg-primary transition-transform duration-300 ease-[var(--ease-premium)] group-hover:scale-x-100" />
-                </a>
-              ))}
-            </div>
-
-            <p className="text-xs text-muted-foreground/90">(c) 2026 Pepu González. Todos los derechos reservados.</p>
-          </div>
+          <p className="text-xs text-[var(--texto-gris)]">(c) 2026 Pepu González. Todos los derechos reservados.</p>
         </div>
       </div>
     </footer>

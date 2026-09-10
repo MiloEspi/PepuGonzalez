@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
-import { Anton, Inter } from "next/font/google";
+import { Anton, Inter, Instrument_Serif } from "next/font/google";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 
 import { Navbar } from "@/components/Navbar";
 import { SvgFilters } from "@/components/SvgFilters";
+import { AmbientBackground } from "@/components/site/ambient-background";
 import { FooterRouteVisibility } from "@/components/site/footer-route-visibility";
+import { MobileWhatsAppSticky } from "@/components/site/mobile-whatsapp-sticky";
 
 import { OverflowDebug } from "@/components/dev/overflow-debug";
 import { FOOTER_QUERY, SETTINGS_QUERY, sanityFetch, type FooterDoc, type SiteSettingsDoc } from "@/lib/sanity";
@@ -22,6 +24,14 @@ const bodyFont = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
+});
+
+const accentFont = Instrument_Serif({
+  variable: "--font-instrument-serif",
+  subsets: ["latin"],
+  weight: "400",
+  style: ["italic"],
+  display: "swap",
 });
 
 const GA_ID = "G-NSD5SY6QJR";
@@ -44,14 +54,16 @@ export default async function RootLayout({
 
   return (
     <html lang="es">
-      <body className={`${headingFont.variable} ${bodyFont.variable} antialiased`}>
+      <body className={`${headingFont.variable} ${bodyFont.variable} ${accentFont.variable} antialiased`}>
         <div className="relative min-h-screen bg-background pt-[var(--navbar-height)] text-foreground">
           {process.env.NODE_ENV === "development" ? <OverflowDebug /> : null}
           <SvgFilters />
           <Navbar extraNavItems={settings.navItems} />
           {children}
           <FooterRouteVisibility content={footer} />
+          <MobileWhatsAppSticky />
         </div>
+        <AmbientBackground />
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
           strategy="afterInteractive"
