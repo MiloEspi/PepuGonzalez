@@ -9,10 +9,8 @@ import { DIGITAL_PRODUCTS } from "@/data/digital-products";
 import { formatPrecio, PRECIOS } from "@/data/precios";
 import { publicAssetSlot } from "@/lib/public-asset";
 
-const CARDS = [
-  { ...DIGITAL_PRODUCTS.recetario, previewSlot: publicAssetSlot("preview/recetario-1.jpg") },
-  { ...DIGITAL_PRODUCTS.rutinas, previewSlot: publicAssetSlot("preview/rutinas-1.jpg") },
-];
+// Recetario todavía no existe — sacado de acá hasta que esté listo. Ver app/recetario (queda en el código, sin link).
+const CARDS = [{ ...DIGITAL_PRODUCTS.rutinas, previewSlot: publicAssetSlot("preview/rutinas-1.jpg") }];
 
 export function ProductsTeaserSection() {
   return (
@@ -21,7 +19,7 @@ export function ProductsTeaserSection() {
         MÁS FORMAS DE <AccentText>empezar</AccentText>
       </SectionTitle>
 
-      <div className="mt-12 grid gap-4 md:grid-cols-2">
+      <div className="mt-12 grid gap-4">
         {CARDS.map((card) => (
           <Link
             key={card.slug}

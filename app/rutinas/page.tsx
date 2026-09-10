@@ -12,5 +12,5 @@ export const metadata: Metadata = {
 const PREVIEW_SLOTS = ["preview/rutinas-1.jpg", "preview/rutinas-2.jpg", "preview/rutinas-3.jpg"].map(publicAssetSlot);
 
 export default function RutinasPage() {
-  return <DigitalProductPage product={DIGITAL_PRODUCTS.rutinas} previewSlots={PREVIEW_SLOTS} />;
+  return <DigitalProductPage product={DIGITAL_PRODUCTS.rutinas} previewSlots={PREVIEW_SLOTS} showPackLine={false} />;
 }

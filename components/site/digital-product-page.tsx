@@ -15,9 +15,10 @@ import type { PublicAssetSlot } from "@/lib/public-asset";
 interface DigitalProductPageProps {
   product: DigitalProduct;
   previewSlots: PublicAssetSlot[];
+  showPackLine?: boolean;
 }
 
-function BuyButton({ product }: { product: DigitalProduct }) {
+function BuyButton({ product, showPackLine }: { product: DigitalProduct; showPackLine: boolean }) {
   return (
     <div className="flex flex-col items-center gap-3">
       <PrimaryButton
@@ -27,14 +28,16 @@ function BuyButton({ product }: { product: DigitalProduct }) {
       >
         Lo quiero, escribime
       </PrimaryButton>
-      <p className="text-xs text-[var(--texto-gris)]">
-        Llevando el recetario y una rutina juntos: {formatPrecio(PRECIOS.pack)}
-      </p>
+      {showPackLine ? (
+        <p className="text-xs text-[var(--texto-gris)]">
+          Llevando el recetario y una rutina juntos: {formatPrecio(PRECIOS.pack)}
+        </p>
+      ) : null}
     </div>
   );
 }
 
-export function DigitalProductPage({ product, previewSlots }: DigitalProductPageProps) {
+export function DigitalProductPage({ product, previewSlots, showPackLine = true }: DigitalProductPageProps) {
   return (
     <main>
       <Section id="hero" tone="a" glow containerClassName="flex flex-col items-center text-center">
@@ -47,7 +50,7 @@ export function DigitalProductPage({ product, previewSlots }: DigitalProductPage
           Precio: {formatPrecio(PRECIOS[product.priceKey])}
         </p>
         <div className="mt-6">
-          <BuyButton product={product} />
+          <BuyButton product={product} showPackLine={showPackLine} />
         </div>
       </Section>
 
@@ -110,7 +113,7 @@ export function DigitalProductPage({ product, previewSlots }: DigitalProductPage
       </Section>
 
       <Section id="cierre" tone="a" containerClassName="flex flex-col items-center text-center">
-        <BuyButton product={product} />
+        <BuyButton product={product} showPackLine={showPackLine} />
         <p className="mt-10 text-sm text-[var(--texto-gris)]">
           ¿Querés que te lo arme a medida?{" "}
           <Link href="/#metodo" className="text-[var(--dorado)] underline underline-offset-4">

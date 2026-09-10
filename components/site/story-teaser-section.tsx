@@ -11,9 +11,9 @@ const HOY = { src: "/DSC02489.jpg", filename: "DSC02489.jpg", exists: true };
 function Photo({ slot, label }: { slot: { src: string; filename: string; exists: boolean }; label: string }) {
   return (
     <div className="flex flex-col items-center gap-2">
-      <div className="relative aspect-[8/5] w-full overflow-hidden rounded-[12px] bg-[var(--negro-2)] sm:aspect-[4/5]">
+      <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[12px] bg-[var(--negro-2)]">
         {slot.exists ? (
-          <Image src={slot.src} alt={`${label} de Pepu González`} fill sizes="(max-width: 767px) 45vw, 250px" className="object-cover" />
+          <Image src={slot.src} alt={`${label} de Pepu González`} fill sizes="(max-width: 767px) 230px, 250px" className="object-cover object-top" />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center border border-[var(--dorado-suave)]/30 p-2 text-center">
             <span className="text-[10px] uppercase tracking-[0.14em] text-[var(--texto-gris)]">{slot.filename}</span>
@@ -33,7 +33,7 @@ export function StoryTeaserSection() {
         MI ANTES Y <AccentText>después</AccentText>
       </SectionTitle>
 
-      <div className="mx-auto mt-10 grid max-w-full grid-cols-2 gap-3 sm:max-w-[520px] md:mt-12 md:gap-4">
+      <div className="mx-auto mt-10 grid max-w-[460px] grid-cols-2 gap-3 md:mt-12 md:max-w-[520px] md:gap-4">
         <Photo slot={ANTES} label="Antes" />
         <Photo slot={HOY} label="Hoy" />
       </div>

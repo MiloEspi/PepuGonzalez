@@ -23,7 +23,7 @@ interface NavbarProps {
 
 const STATIC_NAV_ITEMS: StaticNavItem[] = [
   { label: "Mi Historia", href: "/mi-historia", variant: "muted" },
-  { label: "Recetario", href: "/recetario", variant: "product" },
+  // Recetario todavía no existe — sacado del nav hasta que esté listo. Ver data/digital-products.ts.
   { label: "Rutinas", href: "/rutinas", variant: "product" },
 ];
 
