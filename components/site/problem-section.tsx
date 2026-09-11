@@ -12,7 +12,7 @@ const PROBLEM_PHRASES = [
 
 export function ProblemSection() {
   return (
-    <Section id="el-problema" tone="b" glow="soft-left">
+    <Section id="el-problema" tone="b">
       <SectionEyebrow>¿TE SUENA?</SectionEyebrow>
       <SectionTitle className="mt-3">
         EL <AccentText>problema</AccentText>

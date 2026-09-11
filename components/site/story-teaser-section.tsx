@@ -27,7 +27,7 @@ function Photo({ slot, label }: { slot: { src: string; filename: string; exists:
 
 export function StoryTeaserSection() {
   return (
-    <Section id="antes-despues" tone="b" glow="soft-left">
+    <Section id="antes-despues" tone="b">
       <SectionEyebrow>MI HISTORIA</SectionEyebrow>
       <SectionTitle className="mt-3">
         MI ANTES Y <AccentText>después</AccentText>

@@ -14,7 +14,7 @@ const CARDS = [{ ...DIGITAL_PRODUCTS.rutinas, previewSlot: publicAssetSlot("prev
 
 export function ProductsTeaserSection() {
   return (
-    <Section id="mas-formas-de-empezar" tone="b" glow="soft-right">
+    <Section id="mas-formas-de-empezar" tone="b">
       <SectionTitle>
         MÁS FORMAS DE <AccentText>empezar</AccentText>
       </SectionTitle>

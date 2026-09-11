@@ -25,8 +25,10 @@ function renderGlow(glow: SectionGlow) {
 /**
  * Envoltorio liviano para las secciones del sitio nuevo: sin tarjeta, sin
  * borde. Solo fondo alternado y el aire de 120px/180px entre secciones.
- * `glow={true}` (15%, fuerte) es solo para Hero y Cierre. `glow="soft-left"` /
- * `"soft-right"` (9%) es para el resto — alterná entre secciones consecutivas.
+ * El resplandor va en exactamente cuatro lugares de todo el sitio:
+ * `glow={true}` (15%, fuerte) en Hero y Cierre; `glow="soft-left"` en
+ * Garantía y `glow="soft-right"` en Resultados (7%). En ningún otro lado —
+ * compite con la lectura en las secciones de texto denso.
  */
 export function Section({ id, tone = "a", glow = false, className, containerClassName, children }: SectionProps) {
   return (

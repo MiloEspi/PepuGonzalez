@@ -26,7 +26,7 @@ const EXCLUDES = [
 export function AsesoriaPage() {
   return (
     <main>
-      <Section id="asesoria" tone="a" glow="soft-left">
+      <Section id="asesoria" tone="a">
         <SectionEyebrow>LA ASESORÍA</SectionEyebrow>
         <SectionTitle className="mt-3">
           QUÉ TE <AccentText>llevás</AccentText>
@@ -42,7 +42,7 @@ export function AsesoriaPage() {
         </div>
       </Section>
 
-      <Section id="asesoria-que-no-incluye" tone="b" glow="soft-right">
+      <Section id="asesoria-que-no-incluye" tone="b">
         <SectionEyebrow>SEAMOS CLAROS</SectionEyebrow>
         <SectionTitle className="mt-3">
           QUÉ NO VAS A <AccentText>encontrar</AccentText>
@@ -58,7 +58,7 @@ export function AsesoriaPage() {
         </div>
       </Section>
 
-      <Section id="asesoria-cta" tone="a" glow="soft-left" containerClassName="flex flex-col items-center text-center">
+      <Section id="asesoria-cta" tone="a" containerClassName="flex flex-col items-center text-center">
         <PrimaryButton href={getStickyWhatsAppHref()} icon={<WhatsAppGlyph />} caption="Contame en qué andás y te digo si te puedo ayudar.">
           Escribime por WhatsApp
         </PrimaryButton>

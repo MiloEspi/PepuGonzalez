@@ -3,6 +3,7 @@ export function AmbientBackground() {
     <div aria-hidden className="ambient-background">
       <div className="ambient-background__grain" />
       <div className="ambient-background__sweep" />
+      <div className="ambient-background__sweep ambient-background__sweep--delayed" />
       <div className="ambient-background__flash" />
     </div>
   );

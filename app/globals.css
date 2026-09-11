@@ -448,11 +448,11 @@
   }
 
   .ambient-glow-soft--left {
-    background: radial-gradient(65vw 50vw at 12% 8%, rgba(227, 179, 65, 0.09), transparent 72%);
+    background: radial-gradient(65vw 50vw at 12% 8%, rgba(227, 179, 65, 0.07), transparent 72%);
   }
 
   .ambient-glow-soft--right {
-    background: radial-gradient(65vw 50vw at 88% 8%, rgba(227, 179, 65, 0.09), transparent 72%);
+    background: radial-gradient(65vw 50vw at 88% 8%, rgba(227, 179, 65, 0.07), transparent 72%);
   }
 
   /* Punto del botón Aplicar — uno solo en toda la página. Negro sobre dorado. */
@@ -498,7 +498,10 @@
    * Banda de luz, no un degradé difuso. mix-blend-mode: screen es el modo
    * correcto para "luz" sobre fondo oscuro (overlay casi no aclara sobre
    * #0A0A0A). El recorrido va en vw, no en px, para que cruce a la misma
-   * velocidad relativa en celular y en desktop.
+   * velocidad relativa en celular y en desktop. Dos barras (una con delay
+   * negativo de medio ciclo) para que el loop nunca se note, y el fade se
+   * hace con opacity en el propio keyframe — nunca con left/background-position,
+   * que fuerzan repintado. Los bordes suaves son el gradiente, no blur().
    */
   .ambient-background__sweep {
     position: absolute;
@@ -506,12 +509,15 @@
     left: -50vw;
     width: max(45vw, 500px);
     height: 200vh;
-    opacity: 0.14;
+    opacity: 0;
     mix-blend-mode: screen;
     background: linear-gradient(90deg, transparent, var(--dorado), transparent);
-    transform: translateX(0vw) rotate(20deg);
     animation: ambient-sweep 12s linear infinite;
-    will-change: transform;
+    will-change: transform, opacity;
+  }
+
+  .ambient-background__sweep--delayed {
+    animation-delay: -6s;
   }
 
   /* Destello diagonal, uno solo, cada 20s — cruza en 3s y desaparece 17s. */
@@ -605,10 +611,15 @@
 
 @keyframes ambient-sweep {
   0% {
-    transform: translateX(0vw) rotate(20deg);
+    opacity: 0;
+    transform: translate3d(0vw, 0, 0) rotate(20deg);
+  }
+  50% {
+    opacity: 0.09;
   }
   100% {
-    transform: translateX(200vw) rotate(20deg);
+    opacity: 0;
+    transform: translate3d(200vw, 0, 0) rotate(20deg);
   }
 }
 
