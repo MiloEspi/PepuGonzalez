@@ -37,7 +37,7 @@ const PHASES: MethodPhase[] = [
 
 export function MethodSection() {
   return (
-    <Section id="metodo" tone="b">
+    <Section id="metodo" tone="b" glow="faint-left">
       <SectionEyebrow>EL MÉTODO</SectionEyebrow>
       <SectionTitle className="mt-3">
         EL ÚLTIMO <AccentText>lunes</AccentText>

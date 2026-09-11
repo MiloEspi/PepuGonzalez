@@ -4,7 +4,7 @@ import { getStickyWhatsAppHref } from "@/data/offers";
 
 export function InlineCta() {
   return (
-    <Section id="escribime" tone="b" containerClassName="flex justify-center">
+    <Section id="escribime" tone="b" glow="faint-right" containerClassName="flex justify-center">
       <PrimaryButton href={getStickyWhatsAppHref()} icon={<WhatsAppGlyph />} caption="Contame en qué andás y te digo si te puedo ayudar.">
         Escribime por WhatsApp
       </PrimaryButton>

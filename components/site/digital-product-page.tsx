@@ -40,7 +40,7 @@ function BuyButton({ product, showPackLine }: { product: DigitalProduct; showPac
 export function DigitalProductPage({ product, previewSlots, showPackLine = true }: DigitalProductPageProps) {
   return (
     <main>
-      <Section id="hero" tone="a" containerClassName="flex flex-col items-center text-center">
+      <Section id="hero" tone="a" glow="faint-right" containerClassName="flex flex-col items-center text-center">
         <SectionTitle>
           <AccentText>{product.title.toLowerCase()}</AccentText>
         </SectionTitle>
@@ -54,7 +54,7 @@ export function DigitalProductPage({ product, previewSlots, showPackLine = true 
         </div>
       </Section>
 
-      <Section id="que-hay-adentro" tone="b">
+      <Section id="que-hay-adentro" tone="b" glow="faint-left">
         <SectionTitle>
           QUÉ HAY <AccentText>adentro</AccentText>
         </SectionTitle>
@@ -71,7 +71,7 @@ export function DigitalProductPage({ product, previewSlots, showPackLine = true 
         </div>
       </Section>
 
-      <Section id="para-quien" tone="a">
+      <Section id="para-quien" tone="a" glow="faint-right">
         <SectionTitle>
           PARA QUIÉN <AccentText>es</AccentText>
         </SectionTitle>
@@ -113,7 +113,7 @@ export function DigitalProductPage({ product, previewSlots, showPackLine = true 
         </div>
       </Section>
 
-      <Section id="preguntas" tone="b">
+      <Section id="preguntas" tone="b" glow="faint-left">
         <SectionTitle>
           <AccentText>Preguntas</AccentText>
         </SectionTitle>
@@ -129,7 +129,7 @@ export function DigitalProductPage({ product, previewSlots, showPackLine = true 
         </div>
       </Section>
 
-      <Section id="cierre" tone="a" containerClassName="flex flex-col items-center text-center">
+      <Section id="cierre" tone="a" glow="faint-right" containerClassName="flex flex-col items-center text-center">
         <BuyButton product={product} showPackLine={showPackLine} />
         <p className="mt-10 text-sm text-[var(--texto-gris)]">
           ¿Querés que te lo arme a medida?{" "}
