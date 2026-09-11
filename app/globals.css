@@ -494,20 +494,24 @@
     background-size: 140px 140px;
   }
 
+  /*
+   * Banda de luz, no un degradé difuso. mix-blend-mode: screen es el modo
+   * correcto para "luz" sobre fondo oscuro (overlay casi no aclara sobre
+   * #0A0A0A). El recorrido va en vw, no en px, para que cruce a la misma
+   * velocidad relativa en celular y en desktop.
+   */
   .ambient-background__sweep {
     position: absolute;
-    inset: 0;
-    opacity: 0.1;
-    background: repeating-linear-gradient(
-      100deg,
-      transparent 0%,
-      transparent 46%,
-      rgba(227, 179, 65, 0.7) 50%,
-      transparent 54%,
-      transparent 100%
-    );
-    background-size: 320% 320%;
-    animation: ambient-sweep 18s linear infinite;
+    top: -50vh;
+    left: -50vw;
+    width: max(45vw, 500px);
+    height: 200vh;
+    opacity: 0.14;
+    mix-blend-mode: screen;
+    background: linear-gradient(90deg, transparent, var(--dorado), transparent);
+    transform: translateX(0vw) rotate(20deg);
+    animation: ambient-sweep 12s linear infinite;
+    will-change: transform;
   }
 
   /* Destello diagonal, uno solo, cada 20s — cruza en 3s y desaparece 17s. */
@@ -601,10 +605,10 @@
 
 @keyframes ambient-sweep {
   0% {
-    background-position: 0% 0%;
+    transform: translateX(0vw) rotate(20deg);
   }
   100% {
-    background-position: 100% 100%;
+    transform: translateX(200vw) rotate(20deg);
   }
 }
 
