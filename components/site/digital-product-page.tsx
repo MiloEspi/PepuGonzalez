@@ -54,7 +54,7 @@ export function DigitalProductPage({ product, previewSlots, showPackLine = true 
         </div>
       </Section>
 
-      <Section id="que-hay-adentro" tone="b">
+      <Section id="que-hay-adentro" tone="b" glow="soft-right">
         <SectionTitle>
           QUÉ HAY <AccentText>adentro</AccentText>
         </SectionTitle>
@@ -71,7 +71,7 @@ export function DigitalProductPage({ product, previewSlots, showPackLine = true 
         </div>
       </Section>
 
-      <Section id="para-quien" tone="a">
+      <Section id="para-quien" tone="a" glow="soft-left">
         <SectionTitle>
           PARA QUIÉN <AccentText>es</AccentText>
         </SectionTitle>
@@ -113,7 +113,7 @@ export function DigitalProductPage({ product, previewSlots, showPackLine = true 
         </div>
       </Section>
 
-      <Section id="preguntas" tone="b">
+      <Section id="preguntas" tone="b" glow="soft-right">
         <SectionTitle>
           <AccentText>Preguntas</AccentText>
         </SectionTitle>
@@ -129,7 +129,7 @@ export function DigitalProductPage({ product, previewSlots, showPackLine = true 
         </div>
       </Section>
 
-      <Section id="cierre" tone="a" containerClassName="flex flex-col items-center text-center">
+      <Section id="cierre" tone="a" glow="soft-left" containerClassName="flex flex-col items-center text-center">
         <BuyButton product={product} showPackLine={showPackLine} />
         <p className="mt-10 text-sm text-[var(--texto-gris)]">
           ¿Querés que te lo arme a medida?{" "}

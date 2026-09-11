@@ -75,7 +75,7 @@ export function TestimonialsSection({ results }: TestimonialsSectionProps) {
 
   if (!testimonialsData.length) {
     return (
-      <Section id="resultados" tone="a">
+      <Section id="resultados" tone="a" glow="soft-right">
         <SectionEyebrow>RESULTADOS REALES</SectionEyebrow>
         <SectionTitle className="mt-3">
           LO QUE LOGRARON <AccentText>mis alumnos</AccentText>
@@ -88,7 +88,7 @@ export function TestimonialsSection({ results }: TestimonialsSectionProps) {
   const duration = Math.max(20, testimonialsData.length * 7);
 
   return (
-    <Section id="resultados" tone="a" containerClassName="!max-w-none px-0 sm:px-0">
+    <Section id="resultados" tone="a" glow="soft-right" containerClassName="!max-w-none px-0 sm:px-0">
       <div className="page-container">
         <SectionEyebrow>RESULTADOS REALES</SectionEyebrow>
         <SectionTitle className="mt-3">

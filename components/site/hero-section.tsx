@@ -96,12 +96,27 @@ export function HeroSection({ video: VIDEO, poster: POSTER }: HeroSectionProps) 
       </div>
       <PageContainer className="relative z-10">
         <div ref={heroRef} className="mx-auto flex max-w-[42rem] flex-col items-center gap-6 text-center">
+          <div
+            data-hero-reveal-item
+            className="inline-flex items-center gap-2 rounded-full border border-[var(--dorado-suave)] bg-transparent px-3 py-1.5 text-xs font-semibold text-[var(--dorado)]"
+          >
+            <span aria-hidden className="size-1.5 shrink-0 rounded-full bg-[var(--dorado)]" />
+            De 85 kilos a 78. Sin dejar el asado.
+          </div>
+
           <h1
             ref={titleRef}
             className="font-heading text-[2.1rem] uppercase leading-[1.05] tracking-tight text-[var(--texto)] sm:text-[2.9rem] md:text-[3.4rem]"
           >
             Este es tu último lunes <AccentText>empezando de cero</AccentText>
           </h1>
+
+          <p
+            data-hero-reveal-item
+            className="max-w-[560px] text-[1.0625rem] leading-[1.65] text-[var(--texto-gris)]"
+          >
+            Bajás de peso comiendo lo que te gusta. 90 días. Yo también odiaba mi físico.
+          </p>
 
           {/* Video — /public/hero.mp4 + /public/hero-poster.jpg, subidos directo por GitHub Desktop */}
           <div
@@ -146,11 +161,8 @@ export function HeroSection({ video: VIDEO, poster: POSTER }: HeroSectionProps) 
             )}
           </div>
 
-          <p
-            data-hero-reveal-item
-            className="max-w-[560px] text-[1.0625rem] leading-[1.65] text-[var(--texto-gris)]"
-          >
-            Bajás de peso comiendo lo que te gusta. 90 días. Yo también odiaba mi físico.
+          <p data-hero-reveal-item className="text-xs text-[var(--texto-gris)]">
+            Son 90 segundos.
           </p>
 
           <div data-hero-reveal-item>

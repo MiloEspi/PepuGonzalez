@@ -10,7 +10,7 @@ const PHRASES = [
 
 export function NotIncludedSection() {
   return (
-    <Section id="lo-que-no-incluye" tone="b">
+    <Section id="lo-que-no-incluye" tone="b" glow="soft-right">
       <SectionTitle>
         LO QUE NO VAS A <AccentText>encontrar acá</AccentText>
       </SectionTitle>

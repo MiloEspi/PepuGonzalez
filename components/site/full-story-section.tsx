@@ -38,7 +38,7 @@ function Photo({ slot, label }: { slot: { src: string; filename: string; exists:
 
 export function FullStorySection() {
   return (
-    <Section id="mi-historia" tone="a">
+    <Section id="mi-historia" tone="a" glow="soft-left">
       <SectionTitle>
         MI <AccentText>historia</AccentText>
       </SectionTitle>
