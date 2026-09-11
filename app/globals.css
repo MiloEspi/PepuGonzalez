@@ -615,7 +615,7 @@
     transform: translate3d(0vw, 0, 0) rotate(20deg);
   }
   50% {
-    opacity: 0.09;
+    opacity: 0.12;
   }
   100% {
     opacity: 0;
