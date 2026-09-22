@@ -1,9 +1,10 @@
 import { Check, Phone, X } from "lucide-react";
 
 import { AccentText } from "@/components/site/accent-text";
-import { PrimaryButton } from "@/components/site/primary-button";
+import { PrimaryButton, WhatsAppGlyph } from "@/components/site/primary-button";
 import { Section } from "@/components/site/section";
 import { SectionEyebrow, SectionTitle } from "@/components/site/section-heading";
+import { getStickyWhatsAppHref } from "@/data/offers";
 
 // TODO: reemplazá "#" con tu link de Calendly u otro sistema de turnos
 const BOOKING_URL = "#";
@@ -29,7 +30,48 @@ export function AsesoriaPage() {
   return (
     <main>
 
-      {/* PASO 4 — Resumen: arriba de todo, antes de "QUÉ TE LLEVÁS" */}
+      {/* ── SECCIONES ORIGINALES — orden y atributos sin tocar ── */}
+
+      <Section id="asesoria" tone="a" glow="faint-left">
+        <SectionEyebrow>LA ASESORÍA</SectionEyebrow>
+        <SectionTitle className="mt-3">
+          QUÉ TE <AccentText>llevás</AccentText>
+        </SectionTitle>
+
+        <div className="mt-12 flex flex-col gap-4 md:mt-14">
+          {INCLUDES.map((item) => (
+            <div key={item} className="flex items-start gap-3">
+              <Check className="mt-1 size-4 shrink-0 text-[var(--dorado)]" strokeWidth={2.5} />
+              <p className="copy max-w-none text-[var(--texto)]">{item}</p>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      <Section id="asesoria-que-no-incluye" tone="b" glow="faint-right">
+        <SectionEyebrow>SEAMOS CLAROS</SectionEyebrow>
+        <SectionTitle className="mt-3">
+          QUÉ NO VAS A <AccentText>encontrar</AccentText>
+        </SectionTitle>
+
+        <div className="mt-10 flex flex-col gap-4">
+          {EXCLUDES.map((item) => (
+            <div key={item} className="flex items-start gap-3">
+              <X className="mt-1 size-4 shrink-0 text-[var(--dorado-suave)]" strokeWidth={2.5} />
+              <p className="copy max-w-none text-[var(--texto-gris)]">{item}</p>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      <Section id="asesoria-cta" tone="a" glow="faint-left" containerClassName="flex flex-col items-center text-center">
+        <PrimaryButton href={getStickyWhatsAppHref()} icon={<WhatsAppGlyph />} caption="Contame en qué andás y te digo si te puedo ayudar.">
+          Escribime por WhatsApp
+        </PrimaryButton>
+      </Section>
+
+      {/* ── SECCIONES NUEVAS — agregadas después del contenido original ── */}
+
       <Section id="asesoria-resumen" tone="b" glow="faint-right">
         <SectionEyebrow>DE ENTRADA</SectionEyebrow>
         <SectionTitle className="mt-3">
@@ -73,7 +115,6 @@ export function AsesoriaPage() {
         </div>
       </Section>
 
-      {/* PASO 6 — El mecanismo */}
       <Section id="asesoria-mecanismo" tone="a" glow="faint-left">
         <SectionEyebrow>EL MECANISMO</SectionEyebrow>
         <SectionTitle className="mt-3">
@@ -84,25 +125,7 @@ export function AsesoriaPage() {
         </p>
       </Section>
 
-      {/* Qué te llevás */}
-      <Section id="asesoria" tone="b" glow="faint-right">
-        <SectionEyebrow>LA ASESORÍA</SectionEyebrow>
-        <SectionTitle className="mt-3">
-          QUÉ TE <AccentText>llevás</AccentText>
-        </SectionTitle>
-
-        <div className="mt-12 flex flex-col gap-4 md:mt-14">
-          {INCLUDES.map((item) => (
-            <div key={item} className="flex items-start gap-3">
-              <Check className="mt-1 size-4 shrink-0 text-[var(--dorado)]" strokeWidth={2.5} />
-              <p className="copy max-w-none text-[var(--texto)]">{item}</p>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* PASO 5 — Precio */}
-      <Section id="asesoria-precio" tone="a" glow="faint-left">
+      <Section id="asesoria-precio" tone="b" glow="faint-right">
         <SectionEyebrow>PRECIO</SectionEyebrow>
         <SectionTitle className="mt-3">
           <AccentText>$99.000</AccentText> por mes
@@ -112,24 +135,6 @@ export function AsesoriaPage() {
         </p>
       </Section>
 
-      {/* Qué no vas a encontrar */}
-      <Section id="asesoria-que-no-incluye" tone="b" glow="faint-right">
-        <SectionEyebrow>SEAMOS CLAROS</SectionEyebrow>
-        <SectionTitle className="mt-3">
-          QUÉ NO VAS A <AccentText>encontrar</AccentText>
-        </SectionTitle>
-
-        <div className="mt-10 flex flex-col gap-4">
-          {EXCLUDES.map((item) => (
-            <div key={item} className="flex items-start gap-3">
-              <X className="mt-1 size-4 shrink-0 text-[var(--dorado-suave)]" strokeWidth={2.5} />
-              <p className="copy max-w-none text-[var(--texto-gris)]">{item}</p>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* PASO 7 — Garantía */}
       <Section id="asesoria-garantia" tone="a" glow="soft-left">
         <SectionEyebrow>GARANTÍA</SectionEyebrow>
         <SectionTitle className="mt-3">
@@ -140,8 +145,7 @@ export function AsesoriaPage() {
         </p>
       </Section>
 
-      {/* PASO 8 — CTA: llamada de diagnóstico */}
-      <Section id="asesoria-cta" tone="b" glow="faint-right" containerClassName="flex flex-col items-center text-center">
+      <Section id="asesoria-llamada" tone="b" glow="faint-right" containerClassName="flex flex-col items-center text-center">
         <PrimaryButton
           href={BOOKING_URL}
           icon={<Phone className="size-4 shrink-0" />}
