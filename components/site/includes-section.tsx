@@ -5,7 +5,7 @@ import { Section } from "@/components/site/section";
 import { SectionEyebrow, SectionTitle } from "@/components/site/section-heading";
 
 const INCLUDES = [
-  "Un plan de comidas con lo que ya comés. Milanesa, asado, fideos, todo entra.",
+  "Aprendés a comer con lo que ya comés. Milanesa, asado, fideos, todo entra.",
   "Rutina para los días que entrenás en serio, no para los que decís que vas a ir.",
   "Videos míos de cada ejercicio, para que no andes mirando qué hace el de al lado.",
   "Las 30 recetas que uso yo.",

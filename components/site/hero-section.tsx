@@ -115,7 +115,7 @@ export function HeroSection({ video: VIDEO, poster: POSTER }: HeroSectionProps) 
             data-hero-reveal-item
             className="max-w-[560px] text-[1.0625rem] leading-[1.65] text-[var(--texto-gris)]"
           >
-            Bajás de peso comiendo lo que te gusta. 90 días. Yo también odiaba mi físico.
+            Te definis sin dejar de comer lo que te gusta. 90 días. Yo también odiaba mi físico.
           </p>
 
           {/* Video — /public/hero.mp4 + /public/hero-poster.jpg, subidos directo por GitHub Desktop */}

@@ -73,7 +73,7 @@ export const PROGRAMAS: Programa[] = assertUniqueSlugs([
       "Acá no solo entrenás.\nAcá evolucionás.\nEste programa está diseñado para generar un antes y un después real.\nSi querés resultados visibles y medibles, necesitás estrategia + nutrición + seguimiento.\nY eso es exactamente lo que incluye.\nLos cupos son limitados porque el seguimiento es personalizado.",
     includes: [
       "Entrenamiento completamente personalizado",
-      "Plan de alimentación adaptado a tu objetivo",
+      "Aprendés a comer para tu objetivo",
       "Ajustes cada 30 días",
       "Seguimiento mensual",
       "Evaluación de progreso",
@@ -98,7 +98,7 @@ export const PROGRAMAS: Programa[] = assertUniqueSlugs([
       "El nivel más alto de acompañamiento.\nEsto no es un plan.\nEs un proceso personalizado conmigo.\nIdeal para quienes quieren llevar su físico al máximo nivel y tener ajustes constantes, contacto directo y estrategia completa.\nAcá no improvisamos.\nConstruimos.",
     includes: [
       "Entrenamiento totalmente personalizado",
-      "Nutrición ajustada al detalle",
+      "Te enseño a ajustar tus comidas",
       "Seguimiento semanal",
       "Ajustes estratégicos continuos",
       "Análisis técnico de progreso",
@@ -129,10 +129,10 @@ export const TABLA_COMPARATIVA: TablaComparativa = [
     mentoria: "Personalización total + ajustes constantes",
   },
   {
-    label: "Plan nutricional",
+    label: "tips alimentarios",
     base: "Recomendaciones generales",
-    transformacion: "Plan completo",
-    mentoria: "Nutrición ajustada semanal",
+    transformacion: "Orientación completa",
+    mentoria: "Ajustamos tus comidas cada semana",
   },
   {
     label: "Seguimiento",

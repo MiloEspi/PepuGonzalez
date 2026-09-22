@@ -64,8 +64,8 @@ export const QUIZ_ROUTINE_STRUCTURE_LABELS: Record<QuizRoutineStructure, string>
 };
 
 export const QUIZ_NUTRITION_LABELS: Record<QuizNutritionPlan, string> = {
-  si: "Plan nutricional: Sí",
-  no: "Plan nutricional: No",
+  si: "Tips alimentarios: Sí",
+  no: "Tips alimentarios: No",
 };
 
 export const QUIZ_FOLLOW_UP_LABELS: Record<QuizFollowUp, string> = {
@@ -139,8 +139,8 @@ export const quizQuestions: QuizQuestion[] = [
   },
   {
     id: "wantsNutritionPlan",
-    title: "¿Querés plan nutricional completo?",
-    subtitle: "Sumamos nutrición completa solo si realmente la necesitas.",
+    title: "¿Querés consejos sobre alimentación?",
+    subtitle: "Sumamos orientación alimentaria solo si realmente la necesitás.",
     options: [
       { label: "Sí", value: "si" },
       { label: "No", value: "no" },

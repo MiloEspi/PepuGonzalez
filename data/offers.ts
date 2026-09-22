@@ -215,7 +215,7 @@ export function getOfferPrimaryHref(offer: Offer): string {
 }
 
 const STICKY_MESSAGE =
-  "Hola Pepu! Quiero bajar de peso en serio, ya probé de todo y no lo sostengo. ¿Me contás cómo funciona?";
+  "Hola Pepu! Quiero definirme y no sé por dónde empezar.";
 
 export function getStickyWhatsAppHref(_selectedPlan?: string): string {
   return getWhatsAppUrl(STICKY_MESSAGE);

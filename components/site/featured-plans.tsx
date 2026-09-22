@@ -102,7 +102,7 @@ const comparisonRows: Array<{
 }> = [
   { label: "Duración", getter: (offer) => offer.comparison.duration },
   { label: "Nivel de personalización", getter: (offer) => offer.comparison.personalization },
-  { label: "Plan nutricional", getter: (offer) => offer.comparison.nutrition },
+  { label: "Tips alimentarios", getter: (offer) => offer.comparison.nutrition },
   { label: "Seguimiento", getter: (offer) => offer.comparison.followUp },
   { label: "Soporte WhatsApp", getter: (offer) => offer.comparison.whatsappSupport },
   { label: "Ideal para", getter: (offer) => offer.comparison.idealFor },

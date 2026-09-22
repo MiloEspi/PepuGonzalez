@@ -7,7 +7,7 @@ import { getStickyWhatsAppHref } from "@/data/offers";
 const INCLUDES = [
   "Diagnóstico inicial real (fotos, medidas, tu nivel y tus días) para construir todo sobre tu cuerpo",
   "Plan de entrenamiento 100% personalizado, con progresión semana a semana",
-  "Plan de nutrición a medida, sin pasar hambre: sabés exactamente qué comer",
+  "Aprendés a comer para tu objetivo, sin pasar hambre: sabés qué decisiones tomar",
   "Videos de técnica de cada ejercicio para que entrenes bien y no te lesiones",
   "Ajustes cada 30 días según tu progreso",
   "Acompañamiento directo conmigo por WhatsApp",

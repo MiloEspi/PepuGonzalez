@@ -35,7 +35,7 @@ export const DIGITAL_PRODUCTS: Record<DigitalProductSlug, DigitalProduct> = {
     slug: "recetario",
     navLabel: "Recetario",
     title: "Recetario",
-    tagline: "30 recetas argentinas armadas para bajar de peso sin vivir a pollo y arroz.",
+    tagline: "30 recetas argentinas para comer rico sin salirte de tu objetivo.",
     audience: "Para el que ya entrena o come más o menos ordenado y necesita variedad real.",
     priceKey: "recetario",
     whatsappMessage: "Hola Pepu, quiero el recetario",

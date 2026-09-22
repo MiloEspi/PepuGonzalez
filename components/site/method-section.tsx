@@ -17,7 +17,7 @@ const PHASES: MethodPhase[] = [
     weeks: "Semanas 1 y 2",
     headline: "Arrancás sin pasar hambre",
     description:
-      "Te armo el plan con la comida que ya hay en tu casa. Ordenamos horarios, cantidades y hábitos. Sin pesar todo, sin tuppers raros y sin tener que avisarle a nadie que estás a dieta. Casi siempre terminás comiendo más de lo que pensabas.",
+      "Te enseño a armarlo con la comida que ya hay en tu casa. Ordenamos horarios, cantidades y hábitos. Sin pesar todo, sin tuppers raros y sin tener que avisarle a nadie que estás a dieta. Casi siempre terminás comiendo más de lo que pensabas.",
   },
   {
     number: "02",
