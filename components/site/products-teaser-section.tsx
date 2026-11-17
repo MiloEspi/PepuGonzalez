@@ -10,8 +10,8 @@ import { formatPrecio, PRECIOS } from "@/data/precios";
 import { publicAssetSlot } from "@/lib/public-asset";
 import { cn } from "@/lib/utils";
 
-// PENDIENTE: pegar el link de compra del recetario. Mientras esté vacío, la tarjeta no se muestra.
-const RECETARIO_CHECKOUT_URL = "";
+// Si se vacía, la tarjeta del recetario deja de mostrarse.
+const RECETARIO_CHECKOUT_URL = "https://pay.hotmart.com/M108536789S";
 
 type Card = {
   key: string;
@@ -21,6 +21,7 @@ type Card = {
   href: string;
   cta: string;
   previewSlot: ReturnType<typeof publicAssetSlot>;
+  imagePosition: string;
 };
 
 const CARDS: Card[] = [
@@ -34,6 +35,7 @@ const CARDS: Card[] = [
           href: RECETARIO_CHECKOUT_URL,
           cta: "Lo quiero",
           previewSlot: publicAssetSlot("preview/recetario-1.jpg"),
+          imagePosition: "center top",
         },
       ]
     : []),
@@ -44,7 +46,8 @@ const CARDS: Card[] = [
     price: PRECIOS[DIGITAL_PRODUCTS.rutinas.priceKey],
     href: `/${DIGITAL_PRODUCTS.rutinas.slug}`,
     cta: "Ver qué trae",
-    previewSlot: publicAssetSlot("preview/rutinas-1.jpg"),
+    previewSlot: publicAssetSlot("preview/rutinas-portada.jpg"),
+    imagePosition: "center 35%",
   },
 ];
 
@@ -54,9 +57,16 @@ const cardClass =
 function CardBody({ card }: { card: Card }) {
   return (
     <>
-      <div className="relative aspect-[16/10] w-full bg-[var(--negro)]">
+      <div className="relative aspect-[4/5] w-full bg-[var(--negro)]">
         {card.previewSlot.exists ? (
-          <Image src={card.previewSlot.src} alt={card.title} fill sizes="(max-width: 767px) 100vw, 50vw" className="object-cover" />
+          <Image
+            src={card.previewSlot.src}
+            alt={card.title}
+            fill
+            sizes="(max-width: 767px) 100vw, 50vw"
+            className="object-cover"
+            style={{ objectPosition: card.imagePosition }}
+          />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center border border-[var(--dorado-suave)]/30 p-2 text-center">
             <span className="text-[10px] uppercase tracking-[0.14em] text-[var(--texto-gris)]">{card.previewSlot.filename}</span>

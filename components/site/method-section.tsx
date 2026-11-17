@@ -41,6 +41,7 @@ const INCLUDES = [
   "Todo en una app: tu entrenamiento, tus comidas y tu progreso en el celular.",
   "Check-in todas las semanas: peso promedio, fotos cada 2 semanas y ajustes según cómo venís.",
   "Respuesta mía por WhatsApp cuando te trabes.",
+  "El recetario Definir comiendo rico, de regalo.",
 ];
 
 export function MethodSection() {

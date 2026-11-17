@@ -23,6 +23,7 @@ export interface DigitalProduct {
   audience: string;
   priceKey: "recetario" | "rutina";
   whatsappMessage: string;
+  checkoutUrl?: string;
   whatsInside: string[];
   audienceYes: string[];
   audienceYesNote?: string;
@@ -72,12 +73,13 @@ export const DIGITAL_PRODUCTS: Record<DigitalProductSlug, DigitalProduct> = {
     slug: "rutinas",
     navLabel: "Rutinas",
     title: "Rutinas",
-    tagline: "Planes de entrenamiento de 3, 4, 5 y 6 días, para elegir el que entra en tu semana real.",
+    tagline: "Planes de entrenamiento de 4, 5 y 6 días, para elegir el que entra en tu semana real.",
     audience: "Para el que ya tiene la comida más o menos resuelta y solo necesita qué hacer en el gimnasio.",
     priceKey: "rutina",
     whatsappMessage: "Hola Pepu, quiero las rutinas",
+    checkoutUrl: "https://pay.hotmart.com/V108538897B",
     whatsInside: [
-      "Rutinas armadas por cantidad de días: 3, 4, 5 o 6 por semana.",
+      "Rutinas armadas por cantidad de días: 4, 5 o 6 por semana.",
       "Ejercicios, series, repeticiones y progresión semana a semana.",
       "Pensadas para gimnasio con mancuernas, barras y máquinas básicas.",
     ],

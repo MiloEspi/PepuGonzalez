@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description: DIGITAL_PRODUCTS.rutinas.tagline,
 };
 
-const PREVIEW_SLOTS = ["preview/rutinas-1.jpg", "preview/rutinas-2.jpg", "preview/rutinas-3.jpg"].map(publicAssetSlot);
+const PREVIEW_SLOTS = ["preview/rutinas-tabla.jpg", "preview/rutinas-2.jpg", "preview/rutinas-3.jpg"].map(publicAssetSlot);
 
 export default function RutinasPage() {
   return <DigitalProductPage product={DIGITAL_PRODUCTS.rutinas} previewSlots={PREVIEW_SLOTS} showPackLine={false} />;

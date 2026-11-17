@@ -46,10 +46,7 @@ export function Footer({ content }: FooterProps) {
   return (
     <footer id="contacto" className="border-t border-white/10 bg-[var(--negro-2)] pt-[60px] md:pt-[90px]">
       <div className="layout-shell pb-14 md:pb-16">
-        <p className="text-sm text-[var(--texto)]">
-          <span className="font-heading uppercase tracking-[0.06em]">Pepu González</span>
-          <span className="text-[var(--texto-gris)]"> · La Plata, Argentina</span>
-        </p>
+        <p className="font-heading text-sm uppercase tracking-[0.06em] text-[var(--texto)]">Pepu González</p>
 
         <div className="mt-6 flex flex-wrap items-center gap-5">
           <a

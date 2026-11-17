@@ -32,7 +32,9 @@ export function Navbar({ extraNavItems }: NavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
 
-  const resolvedExtraNavItems = extraNavItems.filter((item) => item.label?.trim() && item.href?.trim());
+  const resolvedExtraNavItems = extraNavItems
+    .filter((item) => item.label?.trim() && item.href?.trim())
+    .map((item) => (item.label.trim().toLowerCase() === "aplicar" ? { ...item, href: APPLY_HREF } : item));
 
   useEffect(() => {
     if (typeof window === "undefined") return;

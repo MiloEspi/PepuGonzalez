@@ -21,13 +21,19 @@ interface DigitalProductPageProps {
 function BuyButton({ product, showPackLine }: { product: DigitalProduct; showPackLine: boolean }) {
   return (
     <div className="flex flex-col items-center gap-3">
-      <PrimaryButton
-        href={getWhatsAppUrl(product.whatsappMessage)}
-        icon={<WhatsAppGlyph />}
-        caption="Te paso el link de pago y te lo mando al mail el mismo día."
-      >
-        Lo quiero, escribime
-      </PrimaryButton>
+      {product.checkoutUrl ? (
+        <PrimaryButton href={product.checkoutUrl} newTab={false}>
+          Lo quiero
+        </PrimaryButton>
+      ) : (
+        <PrimaryButton
+          href={getWhatsAppUrl(product.whatsappMessage)}
+          icon={<WhatsAppGlyph />}
+          caption="Te paso el link de pago y te lo mando al mail el mismo día."
+        >
+          Lo quiero, escribime
+        </PrimaryButton>
+      )}
       {showPackLine ? (
         <p className="text-xs text-[var(--texto-gris)]">
           Llevando el recetario y una rutina juntos: {formatPrecio(PRECIOS.pack)}

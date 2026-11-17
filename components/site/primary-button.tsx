@@ -10,6 +10,7 @@ interface PrimaryButtonProps {
   icon?: ReactNode;
   caption?: string;
   className?: string;
+  newTab?: boolean;
 }
 
 /**
@@ -17,8 +18,8 @@ interface PrimaryButtonProps {
  * izquierda, flecha a la derecha. Sin borde, sin glow fuerte — solo una
  * sombra dorada muy sutil. Reusar en todas las secciones, no crear variantes.
  */
-export function PrimaryButton({ href, children, icon, caption, className }: PrimaryButtonProps) {
-  const isExternal = href.startsWith("http");
+export function PrimaryButton({ href, children, icon, caption, className, newTab }: PrimaryButtonProps) {
+  const isExternal = newTab ?? href.startsWith("http");
 
   return (
     <div className="inline-flex flex-col items-center gap-2.5">

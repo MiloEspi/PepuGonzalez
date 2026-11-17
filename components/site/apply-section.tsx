@@ -89,6 +89,15 @@ export function ApplySection() {
           </p>
         </div>
       </form>
+
+      <p className="mt-10 max-w-[620px] text-center text-sm text-[var(--texto-gris)]">
+        <a
+          href="#mas-formas-de-empezar"
+          className="underline-offset-4 transition-colors duration-200 hover:text-[var(--dorado)] hover:underline"
+        >
+          ¿Todavía no es tu momento? Empezá por el recetario o las rutinas ↓
+        </a>
+      </p>
     </Section>
   );
 }

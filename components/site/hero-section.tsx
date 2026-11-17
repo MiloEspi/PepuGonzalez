@@ -1,26 +1,25 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { Play } from "lucide-react";
+import { useEffect, useRef } from "react";
+import { ChevronDown, ShieldCheck } from "lucide-react";
 import { animate, stagger } from "animejs";
 
 import { AccentText } from "@/components/site/accent-text";
 import { AmbientGlow } from "@/components/site/ambient-glow";
 import { PageContainer } from "@/components/site/section-primitives";
 import { PrimaryButton } from "@/components/site/primary-button";
+import { StoryPhoto } from "@/components/site/story-photo";
 import type { PublicAssetSlot } from "@/lib/public-asset";
 import { EASE_OUT_EXPO, prefersReducedMotion } from "@/utils/animations";
 
 interface HeroSectionProps {
-  video: PublicAssetSlot;
-  poster: PublicAssetSlot;
+  antes: PublicAssetSlot;
+  hoy: PublicAssetSlot;
 }
 
-export function HeroSection({ video: VIDEO, poster: POSTER }: HeroSectionProps) {
-  const [videoActive, setVideoActive] = useState(false);
+export function HeroSection({ antes, hoy }: HeroSectionProps) {
   const heroRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const glowParallaxRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -80,14 +79,6 @@ export function HeroSection({ video: VIDEO, poster: POSTER }: HeroSectionProps) 
     };
   }, []);
 
-  function handlePlayClick() {
-    const video = videoRef.current;
-    if (!video) return;
-    video.muted = false;
-    void video.play();
-    setVideoActive(true);
-  }
-
   return (
     <section id="inicio" className="relative overflow-hidden pt-8 pb-14 sm:pt-12 sm:pb-16 md:pt-16 md:pb-20">
       <div ref={glowParallaxRef} className="absolute inset-0">
@@ -100,75 +91,48 @@ export function HeroSection({ video: VIDEO, poster: POSTER }: HeroSectionProps) 
             className="inline-flex items-center gap-2 rounded-full border border-[var(--dorado-suave)] bg-transparent px-3 py-1.5 text-xs font-semibold text-[var(--dorado)]"
           >
             <span aria-hidden className="size-1.5 shrink-0 rounded-full bg-[var(--dorado)]" />
-            Para el que entrena y no se le nota
+            Método El Último Lunes · 90 días
           </div>
 
           <h1
             ref={titleRef}
             className="font-heading text-[2.1rem] uppercase leading-[1.05] tracking-tight text-[var(--texto)] sm:text-[2.9rem] md:text-[3.4rem]"
           >
-            Este es tu último lunes <AccentText>empezando de cero</AccentText>
+            Entrenás hace meses
+            <br />
+            <AccentText>y no se te nota</AccentText>
           </h1>
 
           <p
             data-hero-reveal-item
             className="max-w-[560px] text-[1.0625rem] leading-[1.65] text-[var(--texto-gris)]"
           >
-            Te ayudo a bajar la grasa que te tapa el físico en 90 días, comiendo rico y sin vivir a pollo con arroz.
+            En 90 días se te nota que entrenás. Bajás la grasa que te tapa el físico comiendo rico, con un check-in conmigo
+            cada semana.
           </p>
 
-          {/* Video — /public/hero.mp4 + /public/hero-poster.jpg, subidos directo por GitHub Desktop */}
-          <div
-            data-hero-reveal-item
-            className="relative w-full overflow-hidden rounded-[16px] bg-[var(--negro-2)]"
-            style={{ aspectRatio: "16 / 9" }}
-          >
-            {!VIDEO.exists ? (
-              <div className="absolute inset-0 flex items-center justify-center border border-[var(--dorado-suave)]/30 p-2 text-center">
-                <span className="text-xs uppercase tracking-[0.14em] text-[var(--texto-gris)]">{VIDEO.filename}</span>
-              </div>
-            ) : (
-              <>
-                <video
-                  ref={videoRef}
-                  src={VIDEO.src}
-                  poster={POSTER.exists ? POSTER.src : undefined}
-                  controls={videoActive}
-                  muted
-                  playsInline
-                  preload="metadata"
-                  className="h-full w-full object-cover"
-                />
-                {!POSTER.exists && !videoActive ? (
-                  <div className="absolute inset-0 flex items-center justify-center border border-[var(--dorado-suave)]/30 p-2 text-center">
-                    <span className="text-xs uppercase tracking-[0.14em] text-[var(--texto-gris)]">{POSTER.filename}</span>
-                  </div>
-                ) : null}
-                {!videoActive ? (
-                  <button
-                    type="button"
-                    onClick={handlePlayClick}
-                    className="group absolute inset-0 flex items-center justify-center"
-                    aria-label="Reproducir video"
-                  >
-                    <span className="grid size-14 place-items-center rounded-full bg-[var(--dorado)] shadow-[0_0_36px_-12px_rgba(227,179,65,0.55)] transition-transform duration-200 group-hover:scale-105 sm:size-20">
-                      <Play className="size-5 translate-x-0.5 text-black sm:size-7" />
-                    </span>
-                  </button>
-                ) : null}
-              </>
-            )}
+          <div data-hero-reveal-item className="w-full">
+            <div className="mx-auto grid max-w-[460px] grid-cols-2 gap-3 md:max-w-[520px] md:gap-4">
+              <StoryPhoto slot={antes} label="Antes" priority />
+              <StoryPhoto slot={hoy} label="Hoy" priority />
+            </div>
+            <p className="mt-3 text-xs text-[var(--texto-gris)]">Yo: de 85 kg a 78, con músculo</p>
           </div>
 
-          <p data-hero-reveal-item className="text-xs text-[var(--texto-gris)]">
-            Son 90 segundos.
-          </p>
-
           <div data-hero-reveal-item>
-            <PrimaryButton href="#aplicar" caption="Son 5 preguntas. Te respondo yo por WhatsApp.">
+            <PrimaryButton href="#aplicar" caption="5 lugares fundadores. Son 5 preguntas y te respondo yo por WhatsApp.">
               Quiero aplicar
             </PrimaryButton>
           </div>
+
+          <a
+            href="#garantia"
+            data-hero-reveal-item
+            className="-mt-2 inline-flex items-center gap-2 rounded-full border border-[var(--dorado-suave)]/50 bg-[var(--dorado)]/[0.06] px-3.5 py-1.5 text-xs font-semibold text-[var(--dorado)] transition-colors duration-200 hover:border-[var(--dorado)] hover:bg-[var(--dorado)]/[0.12]"
+          >
+            <ShieldCheck className="size-3.5 shrink-0" strokeWidth={2} />
+            Garantía: si cumplís y no bajás, te devuelvo la plata.
+          </a>
 
           <a
             href="#resultados"
@@ -177,6 +141,12 @@ export function HeroSection({ video: VIDEO, poster: POSTER }: HeroSectionProps) 
           >
             Mirá los resultados reales ↓
           </a>
+
+          <ChevronDown
+            aria-hidden
+            data-hero-reveal-item
+            className="scroll-cue-chevron mt-1 size-6 text-[var(--dorado-suave)]"
+          />
         </div>
       </PageContainer>
     </section>

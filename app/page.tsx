@@ -13,15 +13,17 @@ import { publicAssetSlot } from "@/lib/public-asset";
 
 export default async function HomePage() {
   const results = await sanityFetch<ResultDoc[]>(RESULTS_QUERY);
-  const heroVideo = publicAssetSlot("hero.mp4");
-  const heroPoster = publicAssetSlot("hero-poster.jpg");
+  const video = publicAssetSlot("hero.mp4");
+  const poster = publicAssetSlot("hero-poster.jpg");
+  const antes = publicAssetSlot("preview/antes.jpg");
+  const hoy = publicAssetSlot("preview/hoy.jpg");
 
   return (
     <main>
-      <HeroSection video={heroVideo} poster={heroPoster} />
+      <HeroSection antes={antes} hoy={hoy} />
       <TestimonialsSection results={results} />
       <ProblemSection />
-      <StoryTeaserSection />
+      <StoryTeaserSection video={video} poster={poster} />
       <MethodSection />
       <GuaranteeSection />
       <ForWhomSection />

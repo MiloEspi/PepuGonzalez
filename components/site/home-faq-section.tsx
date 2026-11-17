@@ -4,7 +4,11 @@ import { SectionTitle } from "@/components/site/section-heading";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 const FAQS = [
-  { question: "¿Cuánto cuesta?", answer: "Depende de tu país. Te paso el precio en tu moneda cuando aplicás." },
+  {
+    question: "¿Cuánto es la inversión?",
+    answer:
+      "Pensalo así: ya estás invirtiendo. Pagás el gimnasio, quizás suplementos, y le ponés horas todas las semanas sin que se te note. El sistema es lo que hace que todo eso empiece a rendir. Y si cumplís tus check-ins y no bajás, te devuelvo la plata.",
+  },
   {
     question: "¿Cuántos días tengo que entrenar?",
     answer: "Con 3 días por semana alcanza. Armamos el plan según los días que tenés de verdad.",
