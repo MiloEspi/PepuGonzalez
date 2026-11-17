@@ -1,9 +1,9 @@
+import { ApplySection } from "@/components/site/apply-section";
+import { ForWhomSection } from "@/components/site/for-whom-section";
 import { GuaranteeSection } from "@/components/site/guarantee-section";
 import { HeroSection } from "@/components/site/hero-section";
-import { InlineCta } from "@/components/site/inline-cta";
-import { FinalCTA } from "@/components/site/final-cta";
+import { HomeFaqSection } from "@/components/site/home-faq-section";
 import { MethodSection } from "@/components/site/method-section";
-import { NotIncludedSection } from "@/components/site/not-included-section";
 import { ProblemSection } from "@/components/site/problem-section";
 import { ProductsTeaserSection } from "@/components/site/products-teaser-section";
 import { StoryTeaserSection } from "@/components/site/story-teaser-section";
@@ -19,15 +19,15 @@ export default async function HomePage() {
   return (
     <main>
       <HeroSection video={heroVideo} poster={heroPoster} />
-      <StoryTeaserSection />
       <TestimonialsSection results={results} />
-      <InlineCta />
-      <MethodSection />
       <ProblemSection />
-      <NotIncludedSection />
+      <StoryTeaserSection />
+      <MethodSection />
       <GuaranteeSection />
+      <ForWhomSection />
+      <ApplySection />
+      <HomeFaqSection />
       <ProductsTeaserSection />
-      <FinalCTA />
     </main>
   );
 }

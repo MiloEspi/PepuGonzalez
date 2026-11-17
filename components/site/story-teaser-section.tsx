@@ -5,6 +5,9 @@ import { Section } from "@/components/site/section";
 import { SectionEyebrow, SectionTitle } from "@/components/site/section-heading";
 import { publicAssetSlot } from "@/lib/public-asset";
 
+// PENDIENTE: completar con el número real antes de publicar.
+const KILOS_A_LOS_16 = "[número]";
+
 const ANTES = publicAssetSlot("preview/antes.jpg");
 const HOY = publicAssetSlot("preview/hoy.jpg");
 
@@ -27,10 +30,10 @@ function Photo({ slot, label }: { slot: { src: string; filename: string; exists:
 
 export function StoryTeaserSection() {
   return (
-    <Section id="antes-despues" tone="b" glow="faint-left">
+    <Section id="antes-despues" tone="a" glow="faint-left">
       <SectionEyebrow>MI HISTORIA</SectionEyebrow>
       <SectionTitle className="mt-3">
-        MI ANTES Y <AccentText>después</AccentText>
+        YO TAMBIÉN <AccentText>estuve ahí</AccentText>
       </SectionTitle>
 
       <div className="mx-auto mt-10 grid max-w-[460px] grid-cols-2 gap-3 md:mt-12 md:max-w-[520px] md:gap-4">
@@ -39,9 +42,9 @@ export function StoryTeaserSection() {
       </div>
 
       <p className="copy mx-auto mt-10 text-[var(--texto)] md:mt-12">
-        A los 16 pesaba 90 kilos. Probé dietas estrictas y rebotaba. Después me obsesioné, comía poquísimo, y terminé
-        flaco, sin músculo y con la cabeza rota. Hoy peso 78 con músculo y como asado los domingos. Tardé años en
-        entender que no hacía falta nada de eso.
+        A los 16 pesaba {KILOS_A_LOS_16} kilos. Probé dietas estrictas y rebotaba. Después me obsesioné, comía poquísimo
+        y terminé flaco, sin músculo y con la cabeza rota. Hoy peso 78 con músculo y como asado los domingos. Todo lo
+        que te enseño es lo que me funcionó a mí.
       </p>
     </Section>
   );

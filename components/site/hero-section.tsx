@@ -1,14 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ChevronDown, Play } from "lucide-react";
+import { Play } from "lucide-react";
 import { animate, stagger } from "animejs";
 
 import { AccentText } from "@/components/site/accent-text";
 import { AmbientGlow } from "@/components/site/ambient-glow";
 import { PageContainer } from "@/components/site/section-primitives";
-import { PrimaryButton, WhatsAppGlyph } from "@/components/site/primary-button";
-import { getStickyWhatsAppHref } from "@/data/offers";
+import { PrimaryButton } from "@/components/site/primary-button";
 import type { PublicAssetSlot } from "@/lib/public-asset";
 import { EASE_OUT_EXPO, prefersReducedMotion } from "@/utils/animations";
 
@@ -101,7 +100,7 @@ export function HeroSection({ video: VIDEO, poster: POSTER }: HeroSectionProps) 
             className="inline-flex items-center gap-2 rounded-full border border-[var(--dorado-suave)] bg-transparent px-3 py-1.5 text-xs font-semibold text-[var(--dorado)]"
           >
             <span aria-hidden className="size-1.5 shrink-0 rounded-full bg-[var(--dorado)]" />
-            De 85 kilos a 78. Sin dejar el asado.
+            Para el que entrena y no se le nota
           </div>
 
           <h1
@@ -115,7 +114,7 @@ export function HeroSection({ video: VIDEO, poster: POSTER }: HeroSectionProps) 
             data-hero-reveal-item
             className="max-w-[560px] text-[1.0625rem] leading-[1.65] text-[var(--texto-gris)]"
           >
-            Te definis sin dejar de comer lo que te gusta. 90 días. Yo también odiaba mi físico.
+            Te ayudo a bajar la grasa que te tapa el físico en 90 días, comiendo rico y sin vivir a pollo con arroz.
           </p>
 
           {/* Video — /public/hero.mp4 + /public/hero-poster.jpg, subidos directo por GitHub Desktop */}
@@ -166,20 +165,18 @@ export function HeroSection({ video: VIDEO, poster: POSTER }: HeroSectionProps) 
           </p>
 
           <div data-hero-reveal-item>
-            <PrimaryButton
-              href={getStickyWhatsAppHref()}
-              icon={<WhatsAppGlyph />}
-              caption="Contame en qué andás y te digo si te puedo ayudar."
-            >
-              Escribime por WhatsApp
+            <PrimaryButton href="#aplicar" caption="Son 5 preguntas. Te respondo yo por WhatsApp.">
+              Quiero aplicar
             </PrimaryButton>
           </div>
 
-          <ChevronDown
-            aria-hidden
+          <a
+            href="#resultados"
             data-hero-reveal-item
-            className="scroll-cue-chevron mt-1 size-6 text-[var(--dorado-suave)]"
-          />
+            className="text-sm text-[var(--dorado-suave)] underline-offset-4 transition-colors duration-200 hover:text-[var(--dorado)] hover:underline"
+          >
+            Mirá los resultados reales ↓
+          </a>
         </div>
       </PageContainer>
     </section>

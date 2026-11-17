@@ -1,0 +1,42 @@
+import { AccentText } from "@/components/site/accent-text";
+import { Section } from "@/components/site/section";
+import { SectionTitle } from "@/components/site/section-heading";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+
+const FAQS = [
+  { question: "¿Cuánto cuesta?", answer: "Depende de tu país. Te paso el precio en tu moneda cuando aplicás." },
+  {
+    question: "¿Cuántos días tengo que entrenar?",
+    answer: "Con 3 días por semana alcanza. Armamos el plan según los días que tenés de verdad.",
+  },
+  {
+    question: "¿Tengo que pesar todo lo que como?",
+    answer: "No. Arrancamos ordenando horarios, cantidades y hábitos con la comida que ya hay en tu casa.",
+  },
+  {
+    question: "¿Cómo es el seguimiento?",
+    answer: "Todo pasa en la app. Una vez por semana me mandás tu check-in y ajustamos.",
+  },
+  { question: "¿Puedo hacerlo desde otro país?", answer: "Sí. Es todo online." },
+];
+
+export function HomeFaqSection() {
+  return (
+    <Section id="faq" tone="b" glow="faint-right">
+      <SectionTitle>
+        PREGUNTAS <AccentText>frecuentes</AccentText>
+      </SectionTitle>
+
+      <Accordion type="single" collapsible className="mt-10 w-full max-w-[720px]">
+        {FAQS.map((faq, index) => (
+          <AccordionItem key={faq.question} value={`faq-${index}`} className="border-[var(--dorado-suave)]/30">
+            <AccordionTrigger className="py-5 text-base font-semibold text-[var(--texto)] hover:no-underline [&>svg]:text-[var(--dorado)]">
+              {faq.question}
+            </AccordionTrigger>
+            <AccordionContent className="copy text-[var(--texto-gris)]">{faq.answer}</AccordionContent>
+          </AccordionItem>
+        ))}
+      </Accordion>
+    </Section>
+  );
+}

@@ -3,8 +3,8 @@ import { Section } from "@/components/site/section";
 import { SectionEyebrow, SectionTitle } from "@/components/site/section-heading";
 
 const PROBLEM_PHRASES = [
+  "Entreno hace meses y con remera me veo igual que cuando empecé.",
   "En verano no me saco la remera ni en la pileta.",
-  "Entro al gimnasio mirando el piso.",
   "Sé perfecto lo que tengo que hacer. El tema es que el jueves ya lo dejé.",
   "Arranco el lunes, aguanto tres días, y el finde vuelvo a cero.",
   "No quiero vivir a pollo y arroz para siempre.",

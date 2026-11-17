@@ -1,7 +1,4 @@
-"use client";
-
 import Image from "next/image";
-import { useState } from "react";
 
 import { AccentText } from "@/components/site/accent-text";
 import { Section } from "@/components/site/section";
@@ -71,8 +68,6 @@ export function TestimonialsSection({ results }: TestimonialsSectionProps) {
     // Los casos de ganancia muscular quedan al final: el negocio hoy es bajar de peso.
     .sort((a, b) => Number(a.resultMetric.trim().startsWith("+")) - Number(b.resultMetric.trim().startsWith("+")));
 
-  const [paused, setPaused] = useState(false);
-
   if (!testimonialsData.length) {
     return (
       <Section id="resultados" tone="a" glow="soft-right">
@@ -85,8 +80,6 @@ export function TestimonialsSection({ results }: TestimonialsSectionProps) {
     );
   }
 
-  const duration = Math.max(20, testimonialsData.length * 7);
-
   return (
     <Section id="resultados" tone="a" glow="soft-right" containerClassName="!max-w-none px-0 sm:px-0">
       <div className="page-container">
@@ -96,29 +89,19 @@ export function TestimonialsSection({ results }: TestimonialsSectionProps) {
         </SectionTitle>
       </div>
 
-      <div
-        className="relative mt-12 overflow-hidden md:mt-14"
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
-        onTouchStart={() => setPaused(true)}
-        onTouchEnd={() => setPaused(false)}
-      >
-        <div
-          className="marquee-track flex w-max will-change-transform"
-          style={{ animationDuration: `${duration}s`, animationPlayState: paused ? "paused" : "running" }}
-        >
-          <div className="flex gap-4 pr-4 pl-[clamp(1.125rem,4.8vw,1.25rem)]">
-            {testimonialsData.map((item) => (
-              <TestimonialCardItem key={item.id} item={item} />
-            ))}
+      <div className="mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-[clamp(1.125rem,4.8vw,1.25rem)] px-[clamp(1.125rem,4.8vw,1.25rem)] pb-3 [scrollbar-width:none] md:mt-14 [&::-webkit-scrollbar]:hidden">
+        {testimonialsData.map((item) => (
+          <div key={item.id} className="flex snap-start">
+            <TestimonialCardItem item={item} />
           </div>
-          <div className="flex gap-4 pr-4" aria-hidden>
-            {testimonialsData.map((item) => (
-              <TestimonialCardItem key={`dup-${item.id}`} item={item} />
-            ))}
-          </div>
-        </div>
+        ))}
       </div>
+
+      {testimonialsData.length > 1 ? (
+        <div className="page-container">
+          <p className="mt-3 text-xs text-[var(--texto-gris)]">Deslizá para ver más →</p>
+        </div>
+      ) : null}
 
       <div className="page-container">
         <p className="mt-8 text-sm text-[var(--texto-gris)]">

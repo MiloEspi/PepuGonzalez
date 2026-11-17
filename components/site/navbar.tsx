@@ -7,8 +7,6 @@ import { useEffect, useRef, useState } from "react";
 
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
-import { getStickyWhatsAppHref } from "@/data/offers";
-import { WhatsAppButton } from "@/components/site/whatsapp-button";
 
 type ExtraNavItem = {
   label: string;
@@ -22,12 +20,11 @@ interface NavbarProps {
 }
 
 const STATIC_NAV_ITEMS: StaticNavItem[] = [
-  { label: "Mi Historia", href: "/mi-historia", variant: "muted" },
-  // Recetario todavía no existe — sacado del nav hasta que esté listo. Ver data/digital-products.ts.
-  { label: "Rutinas", href: "/rutinas", variant: "product" },
+  { label: "Resultados", href: "/#resultados", variant: "muted" },
+  { label: "Método", href: "/#metodo", variant: "muted" },
 ];
 
-const APPLY_HREF = getStickyWhatsAppHref();
+const APPLY_HREF = "/#aplicar";
 
 export function Navbar({ extraNavItems }: NavbarProps) {
   const pathname = usePathname();
@@ -114,9 +111,13 @@ export function Navbar({ extraNavItems }: NavbarProps) {
 
             <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
               <div className="ml-auto flex items-center gap-2 justify-end md:justify-self-end">
-                <WhatsAppButton href={APPLY_HREF} size="sm" dot className="hidden md:inline-flex tracking-[0.03em]">
+                <Link
+                  href={APPLY_HREF}
+                  className="relative hidden items-center rounded-full bg-[var(--dorado)] px-3.5 py-2 text-sm font-bold text-black transition-[filter] duration-200 hover:brightness-110 md:inline-flex"
+                >
+                  <span aria-hidden className="apply-dot mr-[10px]" />
                   Aplicar
-                </WhatsAppButton>
+                </Link>
                 <SheetTrigger asChild>
                   <button
                     type="button"
@@ -138,9 +139,13 @@ export function Navbar({ extraNavItems }: NavbarProps) {
                 </SheetHeader>
 
                 <div className="space-y-5 overflow-y-auto pb-2">
-                  <WhatsAppButton href={APPLY_HREF} className="w-full justify-center">
+                  <Link
+                    href={APPLY_HREF}
+                    onClick={() => setIsMenuOpen(false)}
+                    className="inline-flex w-full items-center justify-center rounded-full bg-[var(--dorado)] px-4 py-2.5 text-sm font-bold text-black"
+                  >
                     Aplicar
-                  </WhatsAppButton>
+                  </Link>
 
                   <div className="space-y-2">
                     <p className="px-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--texto-gris)]">Accesos</p>
@@ -186,15 +191,13 @@ export function Navbar({ extraNavItems }: NavbarProps) {
             <ul className="flex flex-wrap gap-1.5">
               {STATIC_NAV_ITEMS.map((item) => renderStaticItem(item, true))}
               <li>
-                <a
+                <Link
                   href={APPLY_HREF}
-                  target="_blank"
-                  rel="noreferrer"
                   className="relative inline-flex items-center rounded-full bg-[var(--dorado)] px-2.5 py-1.5 text-xs font-bold text-black"
                 >
                   <span aria-hidden className="apply-dot mr-[10px]" />
                   Aplicar
-                </a>
+                </Link>
               </li>
             </ul>
           </nav>

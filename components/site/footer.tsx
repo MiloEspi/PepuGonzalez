@@ -1,4 +1,4 @@
-import { Instagram, Mail, MessageCircle, Youtube } from "lucide-react";
+import { Instagram, MessageCircle, Youtube } from "lucide-react";
 
 import { getStickyWhatsAppHref } from "@/data/offers";
 import type { FooterDoc } from "@/lib/sanity";
@@ -46,23 +46,12 @@ export function Footer({ content }: FooterProps) {
   return (
     <footer id="contacto" className="border-t border-white/10 bg-[var(--negro-2)] pt-[60px] md:pt-[90px]">
       <div className="layout-shell pb-14 md:pb-16">
-        <p className="font-heading text-sm uppercase tracking-[0.06em] text-[var(--texto)]">Pepu González</p>
+        <p className="text-sm text-[var(--texto)]">
+          <span className="font-heading uppercase tracking-[0.06em]">Pepu González</span>
+          <span className="text-[var(--texto-gris)]"> · La Plata, Argentina</span>
+        </p>
 
-        <div className="mt-4 flex flex-col gap-1.5 text-sm">
-          <a href={`mailto:${content.email}`} className="w-fit text-[var(--texto-gris)] transition-colors duration-200 hover:text-[var(--dorado)]">
-            {content.email}
-          </a>
-          <a
-            href={getStickyWhatsAppHref()}
-            target="_blank"
-            rel="noreferrer"
-            className="w-fit text-[var(--texto-gris)] transition-colors duration-200 hover:text-[var(--dorado)]"
-          >
-            Escribime por WhatsApp
-          </a>
-        </div>
-
-        <div className="mt-7 flex flex-wrap items-center gap-5">
+        <div className="mt-6 flex flex-wrap items-center gap-5">
           <a
             href={getStickyWhatsAppHref()}
             target="_blank"
@@ -72,9 +61,6 @@ export function Footer({ content }: FooterProps) {
             className="text-[var(--texto-gris)] transition-colors duration-200 hover:text-[var(--dorado)]"
           >
             <MessageCircle className="size-5" strokeWidth={1.5} />
-          </a>
-          <a href={`mailto:${content.email}`} aria-label="Mail" title="Mail" className="text-[var(--texto-gris)] transition-colors duration-200 hover:text-[var(--dorado)]">
-            <Mail className="size-5" strokeWidth={1.5} />
           </a>
           {socialLinks.map((item) => {
             const Icon = SOCIAL_ICONS[item.key];
@@ -111,6 +97,9 @@ export function Footer({ content }: FooterProps) {
             ))}
           </div>
 
+          <p className="text-xs text-[var(--texto-gris)]">
+            Contenido educativo. No reemplaza la consulta con un profesional de la salud.
+          </p>
           <p className="text-xs text-[var(--texto-gris)]">(c) 2026 Pepu González. Todos los derechos reservados.</p>
         </div>
       </div>

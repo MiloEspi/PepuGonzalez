@@ -18,12 +18,14 @@ interface PrimaryButtonProps {
  * sombra dorada muy sutil. Reusar en todas las secciones, no crear variantes.
  */
 export function PrimaryButton({ href, children, icon, caption, className }: PrimaryButtonProps) {
+  const isExternal = href.startsWith("http");
+
   return (
     <div className="inline-flex flex-col items-center gap-2.5">
       <a
         href={href}
-        target="_blank"
-        rel="noreferrer"
+        target={isExternal ? "_blank" : undefined}
+        rel={isExternal ? "noreferrer" : undefined}
         className={cn(
           "group inline-flex items-center gap-2.5 rounded-full bg-[var(--dorado)] px-6 py-3.5 text-[0.95rem] font-bold text-black shadow-[0_0_36px_-12px_rgba(227,179,65,0.55)] transition-[filter] duration-200 hover:brightness-110 active:brightness-95",
           className

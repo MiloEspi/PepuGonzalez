@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Check } from "lucide-react";
 
 import { AccentText } from "@/components/site/accent-text";
 import { Section } from "@/components/site/section";
@@ -35,6 +35,14 @@ const PHASES: MethodPhase[] = [
   },
 ];
 
+const INCLUDES = [
+  "Entrenamiento armado para los días que tenés de verdad, con video de cada ejercicio.",
+  "Te enseño a manejar calorías y proteína, con una guía de comidas con lo que te gusta.",
+  "Todo en una app: tu entrenamiento, tus comidas y tu progreso en el celular.",
+  "Check-in todas las semanas: peso promedio, fotos cada 2 semanas y ajustes según cómo venís.",
+  "Respuesta mía por WhatsApp cuando te trabes.",
+];
+
 export function MethodSection() {
   return (
     <Section id="metodo" tone="b" glow="faint-left">
@@ -65,12 +73,19 @@ export function MethodSection() {
         ))}
       </div>
 
-      <p className="mt-[30px] text-sm text-[var(--texto-gris)]">
-        ¿Querés ver todo lo que incluye?{" "}
-        <Link href="/asesoria" className="text-[var(--dorado)] underline underline-offset-4">
-          Mirá el detalle
-        </Link>
-      </p>
+      <div className="mt-16 md:mt-20">
+        <h3 className="font-heading text-2xl uppercase leading-snug text-[var(--texto)] sm:text-3xl">
+          QUÉ <AccentText>incluye</AccentText>
+        </h3>
+        <ul className="mt-8 flex flex-col gap-4">
+          {INCLUDES.map((item) => (
+            <li key={item} className="flex items-start gap-3">
+              <Check className="mt-1 size-4 shrink-0 text-[var(--dorado)]" strokeWidth={2.5} />
+              <p className="copy max-w-none text-[var(--texto)]">{item}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
     </Section>
   );
 }
