@@ -7,7 +7,7 @@ const FAQS = [
   {
     question: "¿Cuánto es la inversión?",
     answer:
-      "Pensalo así: ya estás invirtiendo. Pagás el gimnasio, quizás suplementos, y le ponés horas todas las semanas sin que se te note. El sistema es lo que hace que todo eso empiece a rendir. Y si cumplís tus check-ins y no bajás, te devuelvo la plata.",
+      "Pensalo así: ya estás invirtiendo. Pagás el gimnasio, quizás suplementos, y le ponés horas todas las semanas sin que se te note. Esto es lo que hace que todo eso empiece a rendir. Y si cumplís tus check-ins y no bajás, te devuelvo la plata. El precio te lo paso en tu moneda cuando aplicás.",
   },
   {
     question: "¿Cuántos días tengo que entrenar?",

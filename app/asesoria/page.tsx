@@ -1,12 +1,6 @@
-import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 
-import { AsesoriaPage } from "@/components/site/asesoria-page";
-
-export const metadata: Metadata = {
-  title: "Qué incluye la asesoría | Pepu González",
-  description: "Todo lo que incluye trabajar 1 a 1 conmigo.",
-};
-
+// El contenido de /asesoria quedó viejo (precio y nicho anteriores): por ahora todo va al formulario de la home.
 export default function Page() {
-  return <AsesoriaPage />;
+  redirect("/#aplicar");
 }
