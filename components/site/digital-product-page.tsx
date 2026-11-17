@@ -5,10 +5,9 @@ import { AccentText } from "@/components/site/accent-text";
 import { PreviewGallery } from "@/components/site/preview-gallery";
 import { Section } from "@/components/site/section";
 import { SectionTitle } from "@/components/site/section-heading";
-import { PrimaryButton, WhatsAppGlyph } from "@/components/site/primary-button";
+import { PaymentButtons } from "@/components/site/payment-buttons";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { type DigitalProduct } from "@/data/digital-products";
-import { getWhatsAppUrl } from "@/data/offers";
 import { formatPrecio, PRECIOS } from "@/data/precios";
 import type { PublicAssetSlot } from "@/lib/public-asset";
 
@@ -21,19 +20,7 @@ interface DigitalProductPageProps {
 function BuyButton({ product, showPackLine }: { product: DigitalProduct; showPackLine: boolean }) {
   return (
     <div className="flex flex-col items-center gap-3">
-      {product.checkoutUrl ? (
-        <PrimaryButton href={product.checkoutUrl} newTab={false}>
-          Lo quiero
-        </PrimaryButton>
-      ) : (
-        <PrimaryButton
-          href={getWhatsAppUrl(product.whatsappMessage)}
-          icon={<WhatsAppGlyph />}
-          caption="Te paso el link de pago y te lo mando al mail el mismo día."
-        >
-          Lo quiero, escribime
-        </PrimaryButton>
-      )}
+      <PaymentButtons payment={product.payment} />
       {showPackLine ? (
         <p className="text-xs text-[var(--texto-gris)]">
           Llevando el recetario y una rutina juntos: {formatPrecio(PRECIOS.pack)}

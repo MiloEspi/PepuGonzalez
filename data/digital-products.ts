@@ -15,6 +15,12 @@ export interface DigitalProductLinkedText {
 
 export type DigitalProductListItem = string | DigitalProductLinkedText;
 
+export interface DigitalProductPayment {
+  argentinaUrl: string;
+  exteriorUrl: string;
+  receiptMessage: string;
+}
+
 export interface DigitalProduct {
   slug: DigitalProductSlug;
   navLabel: string;
@@ -23,7 +29,7 @@ export interface DigitalProduct {
   audience: string;
   priceKey: "recetario" | "rutina";
   whatsappMessage: string;
-  checkoutUrl?: string;
+  payment: DigitalProductPayment;
   whatsInside: string[];
   audienceYes: string[];
   audienceYesNote?: string;
@@ -40,6 +46,11 @@ export const DIGITAL_PRODUCTS: Record<DigitalProductSlug, DigitalProduct> = {
     audience: "Para el que ya entrena o come más o menos ordenado y necesita variedad real.",
     priceKey: "recetario",
     whatsappMessage: "Hola Pepu, quiero el recetario",
+    payment: {
+      argentinaUrl: "https://mpago.la/2zGoMX6",
+      exteriorUrl: "https://pay.hotmart.com/M108536789S",
+      receiptMessage: "Hola Pepu, pagué el recetario. Te mando el comprobante.",
+    },
     whatsInside: [
       "30 recetas: milanesas al horno, guisos, tartas, pastas y más — comida de todos los días.",
       "Cada receta con las porciones ya armadas, no tenés que calcular nada.",
@@ -73,11 +84,16 @@ export const DIGITAL_PRODUCTS: Record<DigitalProductSlug, DigitalProduct> = {
     slug: "rutinas",
     navLabel: "Rutinas",
     title: "Rutinas",
-    tagline: "Planes de entrenamiento de 4, 5 y 6 días, para elegir el que entra en tu semana real.",
+    tagline:
+      "Planes de entrenamiento de 4, 5 y 6 días + guías de definición y volumen, para elegir el que entra en tu semana real.",
     audience: "Para el que ya tiene la comida más o menos resuelta y solo necesita qué hacer en el gimnasio.",
     priceKey: "rutina",
     whatsappMessage: "Hola Pepu, quiero las rutinas",
-    checkoutUrl: "https://pay.hotmart.com/V108538897B",
+    payment: {
+      argentinaUrl: "https://mpago.la/2BzRX8G",
+      exteriorUrl: "https://pay.hotmart.com/V108538897B",
+      receiptMessage: "Hola Pepu, pagué las rutinas. Te mando el comprobante.",
+    },
     whatsInside: [
       "Rutinas armadas por cantidad de días: 4, 5 o 6 por semana.",
       "Ejercicios, series, repeticiones y progresión semana a semana.",
