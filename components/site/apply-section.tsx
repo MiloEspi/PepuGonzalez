@@ -106,7 +106,7 @@ export function ApplySection() {
           href="#mas-formas-de-empezar"
           className="underline-offset-4 transition-colors duration-200 hover:text-[var(--dorado)] hover:underline"
         >
-          ¿Todavía no es tu momento? Empezá por el recetario o las rutinas ↓
+          ¿Todavía no es tu momento? Empezá por el pack o el recetario ↓
         </a>
       </p>
     </Section>

@@ -84,7 +84,7 @@ export const DIGITAL_PRODUCTS: Record<DigitalProductSlug, DigitalProduct> = {
     slug: "rutinas",
     navLabel: "Rutinas",
     title: "Pack físico estético",
-    tagline: "Rutinas de 4, 5 y 6 días + guía de definición + guía de volumen. En PDF, para el celular.",
+    tagline: "3 rutinas + guía de definición + guía de volumen. En PDF, para el celular.",
     audience: "Para el que ya tiene la comida más o menos resuelta y solo necesita qué hacer en el gimnasio.",
     priceKey: "rutina",
     whatsappMessage: "Hola Pepu, quiero las rutinas",
