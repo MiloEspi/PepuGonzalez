@@ -3,10 +3,18 @@ import type { DigitalProductPayment } from "@/data/digital-products";
 import { getWhatsAppUrl } from "@/data/offers";
 import { cn } from "@/lib/utils";
 
-export function PaymentButtons({ payment, className }: { payment: DigitalProductPayment; className?: string }) {
+export function PaymentButtons({
+  payment,
+  className,
+  compact = false,
+}: {
+  payment: DigitalProductPayment;
+  className?: string;
+  compact?: boolean;
+}) {
   return (
-    <div className={cn("flex flex-col items-center gap-3 text-center", className)}>
-      <PrimaryButton href={payment.argentinaUrl} newTab={false}>
+    <div className={cn("flex flex-col items-center text-center", compact ? "gap-2.5" : "gap-3", className)}>
+      <PrimaryButton href={payment.argentinaUrl} newTab={false} className={compact ? "px-5 py-2.5 text-sm" : undefined}>
         Pagar desde Argentina
       </PrimaryButton>
       <p className="max-w-[300px] text-xs leading-relaxed text-[var(--texto-gris)]">

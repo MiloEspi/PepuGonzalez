@@ -64,7 +64,7 @@ export function CardImageCarousel({ slides }: { slides: CarouselSlide[] }) {
           <span
             aria-hidden
             className={cn(
-              "pointer-events-none absolute bottom-3 right-3 rounded-full bg-black/65 px-2.5 py-1 text-[11px] font-semibold text-[var(--texto)] backdrop-blur-sm transition-opacity duration-300",
+              "pointer-events-none absolute bottom-2 right-2 rounded-full bg-black/70 px-2 py-0.5 text-[10px] font-semibold text-[var(--texto)] backdrop-blur-sm transition-opacity duration-300",
               hasSwiped ? "opacity-0" : "opacity-100"
             )}
           >

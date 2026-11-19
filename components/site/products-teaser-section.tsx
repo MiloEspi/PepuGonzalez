@@ -61,7 +61,7 @@ export function ProductsTeaserSection() {
         MÁS FORMAS DE <AccentText>empezar</AccentText>
       </SectionTitle>
 
-      <div className="mt-12 grid gap-4 md:grid-cols-2">
+      <div className="mx-auto mt-12 grid w-full max-w-[300px] gap-6 md:max-w-none md:grid-cols-[repeat(2,minmax(0,340px))] md:justify-center md:gap-5">
         {CARDS.map((card) => (
           <article
             key={card.key}
@@ -69,22 +69,24 @@ export function ProductsTeaserSection() {
           >
             <CardImageCarousel slides={card.slides} />
 
-            <div className="px-6 pt-4">
+            <div className="px-5 pt-3">
               {card.titleHref ? (
                 <Link
                   href={card.titleHref}
-                  className="font-heading text-xl uppercase tracking-tight text-[var(--texto)] underline-offset-4 transition-colors duration-200 hover:text-[var(--dorado)] hover:underline"
+                  className="font-heading text-lg uppercase tracking-tight text-[var(--texto)] underline-offset-4 transition-colors duration-200 hover:text-[var(--dorado)] hover:underline"
                 >
                   {card.title}
                 </Link>
               ) : (
-                <p className="font-heading text-xl uppercase tracking-tight text-[var(--texto)]">{card.title}</p>
+                <p className="font-heading text-lg uppercase tracking-tight text-[var(--texto)]">{card.title}</p>
               )}
-              <p className="copy mt-2 text-[var(--texto-gris)]">{card.text}</p>
-              <p className="mt-3 font-heading text-3xl text-[var(--dorado)]">{formatPrecio(card.price)}</p>
+              <p className="mt-1 line-clamp-2 text-sm leading-snug text-[var(--texto-gris)]" title={card.text}>
+                {card.text}
+              </p>
+              <p className="mt-2 font-heading text-2xl text-[var(--dorado)]">{formatPrecio(card.price)}</p>
             </div>
 
-            <PaymentButtons payment={card.payment} className="mt-auto px-6 pb-6 pt-5" />
+            <PaymentButtons payment={card.payment} compact className="mt-auto px-5 pb-5 pt-3" />
           </article>
         ))}
       </div>
