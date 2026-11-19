@@ -1,7 +1,7 @@
 "use client";
 
 import { type FormEvent, useState } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Check, X } from "lucide-react";
 
 import { AccentText } from "@/components/site/accent-text";
 import { WhatsAppGlyph } from "@/components/site/primary-button";
@@ -42,14 +42,25 @@ export function ApplySection() {
   }
 
   return (
-    <Section id="aplicar" tone="a" glow>
-      <SectionEyebrow>CUPOS FUNDADORES</SectionEyebrow>
+    <Section id="aplicar" tone="b" glow>
+      <SectionEyebrow>CUPOS LIMITADOS</SectionEyebrow>
       <SectionTitle className="mt-3">
         APLICÁ A LA <AccentText>asesoría</AccentText>
       </SectionTitle>
       <p className="copy mt-5 text-[var(--texto-gris)]">
-        Abro 5 lugares. Son pocos porque los sigo de cerca a cada uno. Completá esto y te respondo yo por WhatsApp.
+        Tomo 5 alumnos por mes, porque a cada uno lo sigo de cerca. Completá esto y te respondo yo por WhatsApp.
       </p>
+
+      <ul className="mt-6 flex max-w-[620px] flex-col gap-2 text-sm leading-snug">
+        <li className="flex items-start gap-2.5 text-[var(--texto)]">
+          <Check className="mt-0.5 size-4 shrink-0 text-[var(--dorado)]" strokeWidth={2.5} />
+          Es para vos si entrenás hace meses y querés que se te note.
+        </li>
+        <li className="flex items-start gap-2.5 text-[var(--texto-gris)]">
+          <X className="mt-0.5 size-4 shrink-0 text-[var(--dorado-suave)]" strokeWidth={2.5} />
+          No es para vos si buscás algo de 15 días o no vas a mandar tus check-ins.
+        </li>
+      </ul>
 
       <form onSubmit={handleSubmit} className="mt-10 flex max-w-[620px] flex-col gap-6">
         {FIELDS.map((field) => (

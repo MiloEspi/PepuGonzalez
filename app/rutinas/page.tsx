@@ -5,7 +5,7 @@ import { DIGITAL_PRODUCTS } from "@/data/digital-products";
 import { publicAssetSlot } from "@/lib/public-asset";
 
 export const metadata: Metadata = {
-  title: "Rutinas | Pepu González",
+  title: "Pack físico estético | Pepu González",
   description: DIGITAL_PRODUCTS.rutinas.tagline,
 };
 

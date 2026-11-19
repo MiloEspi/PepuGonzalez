@@ -28,6 +28,20 @@ function slides(items: Array<{ path: string; alt: string; fit: CarouselSlide["fi
 
 const CARDS: Card[] = [
   {
+    key: "pack",
+    title: DIGITAL_PRODUCTS.rutinas.title,
+    text: DIGITAL_PRODUCTS.rutinas.tagline,
+    price: PRECIOS[DIGITAL_PRODUCTS.rutinas.priceKey],
+    titleHref: `/${DIGITAL_PRODUCTS.rutinas.slug}`,
+    payment: DIGITAL_PRODUCTS.rutinas.payment,
+    slides: slides([
+      { path: "preview/pack-portada.png", alt: "Portada del Pack físico estético", fit: "cover", position: "center top" },
+      { path: "preview/rutinas-tabla.jpg", alt: "Tabla de las 12 semanas", fit: "contain" },
+      { path: "preview/rutinas-2.jpg", alt: "Día de entrenamiento", fit: "contain" },
+      { path: "preview/rutinas-3.jpg", alt: "Volumen semanal por músculo", fit: "contain" },
+    ]),
+  },
+  {
     key: "recetario",
     title: "Definir comiendo rico",
     text: "Las recetas que como yo para estar definido, cada una con sus macros. Más cómo armo mi día, intercambios y lista del súper.",
@@ -36,20 +50,6 @@ const CARDS: Card[] = [
     slides: slides([
       { path: "preview/recetario-portada.jpg", alt: "Portada del recetario Definir comiendo rico", fit: "cover", position: "center top" },
       { path: "preview/recetario-pagina.jpg", alt: "Página de receta del recetario", fit: "contain" },
-    ]),
-  },
-  {
-    key: "rutinas",
-    title: DIGITAL_PRODUCTS.rutinas.title,
-    text: DIGITAL_PRODUCTS.rutinas.tagline,
-    price: PRECIOS[DIGITAL_PRODUCTS.rutinas.priceKey],
-    titleHref: `/${DIGITAL_PRODUCTS.rutinas.slug}`,
-    payment: DIGITAL_PRODUCTS.rutinas.payment,
-    slides: slides([
-      { path: "preview/rutinas-portada.jpg", alt: "Pepu González", fit: "cover", position: "center 35%" },
-      { path: "preview/rutinas-tabla.jpg", alt: "Tabla de las 12 semanas", fit: "contain" },
-      { path: "preview/rutinas-2.jpg", alt: "Día de entrenamiento", fit: "contain" },
-      { path: "preview/rutinas-3.jpg", alt: "Volumen semanal por músculo", fit: "contain" },
     ]),
   },
 ];

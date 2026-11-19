@@ -83,21 +83,22 @@ export const DIGITAL_PRODUCTS: Record<DigitalProductSlug, DigitalProduct> = {
   rutinas: {
     slug: "rutinas",
     navLabel: "Rutinas",
-    title: "Rutinas",
-    tagline:
-      "Planes de entrenamiento de 4, 5 y 6 días + guías de definición y volumen, para elegir el que entra en tu semana real.",
+    title: "Pack físico estético",
+    tagline: "Rutinas de 4, 5 y 6 días + guía de definición + guía de volumen. En PDF, para el celular.",
     audience: "Para el que ya tiene la comida más o menos resuelta y solo necesita qué hacer en el gimnasio.",
     priceKey: "rutina",
     whatsappMessage: "Hola Pepu, quiero las rutinas",
     payment: {
       argentinaUrl: "https://mpago.la/2BzRX8G",
       exteriorUrl: "https://pay.hotmart.com/V108538897B",
-      receiptMessage: "Hola Pepu, pagué las rutinas. Te mando el comprobante.",
+      receiptMessage: "Hola Pepu, pagué el pack. Te mando el comprobante.",
     },
     whatsInside: [
       "Rutinas armadas por cantidad de días: 4, 5 o 6 por semana.",
       "Ejercicios, series, repeticiones y progresión semana a semana.",
       "Pensadas para gimnasio con mancuernas, barras y máquinas básicas.",
+      "Guía de definición.",
+      "Guía de volumen.",
     ],
     audienceYes: [
       "Para el que entrena hace seis meses o más y hace rato que levanta el mismo peso.",

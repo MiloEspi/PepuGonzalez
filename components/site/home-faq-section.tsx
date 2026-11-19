@@ -17,11 +17,7 @@ const FAQS = [
     question: "¿Tengo que pesar todo lo que como?",
     answer: "No. Arrancamos ordenando horarios, cantidades y hábitos con la comida que ya hay en tu casa.",
   },
-  {
-    question: "¿Cómo es el seguimiento?",
-    answer: "Todo pasa en la app. Una vez por semana me mandás tu check-in y ajustamos.",
-  },
-  { question: "¿Puedo hacerlo desde otro país?", answer: "Sí. Es todo online." },
+  { question: "¿Puedo hacerlo desde otro país?", answer: "Sí. Es todo online y te paso el precio en tu moneda." },
 ];
 
 export function HomeFaqSection() {

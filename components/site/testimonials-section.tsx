@@ -22,8 +22,18 @@ interface TestimonialsSectionProps {
   results: ResultDoc[];
 }
 
+// "- 3kg" / "+5kg " → "−3 kg" / "+5 kg"
+function formatMetric(metric: string): string {
+  const match = metric.trim().match(/^([+-−])?\s*([\d.,]+)\s*(kg)?\s*(.*)$/i);
+  if (!match) return metric.trim();
+  const [, sign = "", value, , rest] = match;
+  return `${sign === "-" ? "−" : sign}${value} kg${rest ? ` ${rest}` : ""}`;
+}
+
 function TestimonialCardItem({ item }: { item: TestimonialCard }) {
-  const pillLabel = [item.resultMetric, item.durationLabel].filter(Boolean).join(" EN ").toUpperCase();
+  const resultLabel = [item.resultMetric ? formatMetric(item.resultMetric) : "", item.durationLabel?.trim()]
+    .filter(Boolean)
+    .join(" · ");
 
   return (
     <article className="flex w-[280px] shrink-0 flex-col overflow-hidden rounded-[16px] bg-[var(--negro-2)] sm:w-[320px]">
@@ -43,14 +53,14 @@ function TestimonialCardItem({ item }: { item: TestimonialCard }) {
       </div>
 
       <div className="flex flex-1 flex-col p-5">
-        <p className="font-heading text-lg uppercase tracking-tight text-[var(--dorado)]">{item.name}</p>
-        {item.quote ? (
-          <p className="mt-3 flex-1 text-sm italic leading-relaxed text-[var(--texto-gris)]">&ldquo;{item.quote}&rdquo;</p>
+        {resultLabel ? (
+          <p className="font-heading text-2xl leading-tight tracking-tight text-[var(--dorado)]">{resultLabel}</p>
         ) : null}
-        {pillLabel ? (
-          <span className="mt-4 inline-flex w-fit items-center rounded-full bg-[var(--dorado)] px-3 py-1.5 text-xs font-bold text-black">
-            {pillLabel}
-          </span>
+        <p className="mt-1 font-heading text-base uppercase tracking-tight text-[var(--texto)]">{item.name}</p>
+        {item.quote ? (
+          <p className="mt-3 line-clamp-3 text-sm italic leading-relaxed text-[var(--texto-gris)] md:line-clamp-none">
+            &ldquo;{item.quote}&rdquo;
+          </p>
         ) : null}
       </div>
     </article>
@@ -80,6 +90,7 @@ export function TestimonialsSection({ results }: TestimonialsSectionProps) {
         <SectionTitle className="mt-3">
           LO QUE LOGRARON <AccentText>mis alumnos</AccentText>
         </SectionTitle>
+        <p className="copy mt-4 text-[var(--texto-gris)]">Alumnos que siguieron el proceso. Sin dietas extremas.</p>
         <p className="copy mt-6 text-[var(--texto-gris)]">Carga documentos de tipo result en Sanity para mostrar este carrusel.</p>
       </Section>
     );
@@ -94,6 +105,7 @@ export function TestimonialsSection({ results }: TestimonialsSectionProps) {
         <SectionTitle className="mt-3">
           LO QUE LOGRARON <AccentText>mis alumnos</AccentText>
         </SectionTitle>
+        <p className="copy mt-4 text-[var(--texto-gris)]">Alumnos que siguieron el proceso. Sin dietas extremas.</p>
       </div>
 
       <div

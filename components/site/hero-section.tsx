@@ -12,6 +12,8 @@ import { StoryPhoto } from "@/components/site/story-photo";
 import type { PublicAssetSlot } from "@/lib/public-asset";
 import { EASE_OUT_EXPO, prefersReducedMotion } from "@/utils/animations";
 
+const HERO_CHIPS = ["Video de ajustes cada semana", "Llamada cada 15 días", "Garantía de devolución", "5 cupos por mes"];
+
 interface HeroSectionProps {
   antes: PublicAssetSlot;
   hoy: PublicAssetSlot;
@@ -107,8 +109,7 @@ export function HeroSection({ antes, hoy }: HeroSectionProps) {
             data-hero-reveal-item
             className="max-w-[560px] text-[1.0625rem] leading-[1.65] text-[var(--texto-gris)]"
           >
-            En 90 días se te nota que entrenás. Bajás la grasa que te tapa el físico comiendo rico, con un check-in conmigo
-            cada semana.
+            Bajás la grasa que te tapa el físico en 90 días, comiendo rico y con un check-in conmigo cada semana.
           </p>
 
           <div data-hero-reveal-item className="w-full">
@@ -119,10 +120,19 @@ export function HeroSection({ antes, hoy }: HeroSectionProps) {
             <p className="mt-3 text-xs text-[var(--texto-gris)]">Yo: de 85 kg a 78, con músculo</p>
           </div>
 
+          <ul data-hero-reveal-item className="grid w-full max-w-[460px] grid-cols-2 gap-2 md:flex md:max-w-none md:flex-wrap md:justify-center">
+            {HERO_CHIPS.map((chip) => (
+              <li
+                key={chip}
+                className="flex items-center justify-center rounded-full border border-[var(--dorado-suave)]/60 px-3 py-1.5 text-center text-[11px] font-semibold leading-tight text-[var(--texto)] md:text-xs"
+              >
+                {chip}
+              </li>
+            ))}
+          </ul>
+
           <div data-hero-reveal-item>
-            <PrimaryButton href="#aplicar" caption="5 lugares fundadores. Son 5 preguntas y te respondo yo por WhatsApp.">
-              Quiero aplicar
-            </PrimaryButton>
+            <PrimaryButton href="#aplicar">Quiero aplicar</PrimaryButton>
           </div>
 
           <a
